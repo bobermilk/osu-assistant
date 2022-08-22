@@ -1,0 +1,1 @@
+# for flask and osu api requests
