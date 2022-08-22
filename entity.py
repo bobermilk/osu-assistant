@@ -70,7 +70,8 @@ class Sources():
         key, data=misc.create_mappack_source(status, gamemode, download_count)
         self.mappack_source[key]=data
 
-    def add_tournament_source(self, id):
+    def add_tournament_source(self, selection):
+        id=selection.split(":")[0] # SOFT-4: Springtime Osu!mania Free-for-all Tournament 4
         key, data=misc.create_tournament_source(id)
         self.tournament_source[key]=data
 

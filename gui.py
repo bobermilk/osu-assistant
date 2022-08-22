@@ -237,7 +237,6 @@ class Main ( wx.Frame ):
 
 		# Connect Events
 		self.m_add_source.Bind( wx.EVT_BUTTON, self.show_add_window )
-		self.m_activity_list.Bind( wx.EVT_LISTBOX_DCLICK, self.edit_activity )
 		self.m_start_downloading.Bind( wx.EVT_BUTTON, self.start_download )
 		self.m_osu_dir.Bind( wx.EVT_DIRPICKER_CHANGED, self.update_osu_folder )
 		self.m_autoupdate_sources.Bind( wx.EVT_CHECKBOX, self.autoupdate_toggle )
@@ -257,9 +256,6 @@ class Main ( wx.Frame ):
 
 	# Virtual event handlers, override them in your derived class
 	def show_add_window( self, event ):
-		event.Skip()
-
-	def edit_activity( self, event ):
 		event.Skip()
 
 	def start_download( self, event ):
@@ -414,12 +410,16 @@ class AddSource ( wx.Frame ):
 		bSizer26.Add( bSizer28, 1, wx.EXPAND, 5 )
 
 
-		bSizer15.Add( bSizer26, 1, wx.EXPAND, 5 )
+		bSizer15.Add( bSizer26, 1, 0, 5 )
 
 
-		bSizer14.Add( bSizer15, 1, wx.EXPAND, 5 )
+		bSizer14.Add( bSizer15, 0, wx.EXPAND, 5 )
 
-		self.m_add_tournament = wx.Button( self.m_panel7, wx.ID_ANY, u"Add Tournament(s)", wx.DefaultPosition, wx.DefaultSize, 0 )
+		m_tournament_searchChoices = []
+		self.m_tournament_search = wx.ListBox( self.m_panel7, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_tournament_searchChoices, wx.LB_SINGLE )
+		bSizer14.Add( self.m_tournament_search, 1, wx.ALL|wx.EXPAND, 5 )
+
+		self.m_add_tournament = wx.Button( self.m_panel7, wx.ID_ANY, u"Add Tournament", wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer14.Add( self.m_add_tournament, 0, wx.ALL|wx.EXPAND, 5 )
 
 
@@ -523,10 +523,6 @@ class AddSource ( wx.Frame ):
 
 		# Connect Events
 		self.m_subscribed_mappers.Bind( wx.EVT_BUTTON, self.open_subscribed_mappers )
-		self.m_add_userpage.Bind( wx.EVT_BUTTON, self.add_userpage )
-		self.m_add_tournament.Bind( wx.EVT_BUTTON, self.add_tournament )
-		self.m_add_mappack.Bind( wx.EVT_BUTTON, self.add_mappack )
-		self.m_add_osucollector.Bind( wx.EVT_BUTTON, self.add_osucollector )
 
 	def __del__( self ):
 		pass
@@ -534,18 +530,6 @@ class AddSource ( wx.Frame ):
 
 	# Virtual event handlers, override them in your derived class
 	def open_subscribed_mappers( self, event ):
-		event.Skip()
-
-	def add_userpage( self, event ):
-		event.Skip()
-
-	def add_tournament( self, event ):
-		event.Skip()
-
-	def add_mappack( self, event ):
-		event.Skip()
-
-	def add_osucollector( self, event ):
 		event.Skip()
 
 
