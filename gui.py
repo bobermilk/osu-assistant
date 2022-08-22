@@ -27,22 +27,9 @@ class Main ( wx.Frame ):
 		self.m_panel_sources = wx.Panel( self.m_notebook2, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		bSizer4 = wx.BoxSizer( wx.VERTICAL )
 
-		bSizer35 = wx.BoxSizer( wx.HORIZONTAL )
-
-		self.m_staticText12 = wx.StaticText( self.m_panel_sources, wx.ID_ANY, u"0 available sources", wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_staticText12.Wrap( -1 )
-
-		bSizer35.Add( self.m_staticText12, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
-
-		self.m_bpButton2 = wx.BitmapButton( self.m_panel_sources, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, wx.BU_AUTODRAW|0 )
-		bSizer35.Add( self.m_bpButton2, 0, wx.ALL, 5 )
-
-
-		bSizer4.Add( bSizer35, 0, 0, 5 )
-
 		self.m_source_list = wx.Listbook( self.m_panel_sources, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LB_DEFAULT )
 
-		bSizer4.Add( self.m_source_list, 1, wx.EXPAND |wx.ALL, 5 )
+		bSizer4.Add( self.m_source_list, 1, wx.ALL|wx.EXPAND, 5 )
 
 		self.m_add_source = wx.Button( self.m_panel_sources, wx.ID_ANY, u"    Add source    ", wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer4.Add( self.m_add_source, 0, wx.ALL|wx.EXPAND, 5 )

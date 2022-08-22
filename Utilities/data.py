@@ -12,6 +12,6 @@ Sources=entity.Sources()
 # Adding things will add to the actual data, but it is not shown
 def get_source_list():
     if constants.DEBUG:
-        return (fake.sources)
+        return fake.Sources.read()
     else:
         return Sources.read()

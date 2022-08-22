@@ -1,9 +1,11 @@
 from Utilities import constants, misc
 
+# Note: the beatmaps below is a list of beatmapid
 class UserSource:
-    def __init__(self, ids, scope):
+    def __init__(self, ids, scope, beatmaps):
         self.ids=ids
         self.scope=scope
+        self.beatmaps=beatmaps
     def get_ids(self):
         return self.ids
     def set_ids(self, ids):
@@ -12,28 +14,34 @@ class UserSource:
         return self.scope
     def set_scope(self, scope):
         self.scope=scope
+    def get_beatmaps(self):
+        return self.beatmaps
+    def add_beatmap(self, beatmap):
+        self.beatmaps.append(beatmap)
+    def delete_beatmap(self, beatmap):
+        self.beatmaps.remove(beatmap)
 
 class TournamentSource:
-    def __init__(self, id):
+    def __init__(self, id, beatmaps):
         self.id=id
+        self.beatmaps=beatmaps
     def get_id(self):
         return self.id
     def set_id(self, id):
         self.id=id
-
-class OsucollectorSource:
-    def __init__(self, id):
-        self.id=id
-    def get_id(self):
-        return self.id
-    def set_id(self, id):
-        self.id=id
+    def get_beatmaps(self):
+        return self.beatmaps
+    def add_beatmap(self, beatmap):
+        self.beatmaps.append(beatmap)
+    def delete_beatmap(self, beatmap):
+        self.beatmaps.remove(beatmap)
 
 class MappackSource:
-    def __init__(self, status, gamemode, download_count):
+    def __init__(self, status, gamemode, download_count, beatmaps):
         self.number=download_count
         self.status=status
         self.gamemode=gamemode
+        self.beatmaps=beatmaps
     def get_status(self):
         return self.status
     def set_status(self, status):
@@ -44,8 +52,29 @@ class MappackSource:
         self.gamemode=gamemode
     def get_download_count(self):
         return self.download_count
+    def get_beatmaps(self):
+        return self.beatmaps
     def set_number(self, download_count):
         self.download_count=download_count
+    def add_beatmap(self, beatmap):
+        self.beatmaps.append(beatmap)
+    def delete_beatmap(self, beatmap):
+        self.beatmaps.remove(beatmap)
+
+class OsucollectorSource:
+    def __init__(self, id, beatmaps):
+        self.id=id
+        self.beatmaps=beatmaps
+    def get_id(self):
+        return self.id
+    def set_id(self, id):
+        self.id=id
+    def get_beatmaps(self):
+        return self.beatmaps
+    def add_beatmap(self, beatmap):
+        self.beatmaps.append(beatmap)
+    def delete_beatmap(self, beatmap):
+        self.beatmaps.remove(beatmap)
 
 # Data for the sources tab
 class Sources():
@@ -56,7 +85,7 @@ class Sources():
         self.tournament_source={}
 
     def read(self):
-        return self.user_source + self.osucollector_source + self.mappack_source + self.tournament_source
+        return list(self.user_source.items()) + list(self.tournament_source.items()) + list(self.mappack_source.items()) + list(self.osucollector_source.items())
         
     def add_user_source(self, links, scope):
         key, data=misc.create_userpage_source(links, scope)
