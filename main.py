@@ -20,13 +20,9 @@ class MainWindow(gui.Main):
         # TODO: clear source list
         source_list=data.get_source_list()
         for key, source in source_list:
-            source_panel=wx.Panel(self.m_source_list, -1)
-            source_panel_maps=wx.ListBox(source_panel)
+            source_panel=gui.SourcePanel(self.m_source_list)
             for i, map in enumerate(source.get_beatmaps()):
-                source_panel_maps.Insert(str(map),i)
-            source_panel_sizer=wx.BoxSizer(wx.VERTICAL)
-            source_panel_sizer.Add(source_panel_maps, 0, wx.EXPAND, 5) # control, proportion, flag, border
-            source_panel.SetSizer(source_panel_sizer)
+                source_panel.m_source.Insert(str(map),i)
             self.m_source_list.AddPage(source_panel, key)
 
     def show_add_window(self, event):

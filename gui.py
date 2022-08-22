@@ -520,3 +520,26 @@ class AddSource ( wx.Frame ):
 		event.Skip()
 
 
+###########################################################################
+## Class SourcePanel
+###########################################################################
+
+class SourcePanel ( wx.Panel ):
+
+	def __init__( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( 500,300 ), style = wx.TAB_TRAVERSAL, name = wx.EmptyString ):
+		wx.Panel.__init__ ( self, parent, id = id, pos = pos, size = size, style = style, name = name )
+
+		bSizer33 = wx.BoxSizer( wx.VERTICAL )
+
+		m_sourceChoices = []
+		self.m_source = wx.ListBox( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_sourceChoices, 0 )
+		bSizer33.Add( self.m_source, 1, wx.ALL|wx.EXPAND, 5 )
+
+
+		self.SetSizer( bSizer33 )
+		self.Layout()
+
+	def __del__( self ):
+		pass
+
+
