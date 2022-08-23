@@ -21,8 +21,10 @@ class MainWindow(gui.Main):
         source_list=data.get_source_list()
         for key, source in source_list:
             source_panel=gui.SourcePanel(self.m_source_list)
-            for i, map in enumerate(source.get_beatmaps()):
+            for i, map in enumerate(source.get_all_beatmaps()):
                 source_panel.m_source.Insert(str(map),i)
+            for i, map in enumerate(source.get_unavailable_beatmaps()):
+                source_panel.m_source.Insert(str(map)+" (unavailable)",i)
             self.m_source_list.AddPage(source_panel, key)
 
     def show_add_window(self, event):

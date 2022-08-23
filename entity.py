@@ -1,12 +1,13 @@
 from Utilities import constants, misc
 
 # Note: the beatmaps below is a list of beatmapid
+# TODO: check if beatmaps that are unavailable can be come availabel again; unavailable_beatmaps should hence have an add function  
 class UserSource:
-    def __init__(self, ids, scope, all_beatmaps, unavailable_beatmaps):
+    def __init__(self, ids, scope):
         self.ids=ids
         self.scope=scope
-        self.all_beatmaps=all_beatmaps
-        self.unavailable_beatmaps=unavailable_beatmaps
+        self.all_beatmaps=[]
+        self.unavailable_beatmaps=[]
     def get_ids(self):
         return self.ids
     def set_ids(self, ids):
@@ -16,7 +17,7 @@ class UserSource:
     def set_scope(self, scope):
         self.scope=scope
     def get_all_beatmaps(self):
-        return self.beatmaps
+        return self.all_beatmaps
     def get_unavailable_beatmaps(self):
         return self.unavailable_beatmaps
     def add_uanavilable_beatmaps(self, unavailable_beatmap):
@@ -27,16 +28,16 @@ class UserSource:
         self.beatmaps.remove(beatmap)
 
 class TournamentSource:
-    def __init__(self, id, all_beatmaps, unavailable_beatmaps):
+    def __init__(self, id):
         self.id=id
-        self.all_beatmaps=all_beatmaps
-        self.unavailable_beatmaps=unavailable_beatmaps
+        self.all_beatmaps=[]
+        self.unavailable_beatmaps=[]
     def get_id(self):
         return self.id
     def set_id(self, id):
         self.id=id
     def get_all_beatmaps(self):
-        return self.beatmaps
+        return self.all_beatmaps
     def get_unavailable_beatmaps(self):
         return self.unavailable_beatmaps
     def add_uanavilable_beatmaps(self, unavailable_beatmap):
@@ -47,12 +48,12 @@ class TournamentSource:
         self.beatmaps.remove(beatmap)
 
 class MappackSource:
-    def __init__(self, status, gamemode, download_count, all_beatmaps, unavailable_beatmaps):
+    def __init__(self, status, gamemode, download_count):
         self.number=download_count
         self.status=status
         self.gamemode=gamemode
-        self.all_beatmaps=all_beatmaps
-        self.unavailable_beatmaps=unavailable_beatmaps
+        self.all_beatmaps=[]
+        self.unavailable_beatmaps=[]
     def get_status(self):
         return self.status
     def set_status(self, status):
@@ -66,7 +67,7 @@ class MappackSource:
     def set_download_count(self, download_count):
         self.download_count=download_count
     def get_all_beatmaps(self):
-        return self.beatmaps
+        return self.all_beatmaps
     def get_unavailable_beatmaps(self):
         return self.unavailable_beatmaps
     def add_uanavilable_beatmaps(self, unavailable_beatmap):
@@ -77,16 +78,16 @@ class MappackSource:
         self.beatmaps.remove(beatmap)
 
 class OsucollectorSource:
-    def __init__(self, id, all_beatmaps, unavailable_beatmaps):
+    def __init__(self, id):
         self.id=id
-        self.all_beatmaps=all_beatmaps
-        self.unavailable_beatmaps=unavailable_beatmaps
+        self.all_beatmaps=[]
+        self.unavailable_beatmaps=[]
     def get_id(self):
         return self.id
     def set_id(self, id):
         self.id=id
     def get_all_beatmaps(self):
-        return self.beatmaps
+        return self.all_beatmaps
     def get_unavailable_beatmaps(self):
         return self.unavailable_beatmaps
     def add_uanavilable_beatmaps(self, unavailable_beatmap):
@@ -107,7 +108,12 @@ class Sources():
 
     def read(self):
         return list(self.user_source.items()) + list(self.tournament_source.items()) + list(self.mappack_source.items()) + list(self.osucollector_source.items())
-        
+
+    def update(self):
+        # apy.py stuff here
+        # output: store beatmaps in source.all_beatmaps
+        pass
+
     def add_user_source(self, links, scope):
         key, data=misc.create_userpage_source(links, scope)
         self.user_source[key]=data
@@ -138,6 +144,25 @@ class Job:
         return self.beatmapset_ids
     def set_beatmapset_ids(self, beatmapset_ids):
         self.beatmapset_ids=beatmapset_ids
+
+class Jobs:
+    def __init__(self):
+        # job_queue: a fifo queue of lists
+        # status: invalid, pending, downloading, downloaded
+        self.job_queue=None
+        self.status=constants.job_status[1]
+
+    # Note: this is called after source.update() has been called
+    def refresh_jobs(self):
+        #job_queue_copy.pop() -> maps=diff(job.beatmapsetids , db.get_data())
+        pass
+
+    def get_jobs(self):
+        return self.job_queue
+        
+    def start_jobs(self):
+        # refresh_jobs --> job_queue.pop() -> download(maps) -> write_collections -> progressbar+=1 
+        pass
 
 # Settings
 class Settings:
