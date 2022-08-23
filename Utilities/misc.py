@@ -1,11 +1,24 @@
-import database
 import entity
+from Network import download
+from Utilities import data, database
+
+# do job
+def do_job(job):
+    downloads=job.get_beatmapsetids()
+    for beatmapsetid in downloads:
+        if data.cancel_jobs_toggle:
+            return False
+        download.download_beatmap(beatmapsetid)
+    return True  
+
 
 # called by job refresh to find out what to download
 def diff_local_and_source(source):
-    for beatmap in source.get_available_beatmaps():
-        if database.query_osudb(beatmap)
-    return 
+    missing_beatmapset_ids=[]
+    for beatmapset_id in source.get_available_beatmapset_id():
+        if not database.query_osudb(beatmapset_id):
+            missing_beatmapset_ids.append()
+    return missing_beatmapset_ids
 
 # The following creates source objects to be inserted into the Sources entities
 def create_userpage_source(links, scope):

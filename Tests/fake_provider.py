@@ -1,8 +1,9 @@
 import entity as e
+from queue import Queue
 
 class Sources(e.Sources):
     def __init__(self):
-        super().__init__(self)
+        super().__init__()
         # Create mock data
         self.user_source["User: played=all bobermilk"]=e.UserSource(["https://osu.ppy.sh/users/15656848"],[False,True,True,False,False,False,False,False])
         self.user_source["User: played=top&fav status=r&gp&p&g Polyester"]=e.UserSource(["https://osu.ppy.sh/users/11106874/mania"],[True,True,False,True,False,True,True,True])
@@ -15,4 +16,19 @@ class Sources(e.Sources):
 
         self.osucollector_source["Osucollector: DT SPEED"]=e.OsucollectorSource(4869)
 
+class Jobs(e.Jobs):
+    def __init__(self):
+        super().__init__()
+        job_queue=Queue()
+        job_queue.put(e.Job("User: played=all bobermilk", [1727891, 1825575, 1622277]))
+        job_queue.put(e.Job("User: played=top&fav status=r&gp&p&g Polyester", [1701223, 1772954]))
+        job_queue.put(e.Job("User: status=r&l&gp&p&g -mint- riunosk", [1622277]))
+        job_queue.put(e.Job("Tournament: osu!mania 4K World Cup 2022", [1806117, 1753715]))
+        job_queue.put(e.Job("Tournament: Springtime Osu!mania Free-for-all Tournament 4", [1738470, 1707554]))
+        job_queue.put(e.Job("Mappack: size=51 mode=m status=r", [1765297, 1501294]))
+        job_queue.put(e.Job("Osucollector: DT SPEED", [1734430]))
+
+        self.job_queue=job_queue
+
 Sources=Sources()
+Jobs=Jobs()

@@ -48,7 +48,7 @@ class Main ( wx.Frame ):
 		bSizer5.Add( self.m_staticText23, 0, wx.TOP|wx.RIGHT|wx.LEFT, 5 )
 
 		m_activity_listChoices = []
-		self.m_activity_list = wx.ListBox( self.m_panel_activity, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_activity_listChoices, wx.LB_SINGLE|wx.LB_SORT )
+		self.m_activity_list = wx.ListBox( self.m_panel_activity, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_activity_listChoices, wx.LB_SORT )
 		bSizer5.Add( self.m_activity_list, 1, wx.ALL|wx.EXPAND, 5 )
 
 		self.m_activity_progress = wx.StaticText( self.m_panel_activity, wx.ID_ANY, u"No active downloads!", wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -62,8 +62,8 @@ class Main ( wx.Frame ):
 
 		bSizer6 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_start_downloading = wx.Button( self.m_panel_activity, wx.ID_ANY, u"Start downloading (top to bottom)", wx.DefaultPosition, wx.DefaultSize, 0 )
-		bSizer6.Add( self.m_start_downloading, 1, wx.ALL, 5 )
+		self.m_toggle_downloading = wx.Button( self.m_panel_activity, wx.ID_ANY, u"Start downloading (top to bottom)", wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer6.Add( self.m_toggle_downloading, 1, wx.ALL, 5 )
 
 
 		bSizer5.Add( bSizer6, 0, wx.EXPAND, 5 )
@@ -235,7 +235,7 @@ class Main ( wx.Frame ):
 
 		# Connect Events
 		self.m_add_source.Bind( wx.EVT_BUTTON, self.show_add_window )
-		self.m_start_downloading.Bind( wx.EVT_BUTTON, self.start_download )
+		self.m_toggle_downloading.Bind( wx.EVT_BUTTON, self.start_download )
 		self.m_osu_dir.Bind( wx.EVT_DIRPICKER_CHANGED, self.update_osu_folder )
 		self.m_autoupdate_sources.Bind( wx.EVT_CHECKBOX, self.autoupdate_toggle )
 		self.m_autodownload_toggle.Bind( wx.EVT_CHECKBOX, self.autodownload_toggle )

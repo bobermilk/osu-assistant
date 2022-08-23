@@ -14,6 +14,7 @@ class MainWindow(gui.Main):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.update_sources(self)
+        AsyncBind(wx.EVT_BUTTON, self.toggle_jobs, self.m_toggle_downloading)
 
     # used to repopulate the source list after a edit
     def update_sources(self, event):
@@ -21,11 +22,30 @@ class MainWindow(gui.Main):
         source_list=data.get_sources_list()
         for source_key, source in source_list:
             source_panel=gui.SourcePanel(self.m_source_list)
-            for i, map in enumerate(source.get_all_beatmaps()):
-                source_panel.m_source.Insert(str(map),i)
-            for i, map in enumerate(source.get_unavailable_beatmaps()):
-                source_panel.m_source.Insert(str(map)+" (unavailable)",i)
+            for i, beatmapset_id, beatmap_id in enumerate(source.get_available_beatmaps()):
+                source_panel.m_source.Insert(str(beatmap_id),i)
+            for i, beatmapset_id, beatmap_id in enumerate(source.get_unavailable_beatmaps()):
+                source_panel.m_source.Insert(str(beatmap_id)+" (unavailable)",i)
             self.m_source_list.AddPage(source_panel, source_key)
+
+    # used to repopulate the activity list after download completes
+    async def update_activity(self, event):
+        job_list=data.get_job_list()
+        for i, job in enumerate(job_list):
+            job_status=job.get_status()
+            self.m_activity_list.Insert(str(job_status), i)
+
+    # toggle jobs
+    async def toggle_jobs(self, event):
+        if data.cancel_jobs_toggle:
+            data.cancel_jobs_toggle=False
+            self.m_toggle_downloading.SetLabelText("Stop Downloading")
+        else:
+            data.cancel_jobs_toggle=True
+            self.m_toggle_downloading.SetLabelText("Start Downloading (top to bottom)")
+            data.Jobs.start_jobs()
+            self.update_activity(self)
+            
 
     def show_add_window(self, event):
         add_source_window=AddSourceWindow(parent=None)

@@ -1,5 +1,5 @@
 from Utilities import constants, misc, data
-import queue
+from queue import Queue
 
 # Used to cache beatmaps retrieved from update_sources() and record beatmap ids
 # Note: the beatmaps is a list of (beatmapset_id, beatmapid)
@@ -9,10 +9,10 @@ class Beatmaps():
         self.unavailable_beatmaps=[]
     # def get_all_beatmapset(self):
     #     return self.all_beatmaps
-    # def get_available_beatmaps(self):
-    #     return list(set(self.all_beatmaps)-set(self.unavailable_beatmaps))
-    # def get_unavailable_beatmaps(self):
-    #     return self.unavailable_beatmaps
+    def get_available_beatmaps(self):
+        return list(set(self.all_beatmaps)-set(self.unavailable_beatmaps))
+    def get_unavailable_beatmaps(self):
+        return self.unavailable_beatmaps
     # def add_uanavilable_beatmaps(self, unavailable_beatmap):
     #     self.unavailable_beatmaps.append(unavailable_beatmap)
     # def add_beatmap(self, beatmap):
@@ -23,7 +23,7 @@ class Beatmaps():
 # TODO: check if beatmaps that are unavailable can be come availabel again; unavailable_beatmaps should hence have an add function  
 class UserSource(Beatmaps):
     def __init__(self, ids, scope):
-        super().__init__(self)
+        super().__init__()
         self.ids=ids
         self.scope=scope
     def get_ids(self):
@@ -37,7 +37,7 @@ class UserSource(Beatmaps):
 
 class TournamentSource(Beatmaps):
     def __init__(self, id):
-        super().__init__(self)
+        super().__init__()
         self.id=id
     def get_id(self):
         return self.id
@@ -46,7 +46,7 @@ class TournamentSource(Beatmaps):
 
 class MappackSource(Beatmaps):
     def __init__(self, status, gamemode, download_count):
-        super().__init__(self)
+        super().__init__()
         self.number=download_count
         self.status=status
         self.gamemode=gamemode
@@ -65,7 +65,7 @@ class MappackSource(Beatmaps):
 
 class OsucollectorSource(Beatmaps):
     def __init__(self, id):
-        super().__init__(self)
+        super().__init__()
         self.id=id
     def get_id(self):
         return self.id
@@ -124,6 +124,7 @@ class Job:
     def __init__(self, source_key, beatmapset_ids):
         self.job_source_key=source_key
         self.beatmapset_ids=beatmapset_ids
+        self.status=constants.job_status[1] # status: invalid, pending, downloading, downloaded
     def get_job_source_key(self):
         return self.job_source_key
     def set_job_source(self, source):
@@ -132,13 +133,15 @@ class Job:
         return self.beatmapset_ids
     def set_beatmapset_ids(self, beatmapset_ids):
         self.beatmapset_ids=beatmapset_ids
+    def get_status(self):
+        return self.status
+    def set_status(self, status_id):
+        self.status=constants.job_status[status_id]
 
 class Jobs:
     def __init__(self):
         # job_queue: a fifo queue of lists
-        # status: invalid, pending, downloading, downloaded
         self.job_queue=None
-        self.status=constants.job_status[1]
 
     def get_jobs(self):
         return self.job_queue
@@ -146,15 +149,20 @@ class Jobs:
     # Note: this is called after Sources.update() has been called
     def refresh_jobs(self):
         #job_queue_copy.pop() -> maps=diff(job.beatmapsetids , db.get_data())
-        job_queue=queue.Queue()
+        job_queue=Queue()
         pending_beatmapset_ids=[]
         for source_key, source in data.get_sources_list():
             pending_beatmapset_ids=misc.diff_local_and_source(source)
             job_queue.append(Job(source_key, pending_beatmapset_ids))
+        self.job_queue=job_queue
 
     def start_jobs(self):
         # refresh_jobs --> job_queue.pop() -> download(maps) -> write_collections -> progressbar+=1 
-        pass
+        while not self.job_queue.empty:
+            job=self.job_queue.pop(0)
+            misc.do_job(job) # TODO: use the success/failure of the job to show notification or something
+        self.refresh_jobs()
+
 
 # Settings
 class Settings:
