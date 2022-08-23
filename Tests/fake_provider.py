@@ -1,4 +1,5 @@
 import entity as e
+import Utilities.sensitive_data as sensitive_data
 
 class Sources(e.Sources):
     def __init__(self):
@@ -29,5 +30,15 @@ class Jobs(e.Jobs):
 
         self.job_queue=job_queue
 
+class Settings(e.Settings):
+    def __init__(self):
+        super().__init__()
+        self.osu_install_folder="/home/milk/Desktop/osu-assistant/Songs/"
+        self.oauth=(sensitive_data.oauth_client_id, sensitive_data.oauth_client_secret)
+        self.xsrf_token=sensitive_data.xsrf_token
+        self.osu_session=sensitive_data.osu_session
+        self.download_from_osu=False
+
 Sources=Sources()
 Jobs=Jobs()
+Settings=Settings()

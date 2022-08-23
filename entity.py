@@ -101,6 +101,7 @@ class Sources():
         # apy.py stuff here
         # output: store beatmaps in source.all_beatmaps as a pair (beatmapsetid, beatmapid)
         # Then refresh the jobs
+        await data.get_jobs().refresh()
         pub.sendMessage("update.sources")
         pub.sendMessage("update.activity")
 
@@ -173,8 +174,15 @@ class Jobs:
 class Settings:
     def __init__(self):
         self.osu_install_folder=None
-        self.oauth=(constants.oauth_client_id,constants.oauth_client_secret) #client id, client secret
+        self.oauth=None
         self.source_show_missing=True
         self.download_on_start=True
-        self.xsrf_token=None
+        self.download_from_osu=False
+        self.xsrf_token=""
+        self.osu_session=""
         self.download_interval=1000
+    def valid_osu_cookies(self):
+        if self.xsrf_token=="" or self.xsrf_token.isspace():
+            return False
+        if self.osu_session=="" or self.osu_session.isspace():
+            return False

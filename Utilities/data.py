@@ -7,6 +7,7 @@ from Tests import fake_provider as fake
 # data (singletons)
 Sources=entity.Sources()
 Jobs=entity.Jobs()
+Settings=entity.Settings()
 
 # User toggles
 cancel_jobs_toggle=False
@@ -26,3 +27,9 @@ def get_jobs():
         return fake.Jobs
     else:
         return Jobs
+        
+def get_settings():
+    if constants.DEBUG:
+        return fake.Settings
+    else:
+        return Settings

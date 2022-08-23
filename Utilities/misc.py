@@ -8,7 +8,7 @@ def do_job(job):
     for beatmapsetid in downloads:
         if data.cancel_jobs_toggle:
             return False
-        download.download_beatmap(beatmapsetid)
+        success=download.download_beatmap(beatmapsetid)
     return True  
 
 

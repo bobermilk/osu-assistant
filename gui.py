@@ -134,18 +134,39 @@ class Main ( wx.Frame ):
 
 		bSizer23.Add( self.m_staticText9, 0, wx.ALL, 5 )
 
+		self.m_checkBox11 = wx.CheckBox( self.m_collapsiblePane1.GetPane(), wx.ID_ANY, u"Use osu website as mirror if beatconnect does not have beatmap", wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer23.Add( self.m_checkBox11, 0, wx.ALL, 5 )
+
+		bSizer34 = wx.BoxSizer( wx.HORIZONTAL )
+
 		bSizer261 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticText41 = wx.StaticText( self.m_collapsiblePane1.GetPane(), wx.ID_ANY, u"XSRF-TOKEN:      \nosu as mirror in the case    \nof unavailable maps on\nbeatconnect", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText41 = wx.StaticText( self.m_collapsiblePane1.GetPane(), wx.ID_ANY, u"XSRF-TOKEN:    ", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText41.Wrap( -1 )
 
 		bSizer261.Add( self.m_staticText41, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-		self.m_settings_token = wx.TextCtrl( self.m_collapsiblePane1.GetPane(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-		bSizer261.Add( self.m_settings_token, 1, wx.ALL, 5 )
+		self.m_settings_xsrf_token = wx.TextCtrl( self.m_collapsiblePane1.GetPane(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer261.Add( self.m_settings_xsrf_token, 1, wx.ALL, 5 )
 
 
-		bSizer23.Add( bSizer261, 0, wx.EXPAND, 5 )
+		bSizer34.Add( bSizer261, 1, 0, 5 )
+
+		bSizer2612 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.m_staticText413 = wx.StaticText( self.m_collapsiblePane1.GetPane(), wx.ID_ANY, u"osu_session: ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText413.Wrap( -1 )
+
+		bSizer2612.Add( self.m_staticText413, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+		self.m_settings_osu_session = wx.TextCtrl( self.m_collapsiblePane1.GetPane(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer2612.Add( self.m_settings_osu_session, 1, wx.ALL, 5 )
+
+
+		bSizer34.Add( bSizer2612, 1, 0, 5 )
+
+
+		bSizer23.Add( bSizer34, 0, wx.EXPAND, 5 )
 
 		bSizer55 = wx.BoxSizer( wx.HORIZONTAL )
 
