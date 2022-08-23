@@ -1,7 +1,13 @@
+import database
 import entity
+
+# called by job refresh to find out what to download
+def diff_local_and_source(source):
+    for beatmap in source.get_available_beatmaps():
+        if database.query_osudb(beatmap)
+    return 
+
 # The following creates source objects to be inserted into the Sources entities
-
-
 def create_userpage_source(links, scope):
     #Example
     # User: played=top&fav status=r&gp&p&g Polyester

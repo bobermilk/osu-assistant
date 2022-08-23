@@ -11,7 +11,9 @@ Jobs=entity.Jobs()
 # Use these alternative functions below for testing purposes
 # The sources tab will only display the mock data when DEBUG=True
 # Adding things will add to the actual data, but it is not shown
-def get_source_list():
+
+# returns [(source_key1, source1), (source_key2, source2), ...]
+def get_sources_list():
     if constants.DEBUG:
         return fake.Sources.read()
     else:

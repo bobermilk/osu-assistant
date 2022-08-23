@@ -18,14 +18,14 @@ class MainWindow(gui.Main):
     # used to repopulate the source list after a edit
     def update_sources(self, event):
         # TODO: clear source list
-        source_list=data.get_source_list()
-        for key, source in source_list:
+        source_list=data.get_sources_list()
+        for source_key, source in source_list:
             source_panel=gui.SourcePanel(self.m_source_list)
             for i, map in enumerate(source.get_all_beatmaps()):
                 source_panel.m_source.Insert(str(map),i)
             for i, map in enumerate(source.get_unavailable_beatmaps()):
                 source_panel.m_source.Insert(str(map)+" (unavailable)",i)
-            self.m_source_list.AddPage(source_panel, key)
+            self.m_source_list.AddPage(source_panel, source_key)
 
     def show_add_window(self, event):
         add_source_window=AddSourceWindow(parent=None)

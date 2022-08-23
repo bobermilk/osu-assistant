@@ -1,12 +1,8 @@
 import entity as e
 
-class Sources():
+class Sources(e.Sources):
     def __init__(self):
-        self.user_source={}
-        self.osucollector_source={}
-        self.mappack_source={}
-        self.tournament_source={}
-
+        super().__init__(self)
         # Create mock data
         self.user_source["User: played=all bobermilk"]=e.UserSource(["https://osu.ppy.sh/users/15656848"],[False,True,True,False,False,False,False,False])
         self.user_source["User: played=top&fav status=r&gp&p&g Polyester"]=e.UserSource(["https://osu.ppy.sh/users/11106874/mania"],[True,True,False,True,False,True,True,True])
@@ -18,8 +14,5 @@ class Sources():
         self.mappack_source["Mappack: size=51 mode=m status=r"]=e.MappackSource(1,0,51)
 
         self.osucollector_source["Osucollector: DT SPEED"]=e.OsucollectorSource(4869)
-        
-    def read(self):
-        return list(self.user_source.items()) + list(self.tournament_source.items()) + list(self.mappack_source.items()) + list(self.osucollector_source.items())
 
 Sources=Sources()
