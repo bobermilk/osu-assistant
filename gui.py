@@ -113,6 +113,17 @@ class Main ( wx.Frame ):
 		self.m_autodownload_toggle.SetValue(True)
 		bSizer25.Add( self.m_autodownload_toggle, 0, wx.ALL, 5 )
 
+		bSizer5511 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.m_export_to_collection = wx.Button( self.m_panel_settings, wx.ID_ANY, u"Export sources to database", wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer5511.Add( self.m_export_to_collection, 1, wx.ALL, 5 )
+
+		self.m_export_to_beatmap = wx.Button( self.m_panel_settings, wx.ID_ANY, u"Export all in-game collections to beatmap", wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer5511.Add( self.m_export_to_beatmap, 1, wx.ALL, 5 )
+
+
+		bSizer25.Add( bSizer5511, 0, wx.EXPAND, 5 )
+
 		self.m_collapsiblePane1 = wx.CollapsiblePane( self.m_panel_settings, wx.ID_ANY, u"Advanced settings", wx.DefaultPosition, wx.DefaultSize, wx.CP_DEFAULT_STYLE )
 		self.m_collapsiblePane1.Collapse( False )
 
@@ -228,6 +239,8 @@ class Main ( wx.Frame ):
 		self.m_osu_dir.Bind( wx.EVT_DIRPICKER_CHANGED, self.update_osu_folder )
 		self.m_autoupdate_sources.Bind( wx.EVT_CHECKBOX, self.autoupdate_toggle )
 		self.m_autodownload_toggle.Bind( wx.EVT_CHECKBOX, self.autodownload_toggle )
+		self.m_export_to_collection.Bind( wx.EVT_BUTTON, self.import_assistant_configuration )
+		self.m_export_to_beatmap.Bind( wx.EVT_BUTTON, self.export_assistant_configuration )
 		self.m_import_assistant.Bind( wx.EVT_BUTTON, self.import_assistant_configuration )
 		self.m_export_assistant.Bind( wx.EVT_BUTTON, self.export_assistant_configuration )
 		self.m_save_settings.Bind( wx.EVT_BUTTON, self.save_settings )
@@ -262,6 +275,8 @@ class Main ( wx.Frame ):
 
 	def export_assistant_configuration( self, event ):
 		event.Skip()
+
+
 
 	def save_settings( self, event ):
 		event.Skip()
