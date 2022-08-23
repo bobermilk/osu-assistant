@@ -11,7 +11,7 @@ Jobs=entity.Jobs()
 # User toggles
 cancel_jobs_toggle=False
 
-# Use these alternative functions below for testing purposes
+# Use these test functions below for testing purposes
 # The sources tab will only display the mock data when DEBUG=True
 # Adding things will add to the actual data, but it is not shown
 

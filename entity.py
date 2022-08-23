@@ -95,9 +95,11 @@ class Sources():
     def read(self):
         return list(self.user_source.items()) + list(self.tournament_source.items()) + list(self.mappack_source.items()) + list(self.osucollector_source.items())
 
-    def update(self):
+    def refresh(self):
         # apy.py stuff here
         # output: store beatmaps in source.all_beatmaps as a pair (beatmapsetid, beatmapid)
+        
+        #update ui
         pass
 
     def add_user_source(self, links, scope):
@@ -146,7 +148,7 @@ class Jobs:
         return self.job_queue
 
     # Note: this is called after Sources.update() has been called
-    def refresh_jobs(self):
+    def refresh(self):
         #job_queue_copy.pop() -> maps=diff(job.beatmapsetids , db.get_data())
         job_queue=[]
         pending_beatmapset_ids=[]
@@ -154,13 +156,15 @@ class Jobs:
             pending_beatmapset_ids=misc.diff_local_and_source(source)
             job_queue.append(Job(source_key, pending_beatmapset_ids))
         self.job_queue=job_queue
+        #update ui
 
     def start_jobs(self):
-        # refresh_jobs --> job_queue.pop() -> download(maps) -> write_collections -> progressbar+=1 
+        # refresh --> job_queue.pop() -> download(maps) -> write_collections -> progressbar+=1 
         while len(self.job_queue) > 0:
             job=self.job_queue.pop(0)
             misc.do_job(job) # TODO: use the success/failure of the job to show notification or something
-        self.refresh_jobs()
+            self.refresh()
+        self.refresh()
 
 
 # Settings

@@ -4,7 +4,7 @@ from Utilities import data, database
 
 # do job
 def do_job(job):
-    downloads=job.get_beatmapsetids()
+    downloads=job.get_beatmapset_ids()
     for beatmapsetid in downloads:
         if data.cancel_jobs_toggle:
             return False
