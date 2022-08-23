@@ -3,9 +3,16 @@ import gui
 from wxasync import AsyncBind, WxAsyncApp
 import asyncio
 from Utilities import data, constants
-from asyncio.events import get_event_loop
+from pubsub import pub
 
 app = WxAsyncApp()
+
+# Used to allow updating of ui from outside using pub.sendMessage()
+def update_sources():
+    main_window.update_sources(None)
+
+def update_activity():
+    main_window.update_activity(None)
 
 class MainWindow(gui.Main):
     """
@@ -15,6 +22,10 @@ class MainWindow(gui.Main):
         super(MainWindow, self).__init__(parent)
         self.update_sources(self)
         self.update_activity(self)
+        data.Sources.refresh()
+
+        pub.subscribe(update_sources, "update.sources")
+        pub.subscribe(update_activity, "update.activity")
         AsyncBind(wx.EVT_BUTTON, self.toggle_jobs, self.m_toggle_downloading)
 
     # used to repopulate the source list after a edit
@@ -30,7 +41,7 @@ class MainWindow(gui.Main):
             self.m_source_list.AddPage(source_panel, source_key)
 
     # used to repopulate the activity list after download completes
-    async def update_activity(self, event):
+    def update_activity(self, event):
         job_list=data.get_job_list()
         for i, job in enumerate(job_list):
             job=job_list.pop(0)
@@ -46,13 +57,8 @@ class MainWindow(gui.Main):
             self.m_toggle_downloading.SetLabelText(constants.activity_start)
         elif not data.cancel_jobs_toggle:
             self.m_toggle_downloading.SetLabelText(constants.activity_stop)
-            data.Jobs.start_jobs()
-            await self.update_activity(self)
+            await data.Jobs.start_jobs()
             self.m_toggle_downloading.SetLabelText(constants.activity_start)
-
-
-        data.cancel_jobs_toggle=True
-        self.m_toggle_downloading.SetLabelText("Start Downloading (top to bottom)")
             
 
     def show_add_window(self, event):

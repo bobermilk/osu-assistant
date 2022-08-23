@@ -1,2 +1,4 @@
 requests
 loguru
+pypubsub
+wx

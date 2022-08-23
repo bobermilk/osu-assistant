@@ -62,7 +62,7 @@ class Main ( wx.Frame ):
 
 		bSizer6 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_toggle_downloading = wx.Button( self.m_panel_activity, wx.ID_ANY, u"Start downloading (top to bottom)", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_toggle_downloading = wx.Button( self.m_panel_activity, wx.ID_ANY, u"Start Downloading (top to bottom)", wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer6.Add( self.m_toggle_downloading, 1, wx.ALL, 5 )
 
 
