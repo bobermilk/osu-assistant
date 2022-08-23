@@ -2,10 +2,11 @@ from Utilities import constants, misc
 
 # Note: the beatmaps below is a list of beatmapid
 class UserSource:
-    def __init__(self, ids, scope, beatmaps):
+    def __init__(self, ids, scope, all_beatmaps, unavailable_beatmaps):
         self.ids=ids
         self.scope=scope
-        self.beatmaps=beatmaps
+        self.all_beatmaps=all_beatmaps
+        self.unavailable_beatmaps=unavailable_beatmaps
     def get_ids(self):
         return self.ids
     def set_ids(self, ids):
@@ -14,34 +15,44 @@ class UserSource:
         return self.scope
     def set_scope(self, scope):
         self.scope=scope
-    def get_beatmaps(self):
+    def get_all_beatmaps(self):
         return self.beatmaps
+    def get_unavailable_beatmaps(self):
+        return self.unavailable_beatmaps
+    def add_uanavilable_beatmaps(self, unavailable_beatmap):
+        self.unavailable_beatmaps.append(unavailable_beatmap)
     def add_beatmap(self, beatmap):
         self.beatmaps.append(beatmap)
     def delete_beatmap(self, beatmap):
         self.beatmaps.remove(beatmap)
 
 class TournamentSource:
-    def __init__(self, id, beatmaps):
+    def __init__(self, id, all_beatmaps, unavailable_beatmaps):
         self.id=id
-        self.beatmaps=beatmaps
+        self.all_beatmaps=all_beatmaps
+        self.unavailable_beatmaps=unavailable_beatmaps
     def get_id(self):
         return self.id
     def set_id(self, id):
         self.id=id
-    def get_beatmaps(self):
+    def get_all_beatmaps(self):
         return self.beatmaps
+    def get_unavailable_beatmaps(self):
+        return self.unavailable_beatmaps
+    def add_uanavilable_beatmaps(self, unavailable_beatmap):
+        self.unavailable_beatmaps.append(unavailable_beatmap)
     def add_beatmap(self, beatmap):
         self.beatmaps.append(beatmap)
     def delete_beatmap(self, beatmap):
         self.beatmaps.remove(beatmap)
 
 class MappackSource:
-    def __init__(self, status, gamemode, download_count, beatmaps):
+    def __init__(self, status, gamemode, download_count, all_beatmaps, unavailable_beatmaps):
         self.number=download_count
         self.status=status
         self.gamemode=gamemode
-        self.beatmaps=beatmaps
+        self.all_beatmaps=all_beatmaps
+        self.unavailable_beatmaps=unavailable_beatmaps
     def get_status(self):
         return self.status
     def set_status(self, status):
@@ -52,29 +63,39 @@ class MappackSource:
         self.gamemode=gamemode
     def get_download_count(self):
         return self.download_count
-    def get_beatmaps(self):
-        return self.beatmaps
-    def set_number(self, download_count):
+    def set_download_count(self, download_count):
         self.download_count=download_count
+    def get_all_beatmaps(self):
+        return self.beatmaps
+    def get_unavailable_beatmaps(self):
+        return self.unavailable_beatmaps
+    def add_uanavilable_beatmaps(self, unavailable_beatmap):
+        self.unavailable_beatmaps.append(unavailable_beatmap)
     def add_beatmap(self, beatmap):
         self.beatmaps.append(beatmap)
     def delete_beatmap(self, beatmap):
         self.beatmaps.remove(beatmap)
 
 class OsucollectorSource:
-    def __init__(self, id, beatmaps):
+    def __init__(self, id, all_beatmaps, unavailable_beatmaps):
         self.id=id
-        self.beatmaps=beatmaps
+        self.all_beatmaps=all_beatmaps
+        self.unavailable_beatmaps=unavailable_beatmaps
     def get_id(self):
         return self.id
     def set_id(self, id):
         self.id=id
-    def get_beatmaps(self):
+    def get_all_beatmaps(self):
         return self.beatmaps
+    def get_unavailable_beatmaps(self):
+        return self.unavailable_beatmaps
+    def add_uanavilable_beatmaps(self, unavailable_beatmap):
+        self.unavailable_beatmaps.append(unavailable_beatmap)
     def add_beatmap(self, beatmap):
         self.beatmaps.append(beatmap)
     def delete_beatmap(self, beatmap):
         self.beatmaps.remove(beatmap)
+    
 
 # Data for the sources tab
 class Sources():
