@@ -24,6 +24,6 @@ def get_sources_list():
 
 def get_job_list():
     if constants.DEBUG:
-        return fake.Sources.Jobs()
+        return fake.Jobs.read()
     else:
-        return Jobs.get_jobs()
+        return Jobs.read()

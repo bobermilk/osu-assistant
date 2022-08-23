@@ -1,5 +1,4 @@
 import entity as e
-from queue import Queue
 
 class Sources(e.Sources):
     def __init__(self):
@@ -19,14 +18,14 @@ class Sources(e.Sources):
 class Jobs(e.Jobs):
     def __init__(self):
         super().__init__()
-        job_queue=Queue()
-        job_queue.put(e.Job("User: played=all bobermilk", [1727891, 1825575, 1622277]))
-        job_queue.put(e.Job("User: played=top&fav status=r&gp&p&g Polyester", [1701223, 1772954]))
-        job_queue.put(e.Job("User: status=r&l&gp&p&g -mint- riunosk", [1622277]))
-        job_queue.put(e.Job("Tournament: osu!mania 4K World Cup 2022", [1806117, 1753715]))
-        job_queue.put(e.Job("Tournament: Springtime Osu!mania Free-for-all Tournament 4", [1738470, 1707554]))
-        job_queue.put(e.Job("Mappack: size=51 mode=m status=r", [1765297, 1501294]))
-        job_queue.put(e.Job("Osucollector: DT SPEED", [1734430]))
+        job_queue=[]
+        job_queue.append(e.Job("User: played=all bobermilk", [1727891, 1825575, 1622277]))
+        job_queue.append(e.Job("User: played=top&fav status=r&gp&p&g Polyester", [1701223, 1772954]))
+        job_queue.append(e.Job("User: status=r&l&gp&p&g -mint- riunosk", [1622277]))
+        job_queue.append(e.Job("Tournament: osu!mania 4K World Cup 2022", [1806117, 1753715]))
+        job_queue.append(e.Job("Tournament: Springtime Osu!mania Free-for-all Tournament 4", [1738470, 1707554]))
+        job_queue.append(e.Job("Mappack: size=51 mode=m status=r", [1765297, 1501294]))
+        job_queue.append(e.Job("Osucollector: DT SPEED", [1734430]))
 
         self.job_queue=job_queue
 

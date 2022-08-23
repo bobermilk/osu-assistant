@@ -32,8 +32,10 @@ class MainWindow(gui.Main):
     async def update_activity(self, event):
         job_list=data.get_job_list()
         for i, job in enumerate(job_list):
+            job=job_list.pop(0)
+            job_source_key=job.get_job_source_key()
             job_status=job.get_status()
-            self.m_activity_list.Insert(str(job_status), i)
+            self.m_activity_list.Insert(str(job_source_key+f" ({job_status})"), i)
 
     # toggle jobs
     async def toggle_jobs(self, event):
@@ -44,7 +46,7 @@ class MainWindow(gui.Main):
             data.cancel_jobs_toggle=True
             self.m_toggle_downloading.SetLabelText("Start Downloading (top to bottom)")
             data.Jobs.start_jobs()
-            self.update_activity(self)
+            await self.update_activity(self)
             
 
     def show_add_window(self, event):

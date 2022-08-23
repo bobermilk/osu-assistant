@@ -48,7 +48,7 @@ class Main ( wx.Frame ):
 		bSizer5.Add( self.m_staticText23, 0, wx.TOP|wx.RIGHT|wx.LEFT, 5 )
 
 		m_activity_listChoices = []
-		self.m_activity_list = wx.ListBox( self.m_panel_activity, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_activity_listChoices, wx.LB_SORT )
+		self.m_activity_list = wx.ListBox( self.m_panel_activity, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_activity_listChoices, 0 )
 		bSizer5.Add( self.m_activity_list, 1, wx.ALL|wx.EXPAND, 5 )
 
 		self.m_activity_progress = wx.StaticText( self.m_panel_activity, wx.ID_ANY, u"No active downloads!", wx.DefaultPosition, wx.DefaultSize, 0 )

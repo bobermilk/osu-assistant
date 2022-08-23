@@ -1,5 +1,4 @@
 from Utilities import constants, misc, data
-from queue import Queue
 
 # Used to cache beatmaps retrieved from update_sources() and record beatmap ids
 # Note: the beatmaps is a list of (beatmapset_id, beatmapid)
@@ -140,16 +139,16 @@ class Job:
 
 class Jobs:
     def __init__(self):
-        # job_queue: a fifo queue of lists
-        self.job_queue=None
+        # job_queue: a ordered list to determine job priority in decending order
+        self.job_queue=[]
 
-    def get_jobs(self):
+    def read(self):
         return self.job_queue
 
     # Note: this is called after Sources.update() has been called
     def refresh_jobs(self):
         #job_queue_copy.pop() -> maps=diff(job.beatmapsetids , db.get_data())
-        job_queue=Queue()
+        job_queue=[]
         pending_beatmapset_ids=[]
         for source_key, source in data.get_sources_list():
             pending_beatmapset_ids=misc.diff_local_and_source(source)
@@ -158,7 +157,7 @@ class Jobs:
 
     def start_jobs(self):
         # refresh_jobs --> job_queue.pop() -> download(maps) -> write_collections -> progressbar+=1 
-        while not self.job_queue.empty:
+        while len(self.job_queue) > 0:
             job=self.job_queue.pop(0)
             misc.do_job(job) # TODO: use the success/failure of the job to show notification or something
         self.refresh_jobs()

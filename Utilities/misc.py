@@ -15,7 +15,7 @@ def do_job(job):
 # called by job refresh to find out what to download
 def diff_local_and_source(source):
     missing_beatmapset_ids=[]
-    for beatmapset_id in source.get_available_beatmapset_id():
+    for beatmapset_id, beatmap_id in source.get_available_beatmaps():
         if not database.query_osudb(beatmapset_id):
             missing_beatmapset_ids.append()
     return missing_beatmapset_ids
