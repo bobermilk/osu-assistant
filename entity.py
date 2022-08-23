@@ -99,8 +99,9 @@ class Sources():
     async def refresh(self):
         # apy.py stuff here
         # output: store beatmaps in source.all_beatmaps as a pair (beatmapsetid, beatmapid)
-        
+        # Then refresh the jobs
         pub.sendMessage("update.sources")
+        pub.sendMessage("update.activity")
 
     def add_user_source(self, links, scope):
         key, data=misc.create_userpage_source(links, scope)
@@ -163,8 +164,8 @@ class Jobs:
         while len(self.job_queue) > 0:
             job=self.job_queue.pop(0)
             misc.do_job(job) # TODO: use the success/failure of the job to show notification or something
-            await self.refresh()
-        await self.refresh()
+            pub.sendMessage("update.activity")
+        pub.sendMessage("update.activity")
 
 
 # Settings

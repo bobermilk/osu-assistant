@@ -2,7 +2,7 @@ import entity
 from Network import download
 from Utilities import data, database
 
-# do job
+# WARNING: this function WILL hang the main thread, so remember to make it async in production
 def do_job(job):
     downloads=job.get_beatmapset_ids()
     for beatmapsetid in downloads:
