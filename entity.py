@@ -1,5 +1,6 @@
 from Utilities import constants, misc, data
 from pubsub import pub
+from copy import copy
 
 # Used to cache beatmaps retrieved from update_sources() and record beatmap ids
 # Note: the beatmaps is a list of (beatmapset_id, beatmapid)
@@ -122,7 +123,7 @@ class Sources():
 
 # Job
 class Job:
-    # source_key is the key used to get source by data.Sources.get_source()
+    # source_key is the key used to get source by data.get_sources().get_source()
     def __init__(self, source_key, beatmapset_ids):
         self.job_source_key=source_key
         self.beatmapset_ids=beatmapset_ids
@@ -146,14 +147,14 @@ class Jobs:
         self.job_queue=[]
 
     def read(self):
-        return self.job_queue
+        return copy(self.job_queue)
 
     # Note: this is called after Sources.update() has been called
     async def refresh(self):
         #job_queue_copy.pop() -> maps=diff(job.beatmapsetids , db.get_data())
         job_queue=[]
         pending_beatmapset_ids=[]
-        for source_key, source in data.get_sources_list():
+        for source_key, source in data.get_sources().read():
             pending_beatmapset_ids=misc.diff_local_and_source(source)
             job_queue.append(Job(source_key, pending_beatmapset_ids))
         self.job_queue=job_queue

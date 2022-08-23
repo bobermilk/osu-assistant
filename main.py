@@ -30,8 +30,8 @@ class MainWindow(gui.Main):
 
     # used to repopulate the source list after a edit
     def update_sources(self, event):
-        # TODO: clear source list
-        source_list=data.get_sources_list()
+        self.m_activity_list.Clear()
+        source_list=data.get_sources().read()
         for source_key, source in source_list:
             source_panel=gui.SourcePanel(self.m_source_list)
             for i, beatmapset_id, beatmap_id in enumerate(source.get_available_beatmaps()):
@@ -42,8 +42,10 @@ class MainWindow(gui.Main):
 
     # used to repopulate the activity list after download completes
     def update_activity(self, event):
-        job_list=data.get_job_list()
-        for i, job in enumerate(job_list):
+        self.m_activity_list.Clear()
+        job_list=data.get_jobs().read()
+        i=0
+        while len(job_list) > 0:
             job=job_list.pop(0)
             job_source_key=job.get_job_source_key()
             job_status=job.get_status()
@@ -57,7 +59,7 @@ class MainWindow(gui.Main):
             self.m_toggle_downloading.SetLabelText(constants.activity_start)
         elif not data.cancel_jobs_toggle:
             self.m_toggle_downloading.SetLabelText(constants.activity_stop)
-            await data.Jobs.start_jobs()
+            await data.get_jobs().start_jobs()
             self.m_toggle_downloading.SetLabelText(constants.activity_start)
             
 
@@ -87,13 +89,13 @@ class AddSourceWindow(gui.AddSource):
                 self.m_user_ranked.GetValue(), self.m_user_loved.GetValue(), self.m_user_guest_participation.GetValue(),
                 self.m_user_pending.GetValue(), self.m_user_graveyarded.GetValue()]
         self.Destroy()
-        data.Sources.add_user_source(links, scope)
+        data.get_sources().add_user_source(links, scope)
         main_window.update_sources(None)
         
     async def add_tournament(self, event):
         selection=self.m_tournament_search.GetString(self.m_tournament_search.GetSelection())
         self.Destroy()
-        data.Sources.add_tournament_source(selection)
+        data.get_sources().add_tournament_source(selection)
         main_window.update_sources(None)
 
     async def add_mappack(self, event):
@@ -101,13 +103,13 @@ class AddSourceWindow(gui.AddSource):
         gamemode=self.m_mappack_gamemode.GetSelection()
         download_count=self.m_mappack_beatmapcount.GetValue()
         self.Destroy()
-        data.Sources.add_mappack_source(status, gamemode, download_count)
+        data.get_sources().add_mappack_source(status, gamemode, download_count)
         main_window.update_sources(None)
 
     async def add_osucollector(self, event):
         links=self.m_osu_collector.GetValue()
         self.Destroy()
-        data.Sources.add_osucollector_source(links)
+        data.get_sources().add_osucollector_source(links)
         main_window.update_sources(None)
 
 async def main():

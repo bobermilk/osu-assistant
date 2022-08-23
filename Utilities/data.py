@@ -15,15 +15,14 @@ cancel_jobs_toggle=False
 # The sources tab will only display the mock data when DEBUG=True
 # Adding things will add to the actual data, but it is not shown
 
-# returns [(source_key1, source1), (source_key2, source2), ...]
-def get_sources_list():
+def get_sources():
     if constants.DEBUG:
-        return fake.Sources.read()
+        return fake.Sources
     else:
-        return Sources.read()
+        return Sources
 
-def get_job_list():
+def get_jobs():
     if constants.DEBUG:
-        return fake.Jobs.read()
+        return fake.Jobs
     else:
-        return Jobs.read()
+        return Jobs
