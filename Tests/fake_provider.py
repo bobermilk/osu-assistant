@@ -37,7 +37,8 @@ class Settings(e.Settings):
         self.oauth=(sensitive_data.oauth_client_id, sensitive_data.oauth_client_secret)
         self.xsrf_token=sensitive_data.xsrf_token
         self.osu_session=sensitive_data.osu_session
-        self.download_from_osu=False
+        self.download_from_osu=True
+        self.download_interval=2000
 
 Sources=Sources()
 Jobs=Jobs()

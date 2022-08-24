@@ -163,6 +163,7 @@ class Jobs:
 
     async def start_jobs(self):
         # refresh --> job_queue.pop() -> download(maps) -> write_collections -> progressbar+=1 
+        print([x.get_beatmapset_ids() for x in self.read()])
         while len(self.job_queue) > 0:
             job=self.job_queue.pop(0)
             misc.do_job(job) # TODO: use the success/failure of the job to show notification or something
@@ -186,3 +187,4 @@ class Settings:
             return False
         if self.osu_session=="" or self.osu_session.isspace():
             return False
+        return True
