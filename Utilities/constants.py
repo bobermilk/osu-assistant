@@ -18,6 +18,7 @@ scrape_guest_participation=user_url+"{}/beatmapsets/guest?limit={}&offset={}"
 scrape_pending=user_url+"{}/beatmapsets/pending?limit={}&offset={}"
 scrape_graveyarded=user_url+"{}/beatmapsets/graveyard?limit={}&offset={}"
 
+osucollector_url="https://osucollector.com/api/collections/{}/beatmapsv2?perPage={}&sortBy=beatmapset.artist&orderBy=asc"
 # urls
 OSU_API_URL = "https://osu.ppy.sh/api/v2"
 OSU_TOKEN_URL = 'https://osu.ppy.sh/oauth/token'

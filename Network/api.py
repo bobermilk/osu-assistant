@@ -6,7 +6,7 @@ import json
 from Utilities import data, constants
 
 # returns (hash, beatmapset_id) for validity check and use the output to write collections
-def query_osu(beatmap_id):
+def query_osu_beatmap(beatmap_id):
     headers={
         "Content-Type": "application/json",
         "Accept": "application/json",
@@ -15,12 +15,25 @@ def query_osu(beatmap_id):
 
     response=requests.get(f"{constants.OSU_API_URL}/beatmaps/{beatmap_id}", headers=headers)
     time.sleep(constants.api_scrape_interval)
-    j=json.loads(response.text)
+    j=response.json()
     try:
         return j["checksum"], j["beatmapset_id"]
     except:
         # The beatmap is not hosted
         return 0,0
+
+# check if beatmapset exist
+def query_osu_beatmapset(beatmapset_id):
+    headers={
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Authorization": f"Bearer {get_token()}",
+    }
+
+    response=requests.get(f"{constants.OSU_API_URL}/beatmapsets/{beatmapset_id}", headers=headers)
+    time.sleep(constants.api_scrape_interval)
+    j=json.loads(response.text)
+    return "error" in j
 
 # Generate a oauth token
 def get_token():
