@@ -6,8 +6,8 @@ import os
 import requests
 import time
 
-def download_beatmap(beatmapset_id):
-    if not api.query_osu(beatmapset_id):
+def download_beatmap(beatmapset_id, hosted):
+    if not hosted:
         return False
 
     success=False
@@ -39,7 +39,6 @@ def download_beatmap(beatmapset_id):
     if not success and settings.download_from_osu and settings.valid_osu_cookies():
         url=constants.osu_beatmap_url_download.format(beatmapset_id)
         cookie={"XSRF-TOKEN":settings.xsrf_token,"osu_session":settings.osu_session}
-        print(settings.xsrf_token,)
         osu_header={ "referer":constants.osu_beatmap_url.format(beatmapset_id) }
         try:
             r = requests.get(url, allow_redirects=True, cookies=cookie, headers=osu_header)

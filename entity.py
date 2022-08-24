@@ -3,23 +3,34 @@ from pubsub import pub
 from copy import copy
 
 # Used to cache beatmaps retrieved from update_sources() and record beatmap ids
-# Note: the beatmaps is a list of (beatmapset_id, beatmapid)
+# Note: the beatmaps is a list of Pair(beatmapset_id, beatmapid)
 class Beatmaps():
     def __init__(self):
         self.all_beatmaps=[]
         self.unavailable_beatmaps=[]
+        
     # def get_all_beatmapset(self):
     #     return self.all_beatmaps
     def get_available_beatmaps(self):
         return list(set(self.all_beatmaps)-set(self.unavailable_beatmaps))
     def get_unavailable_beatmaps(self):
         return self.unavailable_beatmaps
-    # def add_uanavilable_beatmaps(self, unavailable_beatmap):
-    #     self.unavailable_beatmaps.append(unavailable_beatmap)
-    # def add_beatmap(self, beatmap):
-    #     self.beatmaps.append(beatmap)
-    # def delete_beatmap(self, beatmap):
-    #     self.beatmaps.remove(beatmap)
+
+    def query_cache(self, beatmapset_id):
+        return beatmapset_id not in self.unavailable_beatmaps
+
+    # called by the jobqueue
+    # it saves the api queries in the source 
+    def cache_beatmaps(self, unavailable_beatmapset_ids):
+        # unavailable -> available
+        for beatmap in self.unavailable_beatmaps:
+            if beatmap[0] not in unavailable_beatmapset_ids:
+                self.unavailable_beatmaps.remove(beatmap)
+        
+        # available -> unavailable
+        for beatmap in self.all_beatmaps:
+            if beatmap[0] in unavailable_beatmapset_ids and beatmap not in self.unavailable_beatmaps:
+                self.unavailable_beatmaps.append(beatmap)
 
 # TODO: check if beatmaps that are unavailable can be come availabel again; unavailable_beatmaps should hence have an add function  
 class UserSource(Beatmaps):
@@ -150,20 +161,26 @@ class Jobs:
     def read(self):
         return copy(self.job_queue)
 
+    # Note: this is responsible for caching source available beatmaps and updating the job list
     # Note: this is called after Sources.update() has been called
     async def refresh(self):
         #job_queue_copy.pop() -> maps=diff(job.beatmapsetids , db.get_data())
         job_queue=[]
-        pending_beatmapset_ids=[]
+        pending_downloads=[]
+        unavailable_beatmaps=[]
         for source_key, source in data.get_sources().read():
-            pending_beatmapset_ids=misc.diff_local_and_source(source)
-            job_queue.append(Job(source_key, pending_beatmapset_ids))
+            pending_downloads=misc.diff_local_and_source(source)
+            for beatmap in pending_downloads:
+                unavailable_beatmaps.append(beatmap[0])
+            source.cache_beatmaps(unavailable_beatmaps)
+            job_queue.append(Job(source_key, pending_downloads))
+
         self.job_queue=job_queue
         pub.sendMessage("update.activity")
 
     async def start_jobs(self):
         # refresh --> job_queue.pop() -> download(maps) -> write_collections -> progressbar+=1 
-        print([x.get_beatmapset_ids() for x in self.read()])
+        print("Jobs: " + str([x.get_beatmapset_ids() for x in self.read()]))
         while len(self.job_queue) > 0:
             job=self.job_queue.pop(0)
             misc.do_job(job) # TODO: use the success/failure of the job to show notification or something
