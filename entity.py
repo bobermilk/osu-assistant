@@ -1,39 +1,32 @@
+from Network import scraper
 from Utilities import constants, misc, data
 from pubsub import pub
 from copy import copy
 
 # Used to cache beatmaps retrieved from update_sources() and record beatmap ids
-# Note: the beatmaps is a list of Pair(beatmapset_id, beatmapid)
+# Note: the beatmaps is a set    of (beatmapset_id, beatmap_id, beatmap_checksum)
 class Beatmaps():
     def __init__(self):
-        self.all_beatmaps=[]
-        self.unavailable_beatmaps=[]
+        self.all_beatmaps=set()
+        self.unavailable_beatmaps=set()
         
     # def get_all_beatmapset(self):
     #     return self.all_beatmaps
     def get_available_beatmaps(self):
-        return list(set(self.all_beatmaps)-set(self.unavailable_beatmaps))
+        return list(self.all_beatmaps-self.unavailable_beatmaps)
     def get_unavailable_beatmaps(self):
         return self.unavailable_beatmaps
 
     def query_cache(self, beatmapset_id):
         return beatmapset_id not in self.unavailable_beatmaps
 
-    # called by the jobqueue
-    # it saves the api queries in the source 
-    def cache_beatmaps(self, unavailable_beatmapset_ids):
-        # unavailable -> available
-        for beatmap in self.unavailable_beatmaps:
-            if beatmap[0] not in unavailable_beatmapset_ids:
-                self.unavailable_beatmaps.remove(beatmap)
+    # caches api queries for beatmaps
+    def cache_beatmaps(self, all_beatmaps, unavailable_beatmaps):
+        self.all_beatmaps=all_beatmaps
+        self.unavailable_beatmaps=unavailable_beatmaps
         
-        # available -> unavailable
-        for beatmap in self.all_beatmaps:
-            if beatmap[0] in unavailable_beatmapset_ids and beatmap not in self.unavailable_beatmaps:
-                self.unavailable_beatmaps.append(beatmap)
-
-# TODO: check if beatmaps that are unavailable can be come availabel again; unavailable_beatmaps should hence have an add function  
-class UserSource(Beatmaps):
+# Note: ids is a pair (user_id, gamemode)
+class UserpageSource(Beatmaps):
     def __init__(self, ids, scope):
         super().__init__()
         self.ids=ids
@@ -109,15 +102,16 @@ class Sources():
         return list(self.user_source.items()) + list(self.tournament_source.items()) + list(self.mappack_source.items()) + list(self.osucollector_source.items())
 
     async def refresh(self):
-        # TODO: api shit, call get_beatmap_hash and store beatmaps in source.all_beatmaps as a pair (beatmapsetid, beatmapid)
+        # TODO: api shit, call query_osu and store beatmaps in source.all_beatmaps as a triple (beatmapsetid, beatmapid, checksum)
         for source in self.user_source:
-            pass
+            all_beatmaps, unavailable_beatmaps=scraper.get_userpage_beatmaps(source)
+            source.cache_beatmaps(all_beatmaps, unavailable_beatmaps)
         for source in self.tournament_source:
             pass
         for source in self.mappack_source:
             pass
         for source in self.osucollector_source:
-            pass
+            beatmaps=scraper.get_osucollector_beatmaps(source)
 
         # refresh the jobs
         await data.get_jobs().refresh()
@@ -178,13 +172,8 @@ class Jobs:
     async def refresh(self):
         #job_queue_copy.pop() -> maps=diff(job.beatmapsetids , db.get_data())
         job_queue=[]
-        pending_downloads=[]
-        unavailable_beatmaps=[]
         for source_key, source in data.get_sources().read():
             pending_downloads=misc.diff_local_and_source(source)
-            for beatmap in pending_downloads:
-                unavailable_beatmaps.append(beatmap[0])
-            source.cache_beatmaps(unavailable_beatmaps)
             job_queue.append(Job(source_key, pending_downloads))
 
         self.job_queue=job_queue

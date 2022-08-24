@@ -5,18 +5,16 @@ import requests
 import json
 from Utilities import data, constants
 
-def query_osu(beatmapset_id):
-    return True
-
 # returns (hash, beatmapset_id) for validity check and use the output to write collections
-def get_beatmap_hash(beatmap_id):
+def query_osu(beatmap_id):
     headers={
         "Content-Type": "application/json",
         "Accept": "application/json",
         "Authorization": f"Bearer {get_token()}",
     }
+
     response=requests.get(f"{constants.OSU_API_URL}/beatmaps/{beatmap_id}", headers=headers)
-    time.sleep(1)
+    time.sleep(constants.api_scrape_interval)
     j=json.loads(response.text)
     try:
         return j["checksum"], j["beatmapset_id"]

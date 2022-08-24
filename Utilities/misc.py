@@ -47,7 +47,7 @@ def create_userpage_source(links, scope):
 
     # TODO: get source data
     ids=parse_urlstring(links)
-    return (key, entity.UserSource(ids, scope))
+    return (key, entity.UserpageSource(ids, scope))
 
 def create_tournament_source(id):
     #Example

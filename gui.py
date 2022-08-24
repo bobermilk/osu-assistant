@@ -355,7 +355,7 @@ class AddSource ( wx.Frame ):
 
 		bSizer10 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_user_top100 = wx.CheckBox( self.m_panel6, wx.ID_ANY, u"Top 100 plays", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_user_top100 = wx.CheckBox( self.m_panel6, wx.ID_ANY, u"Top 100 plays (gamemode must be in url)", wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer10.Add( self.m_user_top100, 0, wx.ALL, 5 )
 
 		self.m_user_favourites = wx.CheckBox( self.m_panel6, wx.ID_ANY, u"Favourites", wx.DefaultPosition, wx.DefaultSize, 0 )
