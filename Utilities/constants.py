@@ -1,8 +1,10 @@
 DEBUG=True
 
+request_timeout=10
 # urls
 beatconnect_beatmap_url="https://beatconnect.io/b/{}"
 osu_beatmap_url="https://osu.ppy.sh/beatmapsets/{}"
+osu_beatmap_url_download="https://osu.ppy.sh/beatmapsets/{}/download"
 
 # dicts
 gamemode_dict={ 1: "osu", 2:"taiko", 3:"catch", 4:"mania" }
