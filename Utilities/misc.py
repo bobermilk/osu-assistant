@@ -3,7 +3,15 @@ import re
 import requests
 import time
 from Network import download, api
-from Utilities import data, database
+from Utilities import data, database, constants
+
+# Update sources/jobs on startup
+# 
+async def init():
+    # Initialize the cache db
+    await database.create_osudb()
+    # Refresh sources and jobs (the views will update)
+    await data.Sources.refresh()
 
 # WARNING: this function WILL hang the main thread, so remember to make it async in production
 def do_job(job):
@@ -20,7 +28,6 @@ def do_job(job):
         download.download_beatmap(beatmapset_id, is_hosted)
     
     return True  
-
 
 # called by job refresh to find out what to download
 def diff_local_and_source(source):
@@ -92,3 +99,11 @@ def parse_urlstring(urlstring):
         except:
             pass
     return beatmapset_ids
+
+# Gets the directory this application is installed in
+def get_install_directory():
+    if constants.DEBUG:
+        return constants.test_folder
+    else:
+        # TODO: get the install directory here
+        pass

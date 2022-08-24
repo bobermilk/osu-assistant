@@ -1,8 +1,10 @@
+import os
 DEBUG=True
 
+test_folder=os.getcwd()
 request_timeout=10
-# urls
 
+# urlsh
 OSU_API_URL = "https://osu.ppy.sh/api/v2"
 OSU_TOKEN_URL = 'https://osu.ppy.sh/oauth/token'
 

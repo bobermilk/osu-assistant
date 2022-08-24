@@ -121,8 +121,10 @@ class Sources():
 
         # refresh the jobs
         await data.get_jobs().refresh()
+        # Update the views
         pub.sendMessage("update.sources")
         pub.sendMessage("update.activity")
+        # Initiate automatic downloads
         if data.get_settings().download_on_start:
             data.get_jobs().start_jobs()
 

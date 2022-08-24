@@ -2,7 +2,7 @@ import wx
 import gui
 from wxasync import AsyncBind, WxAsyncApp
 import asyncio
-from Utilities import data, constants
+from Utilities import data, constants, database, misc
 from pubsub import pub
 
 app = WxAsyncApp()
@@ -22,7 +22,8 @@ class MainWindow(gui.Main):
         super(MainWindow, self).__init__(parent)
         self.update_sources(self)
         self.update_activity(self)
-        data.Sources.refresh()
+        # initialize the app
+        misc.init()
 
         pub.subscribe(update_sources, "update.sources")
         pub.subscribe(update_activity, "update.activity")

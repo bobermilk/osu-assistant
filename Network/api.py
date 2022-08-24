@@ -1,9 +1,10 @@
+# for flask and osu api requests
+
 import time
 import requests
 import json
 from Utilities import data, constants
 
-# for flask and osu api requests
 def query_osu(beatmapset_id):
     return True
 

@@ -12,7 +12,7 @@ def download_beatmap(beatmapset_id, hosted):
 
     success=False
     settings=data.get_settings()
-    filename = os.path.join(settings.osu_install_folder, str(beatmapset_id) + ".osz")
+    filename = os.path.join(settings.osu_install_folder, "Songs", str(beatmapset_id) + ".osz")
 
     if os.path.isfile(filename):
         success = True
