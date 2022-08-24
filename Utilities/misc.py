@@ -1,4 +1,7 @@
 import entity
+import re
+import requests
+import time
 from Network import download, api
 from Utilities import data, database
 
@@ -71,5 +74,21 @@ def create_osucollector_source(links):
     ids=[]
     return (key, entity.OsucollectorSource(ids))
 
+# Extract beatmapset_ids from osu beatmap urls
 def parse_urlstring(urlstring):
-    pass
+    beatmapset_ids=[]
+
+    ra = "(?<=beatmapsets\/)([0-9]*)(?=#|\n)" # matches format /beatmapsets/xxxxx#xxxxx or /beatmapsets/xxxxx
+    rb = "(.*\/b\/.*)" # matches format /b/xxxxx
+
+    for i in re.findall(ra, urlstring):
+        beatmapset_ids.append(i)
+
+    for url in re.findall(rb, urlstring):
+        try:
+            r = requests.head(url, allow_redirects=True, timeout=10)
+            beatmapset_ids.append(re.findall(ra, r.url)[0])
+            time.sleep(data.get_settings().download_interval)
+        except:
+            pass
+    return beatmapset_ids

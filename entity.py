@@ -109,12 +109,22 @@ class Sources():
         return list(self.user_source.items()) + list(self.tournament_source.items()) + list(self.mappack_source.items()) + list(self.osucollector_source.items())
 
     async def refresh(self):
-        # apy.py stuff here
-        # output: store beatmaps in source.all_beatmaps as a pair (beatmapsetid, beatmapid)
-        # Then refresh the jobs
+        # TODO: api shit, call get_beatmap_hash and store beatmaps in source.all_beatmaps as a pair (beatmapsetid, beatmapid)
+        for source in self.user_source:
+            pass
+        for source in self.tournament_source:
+            pass
+        for source in self.mappack_source:
+            pass
+        for source in self.osucollector_source:
+            pass
+
+        # refresh the jobs
         await data.get_jobs().refresh()
         pub.sendMessage("update.sources")
         pub.sendMessage("update.activity")
+        if data.get_settings().download_on_start:
+            data.get_jobs().start_jobs()
 
     def add_user_source(self, links, scope):
         key, data=misc.create_userpage_source(links, scope)

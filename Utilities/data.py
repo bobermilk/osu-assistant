@@ -4,6 +4,9 @@ import Utilities.constants as constants
 
 from Tests import fake_provider as fake
 
+# Credentials
+OAUTH_TOKEN=None
+
 # data (singletons)
 Sources=entity.Sources()
 Jobs=entity.Jobs()
