@@ -1,11 +1,17 @@
 import os
 import json
+import requests
 import subprocess
+import time
+from bs4 import BeautifulSoup, SoupStrainer
 from urlextract import URLExtract
 
 # Data
-tournaments_data={}
+tournaments_json={}
+mappack_json={}
 mappack_data={}
+mappack_latest=1
+
 
 def update_tournaments():
     global tournament_data
@@ -39,8 +45,28 @@ def update_tournaments():
         tournament_data=json.dumps(tournaments)
 
 def update_mappacks():
-    return {"foo": "beatconnect"}
+    global mappack_data
+    global mappack_json
+    global mappack_latest
+    old_mappack_latest=mappack_latest
+    while True:
+        beatmaps=[]
+        r=requests.get("https://osu.ppy.sh/beatmaps/packs/{}/raw".format(mappack_latest))
+        if r.status_code != 200:
+            mappack_latest-=1
+            break
+        time.sleep(0.5)
+        soup=BeautifulSoup(r.text, "lxml", parse_only=SoupStrainer('a'))
+        urls=[x['href'] for x in soup if x.has_attr('href')]
+        urls.pop(0) # remove mediafire link
+        for url in urls:
+            url=url.split('/')
+            beatmaps.append(url[-1])
+        mappack_data[mappack_latest]=beatmaps
+        mappack_latest+=1
+    if old_mappack_latest<mappack_latest:
+        mappack_json=json.dumps(mappack_data)
 
-update_tournaments()
+update_mappacks()
 with open("test.txt", "w") as f:
-    f.write(tournament_data)
+    f.write(mappack_json)
