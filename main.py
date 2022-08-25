@@ -60,8 +60,7 @@ class MainWindow(gui.Main):
             self.m_toggle_downloading.SetLabelText(constants.activity_start)
         elif not data.cancel_jobs_toggle:
             self.m_toggle_downloading.SetLabelText(constants.activity_stop)
-            await data.get_jobs().start_jobs()
-            self.m_toggle_downloading.SetLabelText(constants.activity_start)
+            data.get_jobs().start_jobs()
             
 
     def show_add_window(self, event):
@@ -100,11 +99,10 @@ class AddSourceWindow(gui.AddSource):
         main_window.update_sources(None)
 
     async def add_mappack(self, event):
-        status=self.m_mappack_status.GetSelection()
+        ids=self.m_mappack_list.GetSelections()
         gamemode=self.m_mappack_gamemode.GetSelection()
-        download_count=self.m_mappack_beatmapcount.GetValue()
         self.Destroy()
-        data.get_sources().add_mappack_source(status, gamemode, download_count)
+        data.get_sources().add_mappack_source(ids, gamemode)
         main_window.update_sources(None)
 
     async def add_osucollector(self, event):
