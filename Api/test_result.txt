@@ -1,0 +1,245 @@
+osu! World Cup #1: OWC/1
+osu! World Cup #2: OWC/2
+osu! World Cup #3: OWC/3
+osu! World Cup 2013: OWC/2013
+osu! World Cup 2014: OWC/2014
+osu! World Cup 2015: OWC/2015
+osu! World Cup 2016: OWC/2016
+osu! World Cup 2017: OWC/2017
+osu! World Cup 2018: OWC/2018
+osu! World Cup 2019: OWC/2019
+osu! World Cup 2020: OWC/2020
+osu! World Cup 2021: OWC/2021
+Taiko World Cup 2011: TWC/2011
+Taiko World Cup 2012: TWC/2012
+Taiko World Cup #3: TWC/3
+osu! Taiko World Cup 2014: TWC/2014
+osu! Taiko World Cup 2015: TWC/2015
+osu!taiko World Cup 2016: TWC/2016
+osu!taiko World Cup 2017: TWC/2017
+osu!taiko World Cup 2018: TWC/2018
+osu!taiko World Cup 2019: TWC/2019
+osu!taiko World Cup 2020: TWC/2020
+osu!taiko World Cup 2021: TWC/2021
+osu!taiko World Cup 2022: TWC/2022
+Catch the Beat World Cup: CWC/1
+Catch the Beat World Cup 2013: CWC/2013
+osu! Catch the Beat World Cup 2014: CWC/2014
+osu!ctb World Cup 2015: CWC/2015
+osu!catch World Cup 2016: CWC/2016
+osu!catch World Cup 2017: CWC/2017
+osu!catch World Cup 2018: CWC/2018
+osu!catch World Cup 2019: CWC/2019
+osu!catch World Cup 2020: CWC/2020
+osu!catch World Cup 2021: CWC/2021
+osu!catch World Cup 2022: CWC/2022
+osu!mania World Cup 2014: MWC/2014
+osu!mania World Cup 2014: MWC/2014
+osu!mania 4K World Cup 2015: MWC/2015
+osu!mania 7K World Cup 2016: MWC/2016_7K
+osu!mania 4K World Cup 2016: MWC/2016_4K
+osu!mania 7K World Cup 2017: MWC/2017_7K
+osu!mania 4K World Cup 2017: MWC/2017_4K
+osu!mania 7K World Cup 2018: MWC/2018_7K
+osu!mania 4K World Cup 2018: MWC/2018_4K
+osu!mania 7K World Cup 2019: MWC/2019_7K
+osu!mania 4K World Cup 2019: MWC/2019_4K
+osu!mania 4K World Cup 2020: MWC/2020_4K
+osu!mania 4K World Cup 2021: MWC/2021_4K
+osu!mania 7K World Cup 2022: MWC/2022_7K
+osu!mania 4K World Cup 2022: MWC/2022_4K
+112's Summer Tournament 2019: 112/Summer_2019
+112's Corona Tournament: 112/Corona_2020
+112's Summer Tournament 2020: 112/Summer_2020
+3 Digit World Cup 2021: 3WC/2021
+Aus/NZ osu!standard Tournament 5 - Summer: ANZT/2018_Summer
+Aus/NZ osu!standard Tournament 5 - Winter: ANZT/2018_Winter
+Aus/NZ osu!standard Tournament 6 - Summer: ANZT/2019_Summer
+CES League osu! Tournament 2: CES/CES2
+Coffee Hispanic Tournament: CH/CHT_1
+Coffee Hispanic Showdown: CH/CHS_1
+Coffee Hispanic: Mocha: CH/CHM_1
+Corgi Cup: June 2016: CC/1
+Corgi Cup: September 2016: CC/2
+Corgi Cup III: April 2017: CC/3
+Corgi Cup IV: September 2017: CC/4
+Corgi Cup V: CC/5
+Corgi Cup VI: CC/6
+Game_Osu Tourney Winter/Spring Edition: GO/3
+Great Singapore Tournament: GST/1
+Great Singapore Tournament 2: GST/2
+Hidden Only Tournament: HOT/1
+Indonesian Draft Cup 2020: IDC/2020
+Mirai. Tournament 2020: Mirai/2020
+nik's Winter Tour 2019: NT/NWT_2019
+nik's Spring/Summer Tour 2019: NT/NSST_2019
+Non-Professional Cup 2: NPC/2
+Old Map Fantasy World Cup: OMF/WC
+osu! Asia Oceania Tournament: o!AOT/1
+osu! Asia Oceania Tournament 2: o!AOT/2
+osu! Battle Archive Malaysia: o!BAM/1
+osu! European Tournament 2: o!ET/2
+osu! European Tournament 2021: o!ET/2021
+osu! Indonesia Tournament #10 (2020): OIT/2020
+osu! Indonesia Tournament #11 (2021): OIT/2021
+osu! Indonesia Tournament #12 (2022): OIT/2022
+osu! Singapore-Indonesia-Malaysia Tournament: OSIM/1
+osu! South East Asia Tournament 2: oSEAT/2
+osu! South East Asia Tournament 3: oSEAT/3
+osu! South East Asia Tournament 4: oSEAT/4
+osu! South East Asia Tournament 5: oSEAT/5
+osu! Tag Team Multiplayer Tournament: oTTMT/1
+osu! Technical Championship: OTC/1
+osu! Technical Championship #2: OTC/2
+osu! Technical Championship #3: OTC/3
+osu! TV Size Tournament 2018: otst!/2018
+osu! TV Size Tournament 2019: otst!/2019
+osu! TV Size Tournament 2020: otst!/2020
+UK osu!standard tournament!: OUKT/1
+UK osu!standard tournament 2: OUKT/2
+osu! UK Tournament 3: OUKT/3
+osu! UK Tournament 4: OUKT/4
+osu! UK Tournament 5: OUKT/5
+osu! Vintage Map Tourney!: OVMT/1
+osu! Vintage Map Tourney 2! Electric Boogaloo!: OVMT/2
+osu! Z-Tournament 2018: OZT/2018
+PERAK osu! Tournament: POT/1
+PERAK osu! Tournament 2022: POT/2022
+RMoT #2: RMoTI/2
+RMoT #5: RMoTI/5
+ROI PRO Tournament: RPT/1
+Royal Danish osu!Cup 2014: RDOC/2014
+Royal Danish osu!Cup 2016: RDOC/2016
+Royal Danish osu!Cup 2017: RDOC/2017
+Royal Danish osu!Cup 2018: RDOC/2018
+Royal Danish osu!Cup 2019: RDOC/2019
+Royal Danish osu!Cup 2020: RDOC/2020
+SS Tournament 2018: SST/2018
+TAG2 Tournament 2019: T2T/2019
+16 player battle royale: The_Roundtable/16_player_battle_royale
+2v2 team tandem tournament: The_Roundtable/2v2_team_tandem_tournament
+1v1 double elimination: The_Roundtable/1v1_double_elimination
+UK Community Cup: UKCC/1
+UK Community Cup 2: UKCC/2
+UK Community Cup 3: UKCC/3
+UK Community Cup 4: UKCC/4
+UK Community Cup 5: UKCC/5
+UK Community Cup 6: UKCC/6
+UK Community Cup 7: UKCC/7
+UK Community Cup 8: UKCC/8
+UK Community Cup 9: UKCC/9
+UK Community Cup X: UKCC/X
+UK Community Cup 10: UKCC/10
+UK Community Cup 11: UKCC/11
+Ulat Bulu Cup 2020: UCUP/2020
+Ulat Cup 2021: UCUP/2021
+Yaz's Summer Cup 2017: YSC/2017
+Yaz's Summer Cup 2018: YSC/2018
+Yaz's Summer Cup 2019: YSC/2019
+Yaz's Summer Cup 2021: YSC/2021
+Yuri Cup: YC/1
+Spanish Showdown 2021: SS/2021
+Spanish Showdown 2022: SS/2022
+3 Digit Taiko World Cup: 3TWC/1
+Indonesian Taiko Showdown: AOTS/IDTS_1
+Asian Taiko Showdown 2018: AOTS/ATS_2018
+Asian-Oceanian Taiko Showdown: AOTS/AOTS_1
+Indonesian Taiko Showdown 2: AOTS/IDTS_2
+Indonesian Taiko Beginner Showdown: AOTS/ITBS_1
+Ausu!Taiko Tournament 2019: ATT/2019
+Ausu!Taiko Tournament 2020: ATT/2020
+Ausu!Taiko Tournament 2021: ATT/2021
+Beginners' Taiko Tournament 4: BTT/4
+Beginners' Taiko Tournament 5: BTT/5
+Beginners' Taiko Tournament 6: BTT/6
+European Taiko Tournament 2018: EUTT/2018
+Intermediate Global Taiko Showdown 2018: GTS/IGTS_2018
+Intermediate Global Taiko Showdown 2019: GTS/IGTS_2019
+Advanced Global Taiko Showdown 2019: GTS/AGTS_2019
+Katacheh Global Taiko Showdown 2019: GTS/KGTS_2019
+Continental Global Taiko Showdown 2019: GTS/CGTS_2019
+Expert Global Taiko Showdown 2020: GTS/EGTS_2020
+Intermediate Global Taiko Showdown 2020: GTS/IGTS_2020
+Advanced Global Taiko Showdown 2020: GTS/AGTS_2020
+Beginners Global Taiko Showdown 2020: GTS/BGTS_2020
+Continental Global Taiko Showdown 2021: GTS/CGTS_2021
+Advanced Global Taiko Showdown 2021: GTS/AGTS_2021
+Rising Global Taiko Showdown 2021: GTS/RGTS_2021
+Intermediate Global Taiko Showdown 2021: GTS/IGTS_2021
+Expert Global Taiko Showdown 2021: GTS/EGTS_2021
+Squad Global Taiko Showdown 2021: GTS/SGTS_2021
+Intermediate Global Taiko Showdown 2022: GTS/IGTS_2022
+Advanced Global Taiko Showdown 2022: GTS/AGTS_2022
+Expert Global Taiko Showdown 2022: GTS/EGTS_2022
+North American Taiko Tournament 2018: NSATT/NATT_2018
+North & South American Taiko Tournament 2019: NSATT/NSATT_2019
+Taiko LMS: Shift Cup: T_LMS/Shift_1
+Taiko LMS: Shift Cup 2: T_LMS/Shift_2
+Taiko Suiji Cup: TSC/1
+Taiko Suiji Cup 2020: TSC/2020
+Taiko Suiji Cup Winter 2020: TSC/2020_Winter
+Taiko Wars: TW/1
+Vaf's Autumn Fiesta: VAF/1
+4 Digit Catch World Cup 2021: 4CWC/2021
+4 Digit Catch World Cup 2022: 4CWC/2022
+Catch French Beginner 4: CFB/4
+Catch French Beginner 5: CFB/5
+Catch French Beginner 6: CFB/6
+Catch French Cup 2018: CFC/2018
+Catch French Cup 3: CFC/3
+Catch French Intermediate Cup: CFC/CFIC_1
+Catch French Cup 4: CFC/4
+Catch French Intermediate Cup 2: CFC/CFIC_2
+Catch French Intermediate Cup 3: CFC/CFIC_3
+Catch the Beat Indonesia Tournament: CIC/2012
+Catch the Beat Indonesia Cup 2013: CIC/2013
+Catch the Beat Indonesia Cup 2014: CIC/2014
+Catch the Beat Indonesia Cup 2018: CIC/2018
+Catch the Beat Indonesia Cup 2019: CIC/2019
+Catch the Beat Indonesia Cup 2020: CIC/2020
+Catch the Beat Indonesia Cup 2021: CIC/2021
+Indonesia Convert Cup 2020: ICC/2020
+Indonesia Convert Cup 2021: ICC/2021
+osu! Cup Master 3: osu!catch edition: OCM/3
+osu!catch CIS Open Tournament 2022: COT/2022
+osu!catch Convert Cup: o!cCC/1
+4 Digit osu!mania World Cup 2: 4DM/2
+4 Digit osu!mania World Cup 3: 4DM/3
+4 Digit osu!mania World Cup 4: 4DM/4
+2v2 :thonking: Mania Tournament: TMT/2TMT
+:thonking: Newbie mania Tournament: TNMT/1
+Cemara Mania Cup \#1 (2020): CMC/2020
+The 4th CJB osu!mania 4K Tournament: CJB_4K/2018
+Chinese osu!mania 4K Tournament 2017: CMT_4K/2017
+Chinese osu!mania 4K Tournament 2018: CMT_4K/2018
+GB Cup 2022 Spring: GBC/GBC_2022_Spring
+Mania Beginner's Showdown: MBS/1
+Mania Beginner's Showdown 2: MBS/2
+Novice Mania Cup 3rd: MXB/3
+Mistrzostwa Polski w 4K 2019: MP/2019_4K
+Mistrzostwa Polski w 7K 2019: MP/2019_7K
+Mistrzostwa Polski w 7K 2020: MP/2020_7K
+osu!mania 4K Chinese National Cup 2019: MCNC/2019
+osu!mania 4K Chinese National Cup 2020: MCNC/2020
+osu!mania 4K Chinese National Cup 2021: MCNC/2021
+osu!mania 7K Chinese National Cup 2022: MCNC/7K2022
+osu!mania Asian's Champions 2019: o!mAC/2019
+osu!mania Flashlight 4K Tournament: FL4T/1
+osu!mania 4K Indonesia Cup 2019: OMIC/2019_4K
+osu!mania LN Tournament: o!mLN/1
+osu!mania LN Tournament 2: o!mLN/2
+osu!mania South East Asia Champion 2020: SEAC/2020
+Score Attack Showdown: SAS/1
+Speed of Light Mania Tournament: SOL/2019
+Speed of Light 2: Lucha Libre Edition: SOL/2020
+Springtime osu!mania Free-for-all Tournament 3: SOFT/3
+The Heptakey osu!mania Cup #1: THOM_CUP/1
+Touhou Project Mania Cup 1st: TMC/1st
+DeltaMax's Taiko Oni Overlord: DMX/2
+DeltaMax's Mania Key Smasher: DMX/3
+Most Amazing LAN Ever: osu!_Riverside/MALE
+osu! Multi Mode French Fiesta: oMMFF/1
+The iDOL@NSTER: Irvine Spring Stage: osu!_UCI/iDOL@NSTER
+Night Fall LAN: osu!_UCI/NFL
+osu!Philippines Holiday Friendlies 2018: oPHF/2018
+osu!Philippines Summer Tournament 2018: oPHST/2018

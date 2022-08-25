@@ -398,49 +398,9 @@ class AddSource ( wx.Frame ):
 		self.m_panel7 = wx.Panel( self.m_notebook2, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		bSizer14 = wx.BoxSizer( wx.VERTICAL )
 
-		bSizer15 = wx.BoxSizer( wx.HORIZONTAL )
-
-		bSizer26 = wx.BoxSizer( wx.HORIZONTAL )
-
-		bSizer27 = wx.BoxSizer( wx.VERTICAL )
-
-		self.m_staticText412 = wx.StaticText( self.m_panel7, wx.ID_ANY, u"Tournament type", wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_staticText412.Wrap( -1 )
-
-		bSizer27.Add( self.m_staticText412, 0, wx.TOP|wx.RIGHT|wx.LEFT, 5 )
-
-		m_tournament_statusChoices = [ u"Official", u"Unofficial" ]
-		self.m_tournament_status = wx.Choice( self.m_panel7, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_tournament_statusChoices, 0 )
-		self.m_tournament_status.SetSelection( 0 )
-		bSizer27.Add( self.m_tournament_status, 0, wx.ALL|wx.EXPAND, 5 )
-
-
-		bSizer26.Add( bSizer27, 1, wx.EXPAND, 5 )
-
-		bSizer28 = wx.BoxSizer( wx.VERTICAL )
-
-		self.m_staticText4121 = wx.StaticText( self.m_panel7, wx.ID_ANY, u"Tournament gamemode", wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_staticText4121.Wrap( -1 )
-
-		bSizer28.Add( self.m_staticText4121, 0, wx.TOP|wx.RIGHT|wx.LEFT, 5 )
-
-		m_tournament_gamemodeChoices = [ u"osu", u"taiko", u"fruits", u"mania" ]
-		self.m_tournament_gamemode = wx.Choice( self.m_panel7, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_tournament_gamemodeChoices, 0 )
-		self.m_tournament_gamemode.SetSelection( 0 )
-		bSizer28.Add( self.m_tournament_gamemode, 0, wx.ALL|wx.EXPAND, 5 )
-
-
-		bSizer26.Add( bSizer28, 1, wx.EXPAND, 5 )
-
-
-		bSizer15.Add( bSizer26, 1, 0, 5 )
-
-
-		bSizer14.Add( bSizer15, 0, wx.EXPAND, 5 )
-
-		m_tournament_searchChoices = []
-		self.m_tournament_search = wx.ListBox( self.m_panel7, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_tournament_searchChoices, wx.LB_SINGLE )
-		bSizer14.Add( self.m_tournament_search, 1, wx.ALL|wx.EXPAND, 5 )
+		m_tournament_listChoices = []
+		self.m_tournament_list = wx.ListBox( self.m_panel7, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_tournament_listChoices, wx.LB_SINGLE )
+		bSizer14.Add( self.m_tournament_list, 1, wx.ALL|wx.EXPAND, 5 )
 
 		self.m_add_tournament = wx.Button( self.m_panel7, wx.ID_ANY, u"Add Tournament", wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer14.Add( self.m_add_tournament, 0, wx.ALL|wx.EXPAND, 5 )

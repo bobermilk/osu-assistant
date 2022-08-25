@@ -93,7 +93,7 @@ class AddSourceWindow(gui.AddSource):
         main_window.update_sources(None)
         
     async def add_tournament(self, event):
-        selection=self.m_tournament_search.GetString(self.m_tournament_search.GetSelection())
+        selection=self.m_tournament_list.GetString(self.m_tournament_list.GetSelection())
         self.Destroy()
         data.get_sources().add_tournament_source(selection)
         main_window.update_sources(None)

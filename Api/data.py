@@ -1,10 +1,16 @@
-from flask import jsonify
 
 # Data
-tournament_data={}
-beatconnect_data={}
+tournaments_data={}
+mappack_data={}
 
-def search_tournament(type, gamemode):
+# We need to pause serving all requests when the update happens
+async def write(_tournament_data, _mappack_data):
+    global tournament_data
+    global mappack_data
+    tournament_data=_tournament_data
+    mappack_data=_mappack_data
+
+def update_tournaments():
     return {"foo":"tournament"}
-def search_beatconnect(status, gamemode):
+def update_mappacks():
     return {"foo": "beatconnect"}
