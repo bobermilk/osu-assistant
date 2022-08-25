@@ -161,7 +161,10 @@ def get_userpage_beatmaps(source):
                 page+=1
 
     return all_beatmaps, unavailable_beatmaps
-
+def get_tournament_beatmaps(source):
+    pass
+def get_mappack_beatmaps(source):
+    pass
 def get_osucollector_beatmaps(source):
     all_beatmaps=set()
     unavailable_beatmaps=set()

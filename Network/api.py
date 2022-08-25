@@ -5,6 +5,13 @@ import requests
 import json
 from Utilities import data, constants
 
+# FLASK API
+def query_flask_tournaments(tournament_id):
+    json=b''
+    return json 
+
+# OSU API 
+
 # returns (hash, beatmapset_id) for validity check and use the output to write collections
 def query_osu_beatmap(beatmap_id):
     headers={
@@ -34,6 +41,10 @@ def query_osu_beatmapset(beatmapset_id):
     time.sleep(constants.api_scrape_interval)
     j=json.loads(response.text)
     return "error" in j
+
+# returns the integer representing the user gamemode
+def query_user_default_gamemode(user_id):
+    pass
 
 # Generate a oauth token
 def get_token():

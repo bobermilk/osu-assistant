@@ -1,13 +1,18 @@
 import entity
-import re
 import requests
-import time
 from Network import download, api
-from Utilities import data, database, constants
+from Utilities import data, database, constants, string
+from Network import scraper
 
 # Update sources/jobs on startup
 # 
 async def init():
+    # Get the jsons
+    try:
+        data.TournamentJson=requests.get("https://raw.githubusercontent.com/bobermilk/osu-assistant/master/tournament.json").json()
+        data.MappackJson=requests.get("https://raw.githubusercontent.com/bobermilk/osu-assistant/master/mappack.json").json()
+    except:
+        pass
     # Initialize the cache db
     await database.create_osudb()
     # Refresh sources and jobs (the views will update)
@@ -39,66 +44,40 @@ def diff_local_and_source(source):
 
 # The following creates source objects to be inserted into the Sources entities
 def create_userpage_source(links, scope):
+    users, gamemode=string.parse_userpages_urlstring(links)
+
     #Example
-    # User: played=top&fav status=r&gp&p&g Polyester
+    # User: played=top&fav status=r&gp&p&g mode=m Polyester
+    source_key=string.generate_userpage_source_key(users, scope, gamemode)
 
-    # TODO: create the name of the source
-    key=""
+    return (source_key, entity.UserpageSource(users, scope))
 
-    # TODO: get source data
-    ids=parse_urlstring(links)
-    return (key, entity.UserpageSource(ids, scope))
+def create_tournament_source(tournament_id, source_key):
+    # Example
+    # SOFT-4: Springtime Osu!mania Free-for-all Tournament 4
+    return (source_key, entity.TournamentSource(tournament_id))
 
-def create_tournament_source(id):
+def create_mappack_source(ids, gamemode):
     #Example
-    # Tournament: osu!mania 4K World Cup 2022
+    # Mappack mode=m #109 #108
+    source_key=string.generate_mappack_source_key(ids, gamemode)
 
-    # TODO: create the name of the source
-    key=""
+    return (source_key, entity.MappackSource(ids, gamemode))
 
-    return (key, entity.TournamentSource(id))
-
-def create_mappack_source(status, gamemode, url):
-    #Example
-    # Mappack size=51 mode=m status=r
-
-    # TODO: create the name of the source
-    key=""
-
-    # TODO: get source data
-    status=1
-    gamemode=1
-    download_count=1
-    return (key, entity.MappackSource(status, gamemode, download_count))
-
-def create_osucollector_source(links):
+def create_osucollector_source(link):
     #Example
     # Osucollector: DT SPEED
-    # TODO: create the name of the source
-    key=""
 
-    # TODO: get source data
-    ids=[]
-    return (key, entity.OsucollectorSource(ids))
+    # Get id
+    osucollector_id=string.generate_osucollector_source_key(link)
 
-# Extract beatmapset_ids from osu beatmap urls
-def parse_urlstring(urlstring):
-    beatmapset_ids=[]
+    # Generate source key
+    source_key=string.generate_osucollector_source_key(osucollector_id)
 
-    ra = "(?<=beatmapsets\/)([0-9]*)(?=#|\n)" # matches format /beatmapsets/xxxxx#xxxxx or /beatmapsets/xxxxx
-    rb = "(.*\/b\/.*)" # matches format /b/xxxxx
+    # Generate new source
+    new_source=entity.OsucollectorSource(osucollector_id)
 
-    for i in re.findall(ra, urlstring):
-        beatmapset_ids.append(i)
-
-    for url in re.findall(rb, urlstring):
-        try:
-            r = requests.head(url, allow_redirects=True, timeout=10)
-            beatmapset_ids.append(re.findall(ra, r.url)[0])
-            time.sleep(data.get_settings().download_interval)
-        except:
-            pass
-    return beatmapset_ids
+    return (source_key, new_source)
 
 # Gets the directory this application is installed in
 def get_install_directory():

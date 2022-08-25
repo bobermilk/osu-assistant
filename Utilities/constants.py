@@ -28,7 +28,7 @@ osu_beatmap_url="https://osu.ppy.sh/beatmapsets/{}"
 osu_beatmap_url_download="https://osu.ppy.sh/beatmapsets/{}/download"
 
 # dicts
-gamemode_dict={ 1: "osu", 2:"taiko", 3:"catch", 4:"mania" }
+gamemode_dict={ "osu":1, "taiko":2, "fruits":3, "mania":4 }
 job_status={ 0: "invalid", 1: "pending", 2: "downloading", 3: "downloaded" } # Used to text progress of jobs
 
 # strings

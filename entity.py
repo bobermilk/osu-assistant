@@ -25,7 +25,7 @@ class Beatmaps():
         self.all_beatmaps=all_beatmaps
         self.unavailable_beatmaps=unavailable_beatmaps
         
-# Note: ids is a pair (user_id, gamemode)
+# Note: ids is a set of pairs (user_id, gamemode)
 class UserpageSource(Beatmaps):
     def __init__(self, ids, scope):
         super().__init__()
@@ -50,23 +50,18 @@ class TournamentSource(Beatmaps):
         self.id=id
 
 class MappackSource(Beatmaps):
-    def __init__(self, status, gamemode, download_count):
+    def __init__(self, ids, gamemode):
         super().__init__()
-        self.number=download_count
-        self.status=status
+        self.ids=ids
         self.gamemode=gamemode
-    def get_status(self):
-        return self.status
-    def set_status(self, status):
-        self.status=status
+    def get_ids(self):
+        return self.ids
+    def set_id(self, ids):
+        self.ids=ids
     def get_gamemode(self):
         return self.gamemode
     def set_gamemode(self, gamemode):
-        self.gamemode=gamemode
-    def get_download_count(self):
-        return self.download_count
-    def set_download_count(self, download_count):
-        self.download_count=download_count
+        self.gamemode=gamemode   
 
 class OsucollectorSource(Beatmaps):
     def __init__(self, id):
@@ -123,21 +118,29 @@ class Sources():
             data.get_jobs().start_jobs()
 
     def add_user_source(self, links, scope):
-        key, data=misc.create_userpage_source(links, scope)
-        self.user_source[key]=data
-
-    def add_osucollector_source(self, links):
-        key, data=misc.create_osucollector_source(links)
-        self.osucollector_source[key]=data
-
-    def add_mappack_source(self, status, gamemode, download_count):
-        key, data=misc.create_mappack_source(status, gamemode, download_count)
-        self.mappack_source[key]=data
+        key, source=misc.create_userpage_source(links, scope)
+        all_beatmaps, unavailable_beatmaps=scraper.get_userpage_beatmaps(source)
+        source.cache_beatmaps(all_beatmaps, unavailable_beatmaps)
+        self.user_source[key]=source
 
     def add_tournament_source(self, selection):
-        id=selection.split(":")[0] # SOFT-4: Springtime Osu!mania Free-for-all Tournament 4
-        key, data=misc.create_tournament_source(id)
-        self.tournament_source[key]=data
+        tournament_id=selection.split(":")[0]
+        key, source=misc.create_tournament_source(tournament_id, selection)
+        all_beatmaps, unavailable_beatmaps=scraper.get_tournament_beatmaps(source)
+        source.cache_beatmaps(all_beatmaps, unavailable_beatmaps)
+        self.tournament_source[key]=source
+
+    def add_mappack_source(self, ids, gamemode):
+        key, source=misc.create_mappack_source(ids, gamemode)
+        all_beatmaps, unavailable_beatmaps=scraper.get_mappack_beatmaps(source)
+        source.cache_beatmaps(all_beatmaps, unavailable_beatmaps)
+        self.mappack_source[key]=source
+
+    def add_osucollector_source(self, link):
+        key, source=misc.create_osucollector_source(link)
+        all_beatmaps, unavailable_beatmaps=scraper.get_osucollector_beatmaps(source)
+        source.cache_beatmaps(all_beatmaps, unavailable_beatmaps)
+        self.osucollector_source[key]=source
 
 # Job
 class Job:

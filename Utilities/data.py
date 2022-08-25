@@ -7,6 +7,10 @@ from Tests import fake_provider as fake
 # Credentials
 OAUTH_TOKEN=None
 
+# Lists
+MappackJson=None
+TournamentJson=None
+
 # data (singletons)
 Sources=entity.Sources()
 Jobs=entity.Jobs()
