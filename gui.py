@@ -134,7 +134,7 @@ class Main ( wx.Frame ):
 
 		bSizer23.Add( self.m_staticText9, 0, wx.ALL, 5 )
 
-		self.m_checkBox11 = wx.CheckBox( self.m_collapsiblePane1.GetPane(), wx.ID_ANY, u"Use osu website as mirror if beatconnect does not have beatmap", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_checkBox11 = wx.CheckBox( self.m_collapsiblePane1.GetPane(), wx.ID_ANY, u"Use osu website as mirror if beatconnect does not have beatmap (botting is against osu api)", wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer23.Add( self.m_checkBox11, 0, wx.ALL, 5 )
 
 		bSizer34 = wx.BoxSizer( wx.HORIZONTAL )
