@@ -134,7 +134,7 @@ class Main ( wx.Frame ):
 
 		bSizer23.Add( self.m_staticText9, 0, wx.ALL, 5 )
 
-		self.m_checkBox11 = wx.CheckBox( self.m_collapsiblePane1.GetPane(), wx.ID_ANY, u"Use osu website as mirror if beatconnect does not have beatmap (botting is against osu api)", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_checkBox11 = wx.CheckBox( self.m_collapsiblePane1.GetPane(), wx.ID_ANY, u"Use osu website as mirror if beatconnect does not have beatmap (botting is against TOS)", wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer23.Add( self.m_checkBox11, 0, wx.ALL, 5 )
 
 		bSizer34 = wx.BoxSizer( wx.HORIZONTAL )
@@ -355,7 +355,7 @@ class AddSource ( wx.Frame ):
 
 		bSizer10 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_user_top100 = wx.CheckBox( self.m_panel6, wx.ID_ANY, u"Top 100 plays (gamemode must be in url)", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_user_top100 = wx.CheckBox( self.m_panel6, wx.ID_ANY, u"Top 100 plays (specify gamemode in url)", wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer10.Add( self.m_user_top100, 0, wx.ALL, 5 )
 
 		self.m_user_favourites = wx.CheckBox( self.m_panel6, wx.ID_ANY, u"Favourites", wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -409,7 +409,7 @@ class AddSource ( wx.Frame ):
 
 		bSizer27.Add( self.m_staticText412, 0, wx.TOP|wx.RIGHT|wx.LEFT, 5 )
 
-		m_tournament_statusChoices = [ u"Official tournament", u"Unofficial tournament" ]
+		m_tournament_statusChoices = [ u"Official", u"Unofficial" ]
 		self.m_tournament_status = wx.Choice( self.m_panel7, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_tournament_statusChoices, 0 )
 		self.m_tournament_status.SetSelection( 0 )
 		bSizer27.Add( self.m_tournament_status, 0, wx.ALL|wx.EXPAND, 5 )
@@ -424,7 +424,7 @@ class AddSource ( wx.Frame ):
 
 		bSizer28.Add( self.m_staticText4121, 0, wx.TOP|wx.RIGHT|wx.LEFT, 5 )
 
-		m_tournament_gamemodeChoices = [ u"Standard", u"Taiko", u"Catch", u"Mania" ]
+		m_tournament_gamemodeChoices = [ u"osu", u"taiko", u"fruits", u"mania" ]
 		self.m_tournament_gamemode = wx.Choice( self.m_panel7, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_tournament_gamemodeChoices, 0 )
 		self.m_tournament_gamemode.SetSelection( 0 )
 		bSizer28.Add( self.m_tournament_gamemode, 0, wx.ALL|wx.EXPAND, 5 )
@@ -464,7 +464,7 @@ class AddSource ( wx.Frame ):
 
 		bSizer31.Add( self.m_staticText4122, 0, wx.TOP|wx.RIGHT|wx.LEFT, 5 )
 
-		m_mappack_statusChoices = [ u"Spotlight", u"Theme", u"Artist/Album" ]
+		m_mappack_statusChoices = [ u"Standard", u"Spotlight", u"Theme", u"Artist/Album" ]
 		self.m_mappack_status = wx.Choice( self.m_panel8, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_mappack_statusChoices, 0 )
 		self.m_mappack_status.SetSelection( 0 )
 		bSizer31.Add( self.m_mappack_status, 0, wx.ALL|wx.EXPAND, 5 )
@@ -479,7 +479,7 @@ class AddSource ( wx.Frame ):
 
 		bSizer34.Add( self.m_staticText4123, 0, wx.TOP|wx.RIGHT|wx.LEFT, 5 )
 
-		m_mappack_gamemodeChoices = [ u"Standard", u"Taiko", u"Catch", u"Mania" ]
+		m_mappack_gamemodeChoices = [ u"osu", u"taiko", u"fruits", u"mania" ]
 		self.m_mappack_gamemode = wx.Choice( self.m_panel8, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_mappack_gamemodeChoices, 0 )
 		self.m_mappack_gamemode.SetSelection( 0 )
 		bSizer34.Add( self.m_mappack_gamemode, 0, wx.ALL|wx.EXPAND, 5 )
