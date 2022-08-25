@@ -13,7 +13,7 @@ class Sources(e.Sources):
         self.tournament_source["Tournament: osu!mania 4K World Cup 2022"]=e.TournamentSource("MWC-2022")
         self.tournament_source["Tournament: Springtime Osu!mania Free-for-all Tournament 4"]=e.TournamentSource("SOFT-4")
 
-        self.mappack_source["Mappack: mode=m #109 #108"]=e.MappackSource(1,0,51)
+        self.mappack_source["Mappack: mode=m #109 #108"]=e.MappackSource({109, 108},4)
 
         self.osucollector_source["Osucollector: DT SPEED"]=e.OsucollectorSource(4869)
 

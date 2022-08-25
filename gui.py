@@ -464,7 +464,7 @@ class AddSource ( wx.Frame ):
 
 		bSizer31.Add( self.m_staticText4122, 0, wx.TOP|wx.RIGHT|wx.LEFT, 5 )
 
-		m_mappack_statusChoices = [ u"Ranked", u"Loved", u"Qualified", u"Unranked", u"All" ]
+		m_mappack_statusChoices = [ u"Spotlight", u"Theme", u"Artist/Album" ]
 		self.m_mappack_status = wx.Choice( self.m_panel8, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_mappack_statusChoices, 0 )
 		self.m_mappack_status.SetSelection( 0 )
 		bSizer31.Add( self.m_mappack_status, 0, wx.ALL|wx.EXPAND, 5 )
@@ -493,20 +493,16 @@ class AddSource ( wx.Frame ):
 
 		bSizer141.Add( bSizer151, 0, wx.EXPAND, 5 )
 
-		self.m_staticText17 = wx.StaticText( self.m_panel8, wx.ID_ANY, u"Number of latest beatmaps to download", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText17 = wx.StaticText( self.m_panel8, wx.ID_ANY, u"Search results", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText17.Wrap( -1 )
 
 		bSizer141.Add( self.m_staticText17, 0, wx.ALL, 5 )
 
-		bSizer64 = wx.BoxSizer( wx.VERTICAL )
+		m_mappack_listChoices = []
+		self.m_mappack_list = wx.ListBox( self.m_panel8, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_mappack_listChoices, 0 )
+		bSizer141.Add( self.m_mappack_list, 1, wx.ALL|wx.EXPAND, 5 )
 
-		self.m_mappack_beatmapcount = wx.Slider( self.m_panel8, wx.ID_ANY, 10, 0, 1000, wx.DefaultPosition, wx.DefaultSize, wx.SL_HORIZONTAL|wx.SL_LABELS )
-		bSizer64.Add( self.m_mappack_beatmapcount, 0, wx.ALL|wx.EXPAND, 5 )
-
-
-		bSizer141.Add( bSizer64, 1, wx.EXPAND, 5 )
-
-		self.m_add_mappack = wx.Button( self.m_panel8, wx.ID_ANY, u"Add Mappack", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_add_mappack = wx.Button( self.m_panel8, wx.ID_ANY, u"Add Mappack(s)", wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer141.Add( self.m_add_mappack, 0, wx.ALL|wx.EXPAND, 5 )
 
 
