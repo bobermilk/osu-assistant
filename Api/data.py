@@ -10,7 +10,7 @@ from urlextract import URLExtract
 tournament_json={}
 mappack_json={}
 mappack_data={}
-mappack_latest=1
+mappack_latest=1500
 
 def update_tournaments():
     print("updating tournaments")
@@ -59,10 +59,12 @@ def update_mappacks():
     try:
         r=requests.get("https://osu.ppy.sh/beatmaps/packs")
         soup=BeautifulSoup(r.text, "lxml", parse_only=SoupStrainer('a'))
-        mappack_latest=int(soup.find_all('a', {"class":"beatmap-pack__header js-accordion__item-header"})[0]['href'].split("/")[-1])
-        while old_mappack_latest<mappack_latest:
+        new_mappack_latest=int(soup.find_all('a', {"class":"beatmap-pack__header js-accordion__item-header"})[0]['href'].split("/")[-1])
+        if new_mappack_latest>mappack_latest:
+            mappack_latest=new_mappack_latest
+        while old_mappack_latest<new_mappack_latest:
             beatmaps=[]
-            r=requests.get("https://osu.ppy.sh/beatmaps/packs/{}/raw".format(old_mappack_latest))
+            r=requests.get("https://osu.ppy.sh/beatmaps/packs/{}/raw".format(new_mappack_latest))
             if r.status_code != 200:
                 continue
             time.sleep(2)
@@ -74,7 +76,7 @@ def update_mappacks():
                 beatmaps.append(url[-1])
             
             mappack_data[mappack_latest]=beatmaps
-            old_mappack_latest+=1
+            new_mappack_latest-=1
         mappack_json=json.dumps(mappack_data)
     except:
         pass
