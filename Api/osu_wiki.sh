@@ -6,7 +6,7 @@ if [ ! -d "osu-wiki" ]; then
     echo -n 1
 else
     cd osu-wiki
-    if git pull | grep -q 'Already up to date'; then
+    if [ "$(git pull)" == "Already up to date." ]; then
         echo -n 0
     else
         echo -n 1

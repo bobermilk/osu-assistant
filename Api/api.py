@@ -7,6 +7,9 @@ from threading import Thread
 app = Flask(__name__)
 api = Api(app)
 
+def start():
+    app.run(debug=False)
+
 def update_data():
     while True:
         data.update_tournaments()
@@ -33,8 +36,6 @@ api.add_resource(Tournaments, '/tournament', endpoint='tournament')
 api.add_resource(Mappack, '/mappack', endpoint='mappack')
 
 if __name__ == '__main__':
-    p=Thread(target=update_data)
-    p.start()
-    app.run(debug=True)
-    p.join()
-    
+    p1=Thread(target=update_data)
+    p1.start()
+    start()
