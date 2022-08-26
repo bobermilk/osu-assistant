@@ -1,5 +1,5 @@
-flask
-bs4
+Flask
+beautifulsoup4
 requests
 urlextract
 flask_restful

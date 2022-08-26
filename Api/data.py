@@ -23,7 +23,8 @@ def update_tournaments():
         # How to parse markdown 101
         # list of (tournament_name, beatmaps)
         tournaments={}
-        with open("test.md", "r") as f:
+        tournament_dir=os.path.join(os.getcwd(),"osu-wiki", "wiki", "Tournaments")
+        with open(os.path.join(tournament_dir,"en.md"), "r") as f:
             items=[x for x in f.read().split("\n") if len(x)>3 and x[:3]=='| [']
             for item in items:
                 item=item.split("](")
@@ -31,7 +32,7 @@ def update_tournaments():
                 tournament_name=item[0][3:]
                 tournament_tag=item[1][:item[1].find(")")]
                 tournament_source_key=tournament_tag.replace('/', '-')
-                dir=os.path.join(os.getcwd(),"osu-wiki", "wiki", "Tournaments", tournament_tag)
+                dir=os.path.join(tournament_dir, tournament_tag)
                 fcontent=open(os.path.join(dir, "en.md")).read()
                 urls=urlextractor.find_urls(fcontent)
                 osu_urls=[x for x in urls if "beatmapsets" in x]
