@@ -3,6 +3,7 @@
 if [ ! -d "osu-wiki" ]; then
     git clone https://github.com/ppy/osu-wiki
     cd osu-wiki
+    echo -n 1
 else
     cd osu-wiki
     if git pull | grep -q 'Already up to date'; then
