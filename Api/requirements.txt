@@ -1,3 +1,5 @@
 flask
 bs4
 requests
+urlextract
+flask_restful
