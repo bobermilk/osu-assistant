@@ -8,11 +8,8 @@ from Network import scraper
 # 
 async def init():
     # Get the jsons
-    try:
-        data.TournamentJson=requests.get("https://raw.githubusercontent.com/bobermilk/osu-assistant/master/tournament.json").json()
-        data.MappackJson=requests.get("https://raw.githubusercontent.com/bobermilk/osu-assistant/master/mappack.json").json()
-    except:
-        pass
+    data.TournamentJson=requests.get("https://raw.githubusercontent.com/bobermilk/osu-assistant-data/main/tournament.json").json()
+    print(data.TournamentJson)
     # Initialize the cache db
     await database.create_osudb()
     # Refresh sources and jobs (the views will update)

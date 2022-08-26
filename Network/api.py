@@ -21,7 +21,7 @@ def query_osu_beatmap(beatmap_id):
     }
 
     response=requests.get(f"{constants.OSU_API_URL}/beatmaps/{beatmap_id}", headers=headers)
-    time.sleep(constants.api_scrape_interval)
+    time.sleep(constants.api_get_interval)
     j=response.json()
     try:
         return j["checksum"], j["beatmapset_id"]
@@ -38,7 +38,7 @@ def query_osu_beatmapset(beatmapset_id):
     }
 
     response=requests.get(f"{constants.OSU_API_URL}/beatmapsets/{beatmapset_id}", headers=headers)
-    time.sleep(constants.api_scrape_interval)
+    time.sleep(constants.api_get_interval)
     j=json.loads(response.text)
     return "error" in j
 

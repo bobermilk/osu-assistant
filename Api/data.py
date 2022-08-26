@@ -10,7 +10,7 @@ from urlextract import URLExtract
 tournament_json={}
 mappack_json={}
 mappack_data={}
-mappack_latest=1500
+mappack_latest=2000
 
 def update_tournaments():
     print("updating tournaments")
@@ -65,9 +65,9 @@ def update_mappacks():
         while old_mappack_latest<new_mappack_latest:
             beatmaps=[]
             r=requests.get("https://osu.ppy.sh/beatmaps/packs/{}/raw".format(new_mappack_latest))
+            time.sleep(2)
             if r.status_code != 200:
                 continue
-            time.sleep(2)
             soup=BeautifulSoup(r.text, "lxml", parse_only=SoupStrainer('a'))
             urls=[x['href'] for x in soup if x.has_attr('href')]
             urls.pop(0) # remove mediafire link
@@ -81,3 +81,10 @@ def update_mappacks():
     except:
         pass
     print("updated mappacks in "+str(time.time()-start))
+
+#update_mappacks()
+update_tournaments()
+with open(os.path.join(os.getcwd(), "tournament.json"),"w") as f:
+    f.write(tournament_json)
+# with open(os.path.join(os.getcwd(), "mappack.json"),"w") as f:
+#     f.write(mappack_json)

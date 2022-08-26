@@ -2,6 +2,7 @@ import wx
 import gui
 from wxasync import AsyncBind, WxAsyncApp
 import asyncio
+import requests
 from Utilities import data, constants, database, misc
 from pubsub import pub
 
@@ -23,6 +24,7 @@ class MainWindow(gui.Main):
         self.update_sources(self)
         self.update_activity(self)
         # initialize the app
+        # TODO: somehow get asyncio to run this concurrently
         misc.init()
 
         pub.subscribe(update_sources, "update.sources")
@@ -66,6 +68,8 @@ class MainWindow(gui.Main):
     def show_add_window(self, event):
         add_source_window=AddSourceWindow(parent=None)
         add_source_window.Show()
+        for i, source_key, tournament in enumerate(data.TournamentJson.items()):
+            add_source_window.m_tournament_list.Insert(source_key + ": "+ tournament, i)
         # bind the buttons to their respective callbacks
         AsyncBind(wx.EVT_BUTTON, add_source_window.add_userpage, add_source_window.m_add_userpage)
         AsyncBind(wx.EVT_BUTTON, add_source_window.add_tournament, add_source_window.m_add_tournament)
