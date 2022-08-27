@@ -2,6 +2,7 @@
 import requests
 import time
 import api
+import data
 import constants
 # returns https://osu.ppy.sh/beatmapsets/<beatmapset_id>
 
@@ -14,12 +15,17 @@ def pausechamp(r):
 def get_userpage_beatmaps(source):
     all_beatmaps=set()
     
+    scope=source.get_scope()
     # Not from api
-    if source.scope[0]:
+    if scope[0]:
         beatmaps=set()
         for user_id, gamemode in source.get_ids():
             on_page=1
-            r=requests.get(constants.scrape_top_plays.format(user_id, gamemode, on_page*100, (on_page-1)*100))
+            if gamemode=="":
+                url=constants.scrape_top_plays_defaultmode.format(user_id, on_page*100, (on_page-1)*100)
+            else:
+                url=constants.scrape_top_plays.format(user_id, gamemode, on_page*100, (on_page-1)*100)
+            r=requests.get(url)
             time.sleep(3)
             for item in r.json():
                 beatmap_id=item['beatmap_id']
@@ -28,10 +34,10 @@ def get_userpage_beatmaps(source):
                 beatmaps.add(beatmap)
         all_beatmaps.update(beatmaps)
 
-    beatmaps=set()
 
     # From osu api
 
+    # beatmaps=set()
     # for user_id, gamemode in source.get_ids():
     #     j=api.query_osu_user_beatmapsets(user_id, gamemode, "loved") # list of jsons on each page
     # Sample json test:
@@ -45,21 +51,21 @@ def get_userpage_beatmaps(source):
     # with open("test.json", "w") as f:
     #     f.write(str(beatmaps))
 
-    if source.scope[1]:
+    if scope[1]:
         # Favourites
         beatmaps=set()
         for user_id, gamemode in source.get_ids():
-            j=api.query_osu_user_beatmapsets(user_id, gamemode, "favourite") # list of jsons on each page
+            j=api.query_osu_user_beatmapsets(user_id, "favourite") # list of jsons on each page
             for item in j:
                 for beatmap in item:
-                    beatmaps.add(beatmap["beatmaps"][0]["beatmapset_id"], None, None)
+                    beatmaps.add((beatmap["beatmaps"][0]["beatmapset_id"], None, None))
         all_beatmaps.update(beatmaps)
         
-    if source.scope[2]:
+    if scope[2]:
         # Everything played
         beatmaps=set()
         for user_id, gamemode in source.get_ids():
-            j=api.query_osu_user_beatmapsets(user_id, gamemode, "most_played") # list of jsons on each page
+            j=api.query_osu_user_beatmapsets(user_id, "most_played")
             for item in j:
                 for beatmap in item:
                     beatmapset_id=beatmap["beatmap"]["beatmapset_id"]
@@ -68,10 +74,10 @@ def get_userpage_beatmaps(source):
         all_beatmaps.update(beatmap)
         
 
-    if source.scope[3]:
+    if scope[3]:
         beatmaps=set()
         for user_id, gamemode in source.get_ids():
-            j=api.query_osu_user_beatmapsets(user_id, gamemode, "ranked") # list of jsons on each page
+            j=api.query_osu_user_beatmapsets(user_id, "ranked")
 
             for item in j:
                 for beatmap in item:
@@ -80,10 +86,10 @@ def get_userpage_beatmaps(source):
         all_beatmaps.update(beatmap)
 
         
-    if source.scope[4]:
+    if scope[4]:
         beatmaps=set()
         for user_id, gamemode in source.get_ids():
-            j=api.query_osu_user_beatmapsets(user_id, gamemode, "loved") # list of jsons on each page
+            j=api.query_osu_user_beatmapsets(user_id, "loved")
 
             for item in j:
                 for beatmap in item:
@@ -91,10 +97,10 @@ def get_userpage_beatmaps(source):
                     beatmaps.add((beatmapset_id, None, None))
         all_beatmaps.update(beatmap)
 
-    if source.scope[5]:
+    if scope[5]:
         beatmaps=set()
         for user_id, gamemode in source.get_ids():
-            j=api.query_osu_user_beatmapsets(user_id, gamemode, "pending") # list of jsons on each page
+            j=api.query_osu_user_beatmapsets(user_id, "pending")
 
             for item in j:
                 for beatmap in item:
@@ -102,10 +108,10 @@ def get_userpage_beatmaps(source):
                     beatmaps.add((beatmapset_id, None, None))
         all_beatmaps.update(beatmap)
 
-    if source.scope[6]:
+    if scope[6]:
         beatmaps=set()
         for user_id, gamemode in source.get_ids():
-            j=api.query_osu_user_beatmapsets(user_id, gamemode, "graveyarded") # list of jsons on each page
+            j=api.query_osu_user_beatmapsets(user_id, "graveyard")
 
             for item in j:
                 for beatmap in item:
@@ -115,7 +121,9 @@ def get_userpage_beatmaps(source):
     return all_beatmaps
 
 def get_tournament_beatmaps(source):
-    pass
+    all_beatmaps=set()
+    all_beatmaps.add(data.TournamentJson[source.get_id()])
+    return all_beatmaps
 def get_mappack_beatmaps(source):
     pass
 def get_osucollector_beatmaps(source):

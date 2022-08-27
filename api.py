@@ -11,7 +11,7 @@ def query_flask_tournaments(tournament_id):
     return json 
 
 # OSU API 
-def query_osu_user_beatmapsets(user_id, gamemode, type):
+def query_osu_user_beatmapsets(user_id, type):
     headers={
         "Content-Type": "application/json",
         "Accept": "application/json",

@@ -138,7 +138,7 @@ class Sources():
 
     def add_osucollector_source(self, link):
         key, source=misc.create_osucollector_source(link)
-        all_beatmaps, unavailable_beatmaps=scraper.get_osucollector_beatmaps(source)
+        all_beatmaps=scraper.get_osucollector_beatmaps(source)
         source.cache_beatmaps(all_beatmaps,set())
         self.osucollector_source[key]=source
 

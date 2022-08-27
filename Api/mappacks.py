@@ -21,7 +21,7 @@ for i, site in enumerate(sites):
     pausechamp(r)
     soup = BeautifulSoup(r.text, "html.parser")
     page_cnt = int(soup.find_all("a", {"class": "pagination-v2__link"})[-2].text)
-    pack_ids=[]
+    pack_ids={}
     for page_num in range(1, page_cnt + 1):
         # get pack titles
         r=requests.get(site.format(page_num))
@@ -45,10 +45,8 @@ for i, site in enumerate(sites):
                     else:
                         beatmaps.append((url[-1], None, None))
             except:
-                pass
-            beatmaps.append([pack.find("div", {"class", "beatmap-pack__name"}).getText(), beatmaps])
-                
-        pack_ids.append(beatmaps)
+                pass                
+            pack_ids[pack.find("div", {"class", "beatmap-pack__name"}).getText()]=beatmaps
     mappacks[i]=pack_ids
     
 with open("mappacks.json", "w") as f:

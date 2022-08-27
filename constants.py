@@ -9,6 +9,7 @@ api_get_interval=1 # actual api
 user_url="https://osu.ppy.sh/users/"
 #scrape_pinned=user_url+"{}/scores/pinned?mode={}&limit={}&offset={}"
 scrape_top_plays=user_url+"{}/scores/best?mode={}&limit={}&offset={}"
+scrape_top_plays_defaultmode=user_url+"{}/scores/best?limit={}&offset={}"
 #scrape_first_place=user_url+"{}/scores/firsts?mode={}&limit={}&offset={}"
 scrape_favourites=user_url+"{}/beatmapsets/favourite?limit={}&offset={}"
 scrape_everything=user_url+"{}/beatmapsets/most_played?limit={}&offset={}"

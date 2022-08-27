@@ -375,9 +375,6 @@ class AddSource ( wx.Frame ):
 		self.m_user_loved = wx.CheckBox( self.m_panel6, wx.ID_ANY, u"Loved", wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer101.Add( self.m_user_loved, 0, wx.ALL, 5 )
 
-		self.m_user_guest_participation = wx.CheckBox( self.m_panel6, wx.ID_ANY, u"Guest Participation", wx.DefaultPosition, wx.DefaultSize, 0 )
-		bSizer101.Add( self.m_user_guest_participation, 0, wx.ALL, 5 )
-
 		self.m_user_pending = wx.CheckBox( self.m_panel6, wx.ID_ANY, u"Pending", wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer101.Add( self.m_user_pending, 0, wx.ALL, 5 )
 
@@ -415,40 +412,20 @@ class AddSource ( wx.Frame ):
 
 		bSizer151 = wx.BoxSizer( wx.HORIZONTAL )
 
-		bSizer30 = wx.BoxSizer( wx.HORIZONTAL )
+		bSizer341 = wx.BoxSizer( wx.VERTICAL )
 
-		bSizer31 = wx.BoxSizer( wx.VERTICAL )
+		self.m_staticText41231 = wx.StaticText( self.m_panel8, wx.ID_ANY, u"Mappack gamemode", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText41231.Wrap( -1 )
 
-		self.m_staticText4122 = wx.StaticText( self.m_panel8, wx.ID_ANY, u"Mappack status", wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_staticText4122.Wrap( -1 )
+		bSizer341.Add( self.m_staticText41231, 0, wx.TOP|wx.RIGHT|wx.LEFT, 5 )
 
-		bSizer31.Add( self.m_staticText4122, 0, wx.TOP|wx.RIGHT|wx.LEFT, 5 )
-
-		m_mappack_statusChoices = [ u"Standard", u"Spotlight", u"Theme", u"Artist/Album" ]
-		self.m_mappack_status = wx.Choice( self.m_panel8, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_mappack_statusChoices, 0 )
-		self.m_mappack_status.SetSelection( 0 )
-		bSizer31.Add( self.m_mappack_status, 0, wx.ALL|wx.EXPAND, 5 )
+		m_mappack_gamemode1Choices = [ u"osu", u"taiko", u"fruits", u"mania" ]
+		self.m_mappack_gamemode1 = wx.Choice( self.m_panel8, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_mappack_gamemode1Choices, 0 )
+		self.m_mappack_gamemode1.SetSelection( 0 )
+		bSizer341.Add( self.m_mappack_gamemode1, 0, wx.ALL|wx.EXPAND, 5 )
 
 
-		bSizer30.Add( bSizer31, 1, wx.EXPAND, 5 )
-
-		bSizer34 = wx.BoxSizer( wx.VERTICAL )
-
-		self.m_staticText4123 = wx.StaticText( self.m_panel8, wx.ID_ANY, u"Mappack gamemode", wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_staticText4123.Wrap( -1 )
-
-		bSizer34.Add( self.m_staticText4123, 0, wx.TOP|wx.RIGHT|wx.LEFT, 5 )
-
-		m_mappack_gamemodeChoices = [ u"osu", u"taiko", u"fruits", u"mania" ]
-		self.m_mappack_gamemode = wx.Choice( self.m_panel8, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_mappack_gamemodeChoices, 0 )
-		self.m_mappack_gamemode.SetSelection( 0 )
-		bSizer34.Add( self.m_mappack_gamemode, 0, wx.ALL|wx.EXPAND, 5 )
-
-
-		bSizer30.Add( bSizer34, 1, wx.EXPAND, 5 )
-
-
-		bSizer151.Add( bSizer30, 1, wx.EXPAND, 5 )
+		bSizer151.Add( bSizer341, 1, wx.EXPAND, 5 )
 
 
 		bSizer141.Add( bSizer151, 0, wx.EXPAND, 5 )

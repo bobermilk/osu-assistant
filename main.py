@@ -33,10 +33,10 @@ class MainWindow(gui.Main):
         source_list=data.get_sources().read()
         for source_key, source in source_list:
             source_panel=gui.ListPanel(self.m_source_list)
-            for i, beatmapset_id, beatmap_id in enumerate(source.get_available_beatmaps()):
-                source_panel.m_list.Insert(str(beatmap_id),i)
-            for i, beatmapset_id, beatmap_id in enumerate(source.get_unavailable_beatmaps()):
-                source_panel.m_list.Insert(str(beatmap_id)+" (unavailable)",i)
+            for i, beatmap in enumerate(source.get_available_beatmaps()):
+                source_panel.m_list.Insert("beatmapset_id="+str(beatmap[0]) + "beatmap_id="+str(beatmap[1]),i)
+            for i, beatmap in enumerate(source.get_unavailable_beatmaps()):
+                source_panel.m_list.Insert("beatmapset_id="+str(beatmap[0]) + "beatmap_id="+str(beatmap[1]),i)
             self.m_source_list.AddPage(source_panel, source_key)
 
     # used to repopulate the activity list after download completes
@@ -64,13 +64,13 @@ class MainWindow(gui.Main):
     def show_add_window(self, event):
         add_source_window=AddSourceWindow(parent=None)
         add_source_window.Show()
-        for item in data.TournamentJson.items():
-            add_tournament_panel=gui.ListPanel(add_source_window.m_tournament)
-            for j, beatmap in enumerate(item[1][1]):
-                add_tournament_panel.m_list.Insert(constants.osu_beatmap_url_full.format(beatmap[0], beatmap[2], beatmap[1]), j)
-            tournament_key=item[0] + ": "+ item[1][0]
+        # for item in data.TournamentJson.items():
+        #     add_tournament_panel=gui.ListPanel(add_source_window.m_tournament)
+        #     for j, beatmap in enumerate(item[1][1]):
+        #         add_tournament_panel.m_list.Insert(constants.osu_beatmap_url_full.format(beatmap[0], beatmap[2], beatmap[1]), j)
+        #     tournament_key=item[0] + ": "+ item[1][0]
             
-            add_source_window.m_tournament.AddPage(add_tournament_panel, tournament_key)
+        #     add_source_window.m_tournament.AddPage(add_tournament_panel, tournament_key)
         # bind the buttons to their respective callbacks
         AsyncBind(wx.EVT_BUTTON, add_source_window.add_userpage, add_source_window.m_add_userpage)
         AsyncBind(wx.EVT_BUTTON, add_source_window.add_tournament, add_source_window.m_add_tournament)
@@ -91,8 +91,7 @@ class AddSourceWindow(gui.AddSource):
     async def add_userpage(self, event):
         links=self.m_userpages.GetValue()
         scope=[self.m_user_top100.GetValue(), self.m_user_favourites.GetValue(), self.m_user_everything.GetValue(),
-                self.m_user_ranked.GetValue(), self.m_user_loved.GetValue(), self.m_user_guest_participation.GetValue(),
-                self.m_user_pending.GetValue(), self.m_user_graveyarded.GetValue()]
+                self.m_user_ranked.GetValue(), self.m_user_loved.GetValue(), self.m_user_pending.GetValue(), self.m_user_graveyarded.GetValue()]
         self.Destroy()
         data.get_sources().add_user_source(links, scope)
         main_window.update_sources(None)

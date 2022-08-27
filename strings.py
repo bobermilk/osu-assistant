@@ -3,8 +3,34 @@ import data, constants
 import api
 
 # Create userpage ids
-def generate_userpage_source_key(users, scope, gamemode):
-    pass
+def generate_userpage_source_key(users, scope):
+    played="played="
+    if scope[0]:
+        played+="top&"
+    if scope[1]:
+        played+="fav&"
+    if scope[2]:
+        played+="all"
+    if played[-1]=='&':
+        played=played[:-1]
+    status="status="
+    if scope[3]:
+        status+="r&"
+    if scope[4]:
+        status+="l&"
+    if scope[5]:
+        status+="p&"
+    if scope[6]:
+        status+="g"
+    if scope[-1]=='&':
+        scope=scope[:-1]
+    ids="ids="
+    for userid, gamemode in users:
+        ids+=str(userid)
+        ids+=","
+    if ids[-1]==",":
+        ids=ids[:-1]
+    return f"User: {played} {status} {ids}"
 def generate_mappack_source_key(ids, gamemode):
     pass
 def generate_osucollector_source_key(id):
@@ -12,7 +38,7 @@ def generate_osucollector_source_key(id):
 
 # Extract (user_id, gamemode) from osu beatmap urls
 # https://osu.ppy.sh/users/15656848/fruits
-def parse_userpages_urlstring(urlstring):
+def parse_userpages_urlstrings(urlstring):
     users=set()
     ra = "(?<=users\/)(.*)" # matches format /user_id/gamemode
 
@@ -25,7 +51,7 @@ def parse_userpages_urlstring(urlstring):
             gamemode=user[1]
         else:
             gamemode=""
-        users.add(user_id, gamemode)
+        users.add((user_id, gamemode))
 
     return users
 
