@@ -11,6 +11,27 @@ def query_flask_tournaments(tournament_id):
     return json 
 
 # OSU API 
+def query_osu_user_beatmapsets(user_id, gamemode, type):
+    headers={
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Authorization": f"Bearer {get_token()}",
+    }
+    page=1
+    jsons=[]
+    while True:
+        response=requests.get(f"{constants.OSU_API_URL}/users/{user_id}/beatmapsets/{type}?limit={page*100}&offset={(page-1)*100}", headers=headers)
+        time.sleep(constants.api_get_interval)
+        j=response.json() # https://osu.ppy.sh/docs/index.html#get-user-beatmaps
+        if str(j)=="[]":
+            break
+        jsons.append(j)
+        page+=1
+    
+    with open("test.json", "w") as f:
+        f.write(str(jsons))
+    return jsons
+
 
 # returns (hash, beatmapset_id) for validity check and use the output to write collections
 def query_osu_beatmap(beatmap_id):
@@ -41,10 +62,6 @@ def query_osu_beatmapset(beatmapset_id):
     time.sleep(constants.api_get_interval)
     j=json.loads(response.text)
     return "error" in j
-
-# returns the integer representing the user gamemode
-def query_user_default_gamemode(user_id):
-    pass
 
 # Generate a oauth token
 def get_token():

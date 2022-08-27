@@ -13,43 +13,107 @@ def pausechamp(r):
 # TODO: write test
 def get_userpage_beatmaps(source):
     all_beatmaps=set()
-    unavailable_beatmaps=set()
     
+    # Not from api
     if source.scope[0]:
-        # Top plays
+        beatmaps=set()
         for user_id, gamemode in source.get_ids():
             on_page=1
             r=requests.get(constants.scrape_top_plays.format(user_id, gamemode, on_page*100, (on_page-1)*100))
+            time.sleep(3)
             for item in r.json():
                 beatmap_id=item['beatmap_id']
                 beatmap_checksum, beatmapset_id = api.query_osu_beatmap(beatmap_id)
                 beatmap=(beatmapset_id, beatmap_id, beatmap_checksum)
-                all_beatmaps.add(beatmap)
-                if beatmap_checksum == False:
-                    # Not hosted
-                    unavailable_beatmaps.add(beatmap)
-        
+                beatmaps.add(beatmap)
+        all_beatmaps.update(beatmaps)
+
+    beatmaps=set()
+
+    # From osu api
+
+    # for user_id, gamemode in source.get_ids():
+    #     j=api.query_osu_user_beatmapsets(user_id, gamemode, "loved") # list of jsons on each page
+    # Sample json test:
+    #     with open("test.json", "w") as f:
+    #         f.write(str(j))
+    #     for item in j:
+    #         for beatmap in item:
+    #             beatmapset_id=beatmap["beatmaps"][0]["beatmapset_id"]
+    #             beatmaps.add((beatmapset_id, None, None))
+
+    # with open("test.json", "w") as f:
+    #     f.write(str(beatmaps))
+
     if source.scope[1]:
         # Favourites
-        pass
+        beatmaps=set()
+        for user_id, gamemode in source.get_ids():
+            j=api.query_osu_user_beatmapsets(user_id, gamemode, "favourite") # list of jsons on each page
+            for item in j:
+                for beatmap in item:
+                    beatmaps.add(beatmap["beatmaps"][0]["beatmapset_id"], None, None)
+        all_beatmaps.update(beatmaps)
         
     if source.scope[2]:
         # Everything played
-        pass
+        beatmaps=set()
+        for user_id, gamemode in source.get_ids():
+            j=api.query_osu_user_beatmapsets(user_id, gamemode, "most_played") # list of jsons on each page
+            for item in j:
+                for beatmap in item:
+                    beatmapset_id=beatmap["beatmap"]["beatmapset_id"]
+                    beatmap_id=beatmap["beatmap_id"]
+                    beatmaps.add((beatmapset_id, beatmap_id, None))
+        all_beatmaps.update(beatmap)
+        
 
     if source.scope[3]:
-        pass
+        beatmaps=set()
+        for user_id, gamemode in source.get_ids():
+            j=api.query_osu_user_beatmapsets(user_id, gamemode, "ranked") # list of jsons on each page
+
+            for item in j:
+                for beatmap in item:
+                    beatmapset_id=beatmap["beatmaps"][0]["beatmapset_id"]
+                    beatmaps.add((beatmapset_id, None, None))
+        all_beatmaps.update(beatmap)
+
+        
     if source.scope[4]:
-        pass
+        beatmaps=set()
+        for user_id, gamemode in source.get_ids():
+            j=api.query_osu_user_beatmapsets(user_id, gamemode, "loved") # list of jsons on each page
+
+            for item in j:
+                for beatmap in item:
+                    beatmapset_id=beatmap["beatmaps"][0]["beatmapset_id"]
+                    beatmaps.add((beatmapset_id, None, None))
+        all_beatmaps.update(beatmap)
+
     if source.scope[5]:
-        pass
+        beatmaps=set()
+        for user_id, gamemode in source.get_ids():
+            j=api.query_osu_user_beatmapsets(user_id, gamemode, "pending") # list of jsons on each page
+
+            for item in j:
+                for beatmap in item:
+                    beatmapset_id=beatmap["beatmaps"][0]["beatmapset_id"]
+                    beatmaps.add((beatmapset_id, None, None))
+        all_beatmaps.update(beatmap)
+
     if source.scope[6]:
-        pass
+        beatmaps=set()
+        for user_id, gamemode in source.get_ids():
+            j=api.query_osu_user_beatmapsets(user_id, gamemode, "graveyarded") # list of jsons on each page
 
-    if source.scope[7]:
-        pass
+            for item in j:
+                for beatmap in item:
+                    beatmapset_id=beatmap["beatmaps"][0]["beatmapset_id"]
+                    beatmaps.add((beatmapset_id, None, None))
+        all_beatmaps.update(beatmap)
+    return all_beatmaps
 
-    return all_beatmaps, unavailable_beatmaps
 def get_tournament_beatmaps(source):
     pass
 def get_mappack_beatmaps(source):

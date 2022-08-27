@@ -1,7 +1,7 @@
 import entity
 import requests
 import download, api
-import data, database, constants, string
+import data, database, constants, strings
 import scraper
 
 # Update sources/jobs on startup
@@ -40,11 +40,11 @@ def diff_local_and_source(source):
 
 # The following creates source objects to be inserted into the Sources entities
 def create_userpage_source(links, scope):
-    users, gamemode=string.parse_userpages_urlstring(links)
+    users=strings.parse_userpages_urlstrings(links) # returns set of (userid, gamemode)
 
     #Example
     # User: played=top&fav status=r&gp&p&g mode=m Polyester
-    source_key=string.generate_userpage_source_key(users, scope, gamemode)
+    source_key=strings.generate_userpage_source_key(users, scope)
 
     return (source_key, entity.UserpageSource(users, scope))
 
@@ -56,7 +56,7 @@ def create_tournament_source(tournament_id, source_key):
 def create_mappack_source(ids, gamemode):
     #Example
     # Mappack mode=m #109 #108
-    source_key=string.generate_mappack_source_key(ids, gamemode)
+    source_key=strings.generate_mappack_source_key(ids, gamemode)
 
     return (source_key, entity.MappackSource(ids, gamemode))
 
@@ -65,10 +65,10 @@ def create_osucollector_source(link):
     # Osucollector: DT SPEED
 
     # Get id
-    osucollector_id=string.generate_osucollector_source_key(link)
+    osucollector_id=strings.generate_osucollector_source_key(link)
 
     # Generate source key
-    source_key=string.generate_osucollector_source_key(osucollector_id)
+    source_key=strings.generate_osucollector_source_key(osucollector_id)
 
     # Generate new source
     new_source=entity.OsucollectorSource(osucollector_id)

@@ -13,21 +13,21 @@ def generate_osucollector_source_key(id):
 # Extract (user_id, gamemode) from osu beatmap urls
 # https://osu.ppy.sh/users/15656848/fruits
 def parse_userpages_urlstring(urlstring):
-    
-    user_ids=set()
+    users=set()
     ra = "(?<=users\/)(.*)" # matches format /user_id/gamemode
-    # rb = "(.*\/b\/.*)" # matches format /b/xxxxx
 
     for user in re.findall(ra, urlstring):
-        user_id=user[0]
+        user=user.split("/")
+        user_id=int(user[0])
 
         # check if gamemode is specified
         if len(user) > 1 and user[1] in constants.gamemode_dict:
-            gamemode=constants.gamemode_dict[user[1]]
+            gamemode=user[1]
         else:
-            gamemode=api.query_user_default_gamemode(user_id)
-        user_ids.add(user_id, gamemode)
-    return user_ids
+            gamemode=""
+        users.add(user_id, gamemode)
+
+    return users
 
     # for url in re.findall(rb, urlstring):
     #     try:

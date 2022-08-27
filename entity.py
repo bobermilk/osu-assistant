@@ -119,27 +119,27 @@ class Sources():
 
     def add_user_source(self, links, scope):
         key, source=misc.create_userpage_source(links, scope)
-        all_beatmaps, unavailable_beatmaps=scraper.get_userpage_beatmaps(source)
-        source.cache_beatmaps(all_beatmaps, unavailable_beatmaps)
+        all_beatmaps=scraper.get_userpage_beatmaps(source)
+        source.cache_beatmaps(all_beatmaps,set())
         self.user_source[key]=source
 
     def add_tournament_source(self, selection):
         tournament_id=selection.split(":")[0]
         key, source=misc.create_tournament_source(tournament_id, selection)
-        all_beatmaps, unavailable_beatmaps=scraper.get_tournament_beatmaps(source)
-        source.cache_beatmaps(all_beatmaps, unavailable_beatmaps)
+        all_beatmaps=scraper.get_tournament_beatmaps(source)
+        source.cache_beatmaps(all_beatmaps,set())
         self.tournament_source[key]=source
 
     def add_mappack_source(self, ids, gamemode):
         key, source=misc.create_mappack_source(ids, gamemode)
-        all_beatmaps, unavailable_beatmaps=scraper.get_mappack_beatmaps(source)
-        source.cache_beatmaps(all_beatmaps, unavailable_beatmaps)
+        all_beatmaps=scraper.get_mappack_beatmaps(source)
+        source.cache_beatmaps(all_beatmaps,set())
         self.mappack_source[key]=source
 
     def add_osucollector_source(self, link):
         key, source=misc.create_osucollector_source(link)
         all_beatmaps, unavailable_beatmaps=scraper.get_osucollector_beatmaps(source)
-        source.cache_beatmaps(all_beatmaps, unavailable_beatmaps)
+        source.cache_beatmaps(all_beatmaps,set())
         self.osucollector_source[key]=source
 
 # Job
