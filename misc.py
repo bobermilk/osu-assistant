@@ -53,25 +53,25 @@ def create_tournament_source(tournament_id, source_key):
     # SOFT-4: Springtime Osu!mania Free-for-all Tournament 4
     return (source_key, entity.TournamentSource(tournament_id))
 
-def create_mappack_source(ids, gamemode):
+def create_mappack_source(ids):
     #Example
     # Mappack mode=m #109 #108
-    source_key=strings.generate_mappack_source_key(ids, gamemode)
+    source_key=strings.generate_mappack_source_key(ids)
 
-    return (source_key, entity.MappackSource(ids, gamemode))
+    return (source_key, entity.MappackSource(ids))
 
-def create_osucollector_source(link):
+def create_osucollector_source(links):
     #Example
     # Osucollector: DT SPEED
 
     # Get id
-    osucollector_id=strings.generate_osucollector_source_key(link)
+    ids=strings.parse_osucollector_urlstrings(links)
 
     # Generate source key
-    source_key=strings.generate_osucollector_source_key(osucollector_id)
+    source_key=strings.generate_osucollector_source_key(ids)
 
     # Generate new source
-    new_source=entity.OsucollectorSource(osucollector_id)
+    new_source=entity.OsucollectorSource(ids)
 
     return (source_key, new_source)
 

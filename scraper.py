@@ -71,7 +71,7 @@ def get_userpage_beatmaps(source):
                     beatmapset_id=beatmap["beatmap"]["beatmapset_id"]
                     beatmap_id=beatmap["beatmap_id"]
                     beatmaps.add((beatmapset_id, beatmap_id, None))
-        all_beatmaps.update(beatmap)
+        all_beatmaps.update(beatmaps)
         
 
     if scope[3]:
@@ -83,7 +83,7 @@ def get_userpage_beatmaps(source):
                 for beatmap in item:
                     beatmapset_id=beatmap["beatmaps"][0]["beatmapset_id"]
                     beatmaps.add((beatmapset_id, None, None))
-        all_beatmaps.update(beatmap)
+        all_beatmaps.update(beatmaps)
 
         
     if scope[4]:
@@ -95,7 +95,7 @@ def get_userpage_beatmaps(source):
                 for beatmap in item:
                     beatmapset_id=beatmap["beatmaps"][0]["beatmapset_id"]
                     beatmaps.add((beatmapset_id, None, None))
-        all_beatmaps.update(beatmap)
+        all_beatmaps.update(beatmaps)
 
     if scope[5]:
         beatmaps=set()
@@ -106,7 +106,7 @@ def get_userpage_beatmaps(source):
                 for beatmap in item:
                     beatmapset_id=beatmap["beatmaps"][0]["beatmapset_id"]
                     beatmaps.add((beatmapset_id, None, None))
-        all_beatmaps.update(beatmap)
+        all_beatmaps.update(beatmaps)
 
     if scope[6]:
         beatmaps=set()
@@ -117,34 +117,33 @@ def get_userpage_beatmaps(source):
                 for beatmap in item:
                     beatmapset_id=beatmap["beatmaps"][0]["beatmapset_id"]
                     beatmaps.add((beatmapset_id, None, None))
-        all_beatmaps.update(beatmap)
+        all_beatmaps.update(beatmaps)
     return all_beatmaps
 
 def get_tournament_beatmaps(source):
     all_beatmaps=set()
-    all_beatmaps.add(data.TournamentJson[source.get_id()])
+    for beatmap in data.TournamentJson[source.get_id()][1]:
+        all_beatmaps.add((beatmap[0], beatmap[1], beatmap[2]))
     return all_beatmaps
+
 def get_mappack_beatmaps(source):
     pass
 def get_osucollector_beatmaps(source):
     all_beatmaps=set()
-    unavailable_beatmaps=set()
-    page=1
-    cursor=None
-    while True:
-        url=constants.osucollector_url.format(source.get_id(), page*100)
-        if cursor!=None:
-            url+="&cursor={}".format(cursor)
-        r=requests.get(url)
-        for item in r.json()['beatmaps']:
-            beatmapset_id=item['beatmapset']['id']
-            time.sleep(2)
-            if api.query_osu_beatmapset(beatmapset_id):
-                unavailable_beatmaps.add(beatmap)
-            beatmap=(beatmapset_id, None, None)
-            all_beatmaps.add(beatmap)
-        cursor=r.json()['nextPageCursor']
-        if cursor == None:
-            break
+    for source_id in source.get_ids():
+        page=1
+        cursor=None
+        while True:
+            url=constants.osucollector_url.format(source_id, page*100)
+            if cursor!=None:
+                url+="&cursor={}".format(cursor)
+            r=requests.get(url)
+            for item in r.json()['beatmaps']:
+                beatmapset_id=item['beatmapset']['id']
+                beatmap=(beatmapset_id, None, None)
+                all_beatmaps.add(beatmap)
+            cursor=r.json()['nextPageCursor']
+            if cursor == None:
+                break
 
-    return all_beatmaps, unavailable_beatmaps
+    return all_beatmaps

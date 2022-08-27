@@ -34,9 +34,9 @@ class MainWindow(gui.Main):
         for source_key, source in source_list:
             source_panel=gui.ListPanel(self.m_source_list)
             for i, beatmap in enumerate(source.get_available_beatmaps()):
-                source_panel.m_list.Insert("beatmapset_id="+str(beatmap[0]) + "beatmap_id="+str(beatmap[1]),i)
+                source_panel.m_list.Insert("beatmapset_id="+str(beatmap[0]) + " beatmap_id="+str(beatmap[1]),i)
             for i, beatmap in enumerate(source.get_unavailable_beatmaps()):
-                source_panel.m_list.Insert("beatmapset_id="+str(beatmap[0]) + "beatmap_id="+str(beatmap[1]),i)
+                source_panel.m_list.Insert("beatmapset_id="+str(beatmap[0]) + " beatmap_id="+str(beatmap[1]),i)
             self.m_source_list.AddPage(source_panel, source_key)
 
     # used to repopulate the activity list after download completes
@@ -64,13 +64,13 @@ class MainWindow(gui.Main):
     def show_add_window(self, event):
         add_source_window=AddSourceWindow(parent=None)
         add_source_window.Show()
-        # for item in data.TournamentJson.items():
-        #     add_tournament_panel=gui.ListPanel(add_source_window.m_tournament)
-        #     for j, beatmap in enumerate(item[1][1]):
-        #         add_tournament_panel.m_list.Insert(constants.osu_beatmap_url_full.format(beatmap[0], beatmap[2], beatmap[1]), j)
-        #     tournament_key=item[0] + ": "+ item[1][0]
+        for item in data.TournamentJson.items():
+            add_tournament_panel=gui.ListPanel(add_source_window.m_tournament)
+            for j, beatmap in enumerate(item[1][1]):
+                add_tournament_panel.m_list.Insert(constants.osu_beatmap_url_full.format(beatmap[0], beatmap[2], beatmap[1]), j)
+            tournament_key=item[0] + ": "+ item[1][0]
             
-        #     add_source_window.m_tournament.AddPage(add_tournament_panel, tournament_key)
+            add_source_window.m_tournament.AddPage(add_tournament_panel, tournament_key)
         # bind the buttons to their respective callbacks
         AsyncBind(wx.EVT_BUTTON, add_source_window.add_userpage, add_source_window.m_add_userpage)
         AsyncBind(wx.EVT_BUTTON, add_source_window.add_tournament, add_source_window.m_add_tournament)
@@ -97,16 +97,15 @@ class AddSourceWindow(gui.AddSource):
         main_window.update_sources(None)
         
     async def add_tournament(self, event):
-        selection=self.m_tournament_list.GetString(self.m_tournament_list.GetSelection())
+        selection=self.m_tournament.GetPageText(self.m_tournament.GetSelection())
         self.Destroy()
         data.get_sources().add_tournament_source(selection)
         main_window.update_sources(None)
 
     async def add_mappack(self, event):
         ids=self.m_mappack_list.GetSelections()
-        gamemode=self.m_mappack_gamemode.GetSelection()
         self.Destroy()
-        data.get_sources().add_mappack_source(ids, gamemode)
+        data.get_sources().add_mappack_source(ids)
         main_window.update_sources(None)
 
     async def add_osucollector(self, event):

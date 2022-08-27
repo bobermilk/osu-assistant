@@ -419,10 +419,10 @@ class AddSource ( wx.Frame ):
 
 		bSizer341.Add( self.m_staticText41231, 0, wx.TOP|wx.RIGHT|wx.LEFT, 5 )
 
-		m_mappack_gamemode1Choices = [ u"osu", u"taiko", u"fruits", u"mania" ]
-		self.m_mappack_gamemode1 = wx.Choice( self.m_panel8, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_mappack_gamemode1Choices, 0 )
-		self.m_mappack_gamemode1.SetSelection( 0 )
-		bSizer341.Add( self.m_mappack_gamemode1, 0, wx.ALL|wx.EXPAND, 5 )
+		m_mappack_sectionChoices = [ u"Standard", u"Spotlight", u"Theme", u"Artist/Album" ]
+		self.m_mappack_section = wx.Choice( self.m_panel8, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_mappack_sectionChoices, 0 )
+		self.m_mappack_section.SetSelection( 0 )
+		bSizer341.Add( self.m_mappack_section, 0, wx.ALL|wx.EXPAND, 5 )
 
 
 		bSizer151.Add( bSizer341, 1, wx.EXPAND, 5 )

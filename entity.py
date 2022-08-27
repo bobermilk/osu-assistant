@@ -50,27 +50,22 @@ class TournamentSource(Beatmaps):
         self.id=id
 
 class MappackSource(Beatmaps):
-    def __init__(self, ids, gamemode):
+    def __init__(self, ids):
         super().__init__()
         self.ids=ids
-        self.gamemode=gamemode
     def get_ids(self):
         return self.ids
     def set_id(self, ids):
         self.ids=ids
-    def get_gamemode(self):
-        return self.gamemode
-    def set_gamemode(self, gamemode):
-        self.gamemode=gamemode   
 
 class OsucollectorSource(Beatmaps):
-    def __init__(self, id):
+    def __init__(self, ids):
         super().__init__()
-        self.id=id
-    def get_id(self):
-        return self.id
-    def set_id(self, id):
-        self.id=id
+        self.ids=ids
+    def get_ids(self):
+        return self.ids
+    def set_ids(self, ids):
+        self.ids=ids
 
 # Data for the sources tab
 class Sources():
