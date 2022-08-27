@@ -1,7 +1,7 @@
 # downloading from mirror
 # returns (success, )
-from Utilities import constants, data, io
-from Network import api
+import constants, data, io
+import api
 import os
 import requests
 import time

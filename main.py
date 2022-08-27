@@ -3,7 +3,7 @@ import wx
 import gui
 from wxasync import AsyncBind, WxAsyncApp
 import asyncio
-from Utilities import data, constants, misc
+import data, constants, misc
 from pubsub import pub
 
 app = WxAsyncApp()

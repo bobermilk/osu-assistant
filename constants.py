@@ -4,7 +4,6 @@ DEBUG=True
 test_folder=os.getcwd()
 request_timeout=10
 api_get_interval=0.5 # actual api
-api_scrape_interval=2 # raw json files on the website
 
 # scraper.py endpoints
 user_url="https://osu.ppy.sh/users/"

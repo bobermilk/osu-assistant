@@ -3,7 +3,7 @@
 import sqlite3
 import os
 import sys
-from Utilities import buffer, data, misc
+import buffer, data, misc
 
 def query_osudb(beatmapsetid):
     pass

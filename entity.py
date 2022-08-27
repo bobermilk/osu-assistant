@@ -1,5 +1,5 @@
-from Network import scraper
-from Utilities import constants, misc, data
+import scraper
+import constants, misc, data
 from pubsub import pub
 from copy import copy
 

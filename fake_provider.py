@@ -1,6 +1,6 @@
 import entity as e
 import os
-import Utilities.sensitive_data as sensitive_data
+import sensitive_data
 
 class Sources(e.Sources):
     def __init__(self):

@@ -3,7 +3,7 @@
 import time
 import requests
 import json
-from Utilities import data, constants
+import data, constants
 
 # FLASK API
 def query_flask_tournaments(tournament_id):

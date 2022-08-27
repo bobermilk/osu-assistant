@@ -1,6 +1,6 @@
 import re
-from Utilities import data, constants
-from Network import api
+import data, constants
+import api
 
 # Create userpage ids
 def generate_userpage_source_key(users, scope, gamemode):

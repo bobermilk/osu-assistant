@@ -1,8 +1,8 @@
 # data provider (store variables, hardcode things and functions to get and set data)
 import entity
-import Utilities.constants as constants
+import  constants
 
-from Tests import fake_provider as fake
+import fake_provider as fake
 
 # Credentials
 OAUTH_TOKEN=None

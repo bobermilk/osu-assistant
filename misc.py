@@ -1,8 +1,8 @@
 import entity
 import requests
-from Network import download, api
-from Utilities import data, database, constants, string
-from Network import scraper
+import download, api
+import data, database, constants, string
+import scraper
 
 # Update sources/jobs on startup
 # 
