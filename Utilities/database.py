@@ -13,9 +13,11 @@ async def create_osudb():
     # osu db can be really big and we probably shouldnt store it in ram
     # but we still want to be able to query it quickly
     # solution: parse the db into an sqlite db
-    cache_db=os.path.join(misc.get_install_folder(), "cache.db")
-    if os.isfile(cache_db):
+    cache_db=os.path.join(misc.get_install_directory(), "cache.db")
+    try:
         os.remove(cache_db)
+    except:
+        pass
     sql = sqlite3.connect(cache_db)
     c = sql.cursor()
     c.execute(''' SELECT count(name) FROM sqlite_master WHERE type='table' AND name='maps' ''')

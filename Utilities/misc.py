@@ -7,14 +7,14 @@ from Network import scraper
 # Update sources/jobs on startup
 # 
 async def init():
+    print("hi")
     # Get the jsons
     data.TournamentJson=requests.get("https://raw.githubusercontent.com/bobermilk/osu-assistant-data/main/tournament.json").json()
-    print(data.TournamentJson)
     # Initialize the cache db
     await database.create_osudb()
     # Refresh sources and jobs (the views will update)
     await data.Sources.refresh()
-
+    
 # WARNING: this function WILL hang the main thread, so remember to make it async in production
 def do_job(job):
     downloads=job.get_beatmapset_ids()

@@ -115,7 +115,7 @@ class Sources():
         pub.sendMessage("update.activity")
         # Initiate automatic downloads
         if data.get_settings().download_on_start:
-            data.get_jobs().start_jobs()
+            await data.get_jobs().start_jobs()
 
     def add_user_source(self, links, scope):
         key, source=misc.create_userpage_source(links, scope)

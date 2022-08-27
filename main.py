@@ -1,9 +1,9 @@
+from asyncio import coroutines
 import wx
 import gui
 from wxasync import AsyncBind, WxAsyncApp
 import asyncio
-import requests
-from Utilities import data, constants, database, misc
+from Utilities import data, constants, misc
 from pubsub import pub
 
 app = WxAsyncApp()
@@ -23,10 +23,6 @@ class MainWindow(gui.Main):
         super(MainWindow, self).__init__(parent)
         self.update_sources(self)
         self.update_activity(self)
-        # initialize the app
-        # TODO: somehow get asyncio to run this concurrently
-        misc.init()
-
         pub.subscribe(update_sources, "update.sources")
         pub.subscribe(update_activity, "update.activity")
         AsyncBind(wx.EVT_BUTTON, self.toggle_jobs, self.m_toggle_downloading)
@@ -118,6 +114,7 @@ class AddSourceWindow(gui.AddSource):
 async def main():
     main_window.Show()
     app.SetTopWindow(main_window)
-    await app.MainLoop()
+    app.MainLoop()
 
 asyncio.run(main())
+misc.init()
