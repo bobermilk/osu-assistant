@@ -1,3 +1,4 @@
 sensitive_data.py
 __pycache__/
 osu!.db
+cache.db
