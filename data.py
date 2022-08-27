@@ -25,6 +25,7 @@ cancel_jobs_toggle=False
 
 def get_sources():
     if constants.DEBUG:
+        return Sources
         return fake.Sources
     else:
         return Sources
