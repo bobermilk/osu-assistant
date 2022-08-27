@@ -10,11 +10,8 @@ from urlextract import URLExtract
 tournament_json={}
 mappack_json={}
 mappack_data={}
-mappack_latest=2000
 
 def update_tournaments():
-    print("updating tournaments")
-    start=time.time()
     global tournament_json
     urlextractor=URLExtract()
     proc=subprocess.run([os.path.join(os.getcwd(), 'osu_wiki.sh')], check=True, capture_output=True, text=True)
@@ -47,44 +44,59 @@ def update_tournaments():
                     beatmaps.append((url.split("/")[-2], None, None))
                 tournaments[tournament_source_key]=[tournament_name, beatmaps]
         tournament_json=json.dumps(tournaments)
-    print("updated tournaments in "+str(time.time()-start))
+
+    with open("tournament.json", "w") as f:
+        f.write(json.dumps(tournament_json))
+
+def pausechamp(r):
+    if r.status_code != 200:
+        raise Exception()
+    time.sleep(5)
 
 def update_mappacks():
-    print("updating mappacks")
-    start=time.time()
-    global mappack_data
-    global mappack_latest
     global mappack_json
-    old_mappack_latest=mappack_latest
-    try:
-        r=requests.get("https://osu.ppy.sh/beatmaps/packs")
-        soup=BeautifulSoup(r.text, "lxml", parse_only=SoupStrainer('a'))
-        new_mappack_latest=int(soup.find_all('a', {"class":"beatmap-pack__header js-accordion__item-header"})[0]['href'].split("/")[-1])
-        if new_mappack_latest>mappack_latest:
-            mappack_latest=new_mappack_latest
-        while old_mappack_latest<new_mappack_latest:
-            beatmaps=[]
-            r=requests.get("https://osu.ppy.sh/beatmaps/packs/{}/raw".format(new_mappack_latest))
-            time.sleep(2)
-            if r.status_code != 200:
-                continue
-            soup=BeautifulSoup(r.text, "lxml", parse_only=SoupStrainer('a'))
-            urls=[x['href'] for x in soup if x.has_attr('href')]
-            urls.pop(0) # remove mediafire link
-            for url in urls:
-                url=url.split('/')
-                beatmaps.append(url[-1])
-            
-            mappack_data[mappack_latest]=beatmaps
-            new_mappack_latest-=1
-        mappack_json=json.dumps(mappack_data)
-    except:
-        pass
-    print("updated mappacks in "+str(time.time()-start))
+    mappacks={}
+    sites = [
+        "https://osu.ppy.sh/beatmaps/packs?type=standard&page={}",
+        "https://osu.ppy.sh/beatmaps/packs?type=chart&page={}",
+        "https://osu.ppy.sh/beatmaps/packs?type=theme&page={}",
+        "https://osu.ppy.sh/beatmaps/packs?type=artist&page={}",
+    ]
 
-#update_mappacks()
-update_tournaments()
-with open(os.path.join(os.getcwd(), "tournament.json"),"w") as f:
-    f.write(tournament_json)
-# with open(os.path.join(os.getcwd(), "mappack.json"),"w") as f:
-#     f.write(mappack_json)
+    for i, site in enumerate(sites):
+        r = requests.get(site.format(1))
+        pausechamp(r)
+        soup = BeautifulSoup(r.text, "html.parser")
+        page_cnt = int(soup.find_all("a", {"class": "pagination-v2__link"})[-2].text)
+        pack_ids=[]
+        for page_num in range(1, page_cnt + 1):
+            # get pack titles
+            r=requests.get(site.format(page_num))
+            pausechamp(r)
+            soup = BeautifulSoup(r.text, "html.parser")
+            packs = soup.find_all("a", {"class", "beatmap-pack__header js-accordion__item-header"})
+            beatmaps=[]
+            for pack in packs:
+                try:
+                    soup=BeautifulSoup(r.text, "lxml", parse_only=SoupStrainer('a'))
+                    mappack_id=pack['href'].split("/")[-1]
+                    r=requests.get("https://osu.ppy.sh/beatmaps/packs/{}/raw".format(mappack_id))
+                    pausechamp(r)
+                    soup=BeautifulSoup(r.text, "lxml", parse_only=SoupStrainer('a'))
+                    urls=[x['href'] for x in soup if x.has_attr('href')]
+                    urls.pop(0) # remove mediafire link
+                    for url in urls:
+                        url=url.replace('#', '/').split("/")
+                        if url[-3]!="osu.ppy.sh":
+                            beatmaps.append((url[-3], url[-1], url[-2])) # beatmapset_id, beatmap_id, gamemode
+                        else:
+                            beatmaps.append((url[-1], None, None))
+                except:
+                    pass
+                beatmaps.append([pack.find("div", {"class", "beatmap-pack__name"}).getText(), beatmaps])
+                    
+            pack_ids.append(beatmaps)
+        mappacks[i]=pack_ids
+    mappack_json=json.dumps(mappacks)
+    with open("mappack.json", "w") as f:
+        f.write(json.dumps(mappacks))
