@@ -27,6 +27,7 @@ OSU_TOKEN_URL = 'https://osu.ppy.sh/oauth/token'
 beatconnect_beatmap_url="https://beatconnect.io/b/{}"
 osu_beatmap_url="https://osu.ppy.sh/beatmapsets/{}"
 osu_beatmap_url_download="https://osu.ppy.sh/beatmapsets/{}/download"
+osu_beatmap_url_full="https://osu.ppy.sh/beatmapsets/{}#{}/{}"
 
 # dicts
 gamemode_dict={ "osu":1, "taiko":2, "fruits":3, "mania":4 }

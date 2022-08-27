@@ -29,14 +29,14 @@ class MainWindow(gui.Main):
 
     # used to repopulate the source list after a edit
     def update_sources(self, event):
-        self.m_activity_list.Clear()
+        self.m_source_list.DeleteAllPages()
         source_list=data.get_sources().read()
         for source_key, source in source_list:
-            source_panel=gui.SourcePanel(self.m_source_list)
+            source_panel=gui.ListPanel(self.m_source_list)
             for i, beatmapset_id, beatmap_id in enumerate(source.get_available_beatmaps()):
-                source_panel.m_source.Insert(str(beatmap_id),i)
+                source_panel.m_list.Insert(str(beatmap_id),i)
             for i, beatmapset_id, beatmap_id in enumerate(source.get_unavailable_beatmaps()):
-                source_panel.m_source.Insert(str(beatmap_id)+" (unavailable)",i)
+                source_panel.m_list.Insert(str(beatmap_id)+" (unavailable)",i)
             self.m_source_list.AddPage(source_panel, source_key)
 
     # used to repopulate the activity list after download completes
@@ -64,8 +64,13 @@ class MainWindow(gui.Main):
     def show_add_window(self, event):
         add_source_window=AddSourceWindow(parent=None)
         add_source_window.Show()
-        for i, source_key, tournament in enumerate(data.TournamentJson.items()):
-            add_source_window.m_tournament_list.Insert(source_key + ": "+ tournament, i)
+        for item in data.TournamentJson.items():
+            add_tournament_panel=gui.ListPanel(add_source_window.m_tournament)
+            for j, beatmap in enumerate(item[1][1]):
+                add_tournament_panel.m_list.Insert(constants.osu_beatmap_url_full.format(beatmap[0], beatmap[2], beatmap[1]), j)
+            tournament_key=item[0] + ": "+ item[1][0]
+            
+            add_source_window.m_tournament.AddPage(add_tournament_panel, tournament_key)
         # bind the buttons to their respective callbacks
         AsyncBind(wx.EVT_BUTTON, add_source_window.add_userpage, add_source_window.m_add_userpage)
         AsyncBind(wx.EVT_BUTTON, add_source_window.add_tournament, add_source_window.m_add_tournament)
@@ -114,7 +119,7 @@ class AddSourceWindow(gui.AddSource):
 async def main():
     main_window.Show()
     app.SetTopWindow(main_window)
-    app.MainLoop()
+    await misc.init()
+    await app.MainLoop()
 
 asyncio.run(main())
-misc.init()

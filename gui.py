@@ -398,9 +398,9 @@ class AddSource ( wx.Frame ):
 		self.m_panel7 = wx.Panel( self.m_notebook2, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		bSizer14 = wx.BoxSizer( wx.VERTICAL )
 
-		m_tournament_listChoices = []
-		self.m_tournament_list = wx.ListBox( self.m_panel7, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_tournament_listChoices, wx.LB_SINGLE )
-		bSizer14.Add( self.m_tournament_list, 1, wx.ALL|wx.EXPAND, 5 )
+		self.m_tournament = wx.Listbook( self.m_panel7, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LB_DEFAULT )
+
+		bSizer14.Add( self.m_tournament, 1, wx.EXPAND |wx.ALL, 5 )
 
 		self.m_add_tournament = wx.Button( self.m_panel7, wx.ID_ANY, u"Add Tournament", wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer14.Add( self.m_add_tournament, 0, wx.ALL|wx.EXPAND, 5 )
@@ -513,19 +513,19 @@ class AddSource ( wx.Frame ):
 
 
 ###########################################################################
-## Class SourcePanel
+## Class ListPanel
 ###########################################################################
 
-class SourcePanel ( wx.Panel ):
+class ListPanel ( wx.Panel ):
 
 	def __init__( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( 500,300 ), style = wx.TAB_TRAVERSAL, name = wx.EmptyString ):
 		wx.Panel.__init__ ( self, parent, id = id, pos = pos, size = size, style = style, name = name )
 
 		bSizer33 = wx.BoxSizer( wx.VERTICAL )
 
-		m_sourceChoices = []
-		self.m_source = wx.ListBox( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_sourceChoices, 0 )
-		bSizer33.Add( self.m_source, 1, wx.ALL|wx.EXPAND, 5 )
+		m_listChoices = []
+		self.m_list = wx.ListBox( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_listChoices, 0 )
+		bSizer33.Add( self.m_list, 1, wx.ALL|wx.EXPAND, 5 )
 
 
 		self.SetSizer( bSizer33 )
