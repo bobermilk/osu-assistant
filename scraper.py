@@ -139,8 +139,10 @@ def get_osucollector_beatmaps(source):
                 url+="&cursor={}".format(cursor)
             r=requests.get(url)
             for item in r.json()['beatmaps']:
-                beatmapset_id=item['beatmapset']['id']
-                beatmap=(beatmapset_id, None, None)
+                beatmapset_id=item['beatmapset_id']
+                beatmap_id=item['id']
+                beatmap_checksum=item['checksum']
+                beatmap=(beatmapset_id, beatmap_id, beatmap_checksum)
                 all_beatmaps.add(beatmap)
             cursor=r.json()['nextPageCursor']
             if cursor == None:
