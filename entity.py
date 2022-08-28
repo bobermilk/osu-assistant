@@ -171,7 +171,6 @@ class Job:
     def __init__(self, source_key, downloads):
         self.job_source_key=source_key
         self.job_downloads=downloads
-        self.status=constants.job_status[1] # status: invalid, pending, downloading, downloaded
     def get_job_downloads(self):
         return self.job_downloads
     def set_job_downloads(self, downloads):
@@ -180,10 +179,6 @@ class Job:
         return self.job_source_key
     def set_job_source_key(self, source):
         self.job_source_key=source
-    def get_status(self):
-        return self.status
-    def set_status(self, status_id):
-        self.status=constants.job_status[status_id]
 
 class Jobs:
     def __init__(self):
@@ -205,11 +200,21 @@ class Jobs:
         self.job_queue=job_queue
         pub.sendMessage("update.activity")
 
+    def get_job_cnt(self):
+        return len(self.job_queue)
+
     async def start_jobs(self):
         # refresh --> job_queue.pop() -> download(maps) -> write_collections -> progressbar+=1 
-        while len(self.job_queue) > 0:
+        initial_job_cnt=self.get_job_cnt()
+        pub.sendMessage("update.progress", arg1=0, arg2=initial_job_cnt, arg3=None)
+        while self.get_job_cnt() > 0:
             job=self.job_queue.pop(0)
-            await misc.do_job(job) # TODO: use the success/failure of the job to show notification or something
+            pub.sendMessage("update.progress", arg1=initial_job_cnt-self.get_job_cnt(), arg2=None, arg3=f"Downloading {job.get_job_source_key()}")
+            success=await misc.do_job(job)
+            if not success:
+                data.cancel_jobs_toggle=False
+                pub.sendMessage("update.progress", arg1=None, arg2=None, arg3=f"{self.get_job_cnt()} downloads cancelled")
+                break # Terminate all jobs
             pub.sendMessage("update.activity")
         pub.sendMessage("update.activity")
 

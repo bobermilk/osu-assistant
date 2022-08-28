@@ -15,6 +15,19 @@ def update_sources():
 def update_activity():
     main_window.update_activity(None)
 
+def update_progress(value, range, progress_message):
+    if range != None:
+        # set job count to range
+        main_window.m_progressbar.SetRange(range)
+    if value != None:  
+        # Set current job progress
+        main_window.m_progressbar.SetValue(value)
+    else:
+        # Job complete
+        main_window.m_progressbar.SetRange(0)
+    if progress_message != None:
+        main_window.m_activity_progress.SetLabelText(progress_message)
+
 class MainWindow(gui.Main):
     """
     Main window bro
@@ -25,6 +38,7 @@ class MainWindow(gui.Main):
         self.update_activity(self)
         pub.subscribe(update_sources, "update.sources")
         pub.subscribe(update_activity, "update.activity")
+        pub.subscribe(update_progress, "update.progress")
         AsyncBind(wx.EVT_BUTTON, self.show_add_window, self.m_add_source)
         AsyncBind(wx.EVT_BUTTON, self.toggle_jobs, self.m_toggle_downloading)
 
