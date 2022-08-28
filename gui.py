@@ -255,7 +255,6 @@ class Main ( wx.Frame ):
 		self.Centre( wx.BOTH )
 
 		# Connect Events
-		self.m_add_source.Bind( wx.EVT_BUTTON, self.show_add_window )
 		self.m_toggle_downloading.Bind( wx.EVT_BUTTON, self.start_download )
 		self.m_osu_dir.Bind( wx.EVT_DIRPICKER_CHANGED, self.update_osu_folder )
 		self.m_autoupdate_sources.Bind( wx.EVT_CHECKBOX, self.autoupdate_toggle )
@@ -276,9 +275,6 @@ class Main ( wx.Frame ):
 
 
 	# Virtual event handlers, override them in your derived class
-	def show_add_window( self, event ):
-		event.Skip()
-
 	def start_download( self, event ):
 		event.Skip()
 
@@ -479,7 +475,6 @@ class AddSource ( wx.Frame ):
 
 		# Connect Events
 		self.m_subscribed_mappers.Bind( wx.EVT_BUTTON, self.open_subscribed_mappers )
-		self.m_mappack_section.Bind( wx.EVT_CHOICE, self.change_mappack_section )
 
 	def __del__( self ):
 		pass
@@ -487,9 +482,6 @@ class AddSource ( wx.Frame ):
 
 	# Virtual event handlers, override them in your derived class
 	def open_subscribed_mappers( self, event ):
-		event.Skip()
-
-	def change_mappack_section( self, event ):
 		event.Skip()
 
 

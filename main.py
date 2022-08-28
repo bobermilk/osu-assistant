@@ -25,6 +25,7 @@ class MainWindow(gui.Main):
         self.update_activity(self)
         pub.subscribe(update_sources, "update.sources")
         pub.subscribe(update_activity, "update.activity")
+        AsyncBind(wx.EVT_BUTTON, self.show_add_window, self.m_add_source)
         AsyncBind(wx.EVT_BUTTON, self.toggle_jobs, self.m_toggle_downloading)
 
     # used to repopulate the source list after a edit
@@ -59,15 +60,8 @@ class MainWindow(gui.Main):
         elif not data.cancel_jobs_toggle:
             self.m_toggle_downloading.SetLabelText(constants.activity_stop)
             await data.get_jobs().start_jobs()
-            
-    def change_mappack_section(self, event):
-        selection=str(self.change_mappack_section.GetSelection())
-        self.m_mappack_list.Clear()
-        for key, item in data.MappackJson.items()[selection]:
-            print(str(key))
-        self.m_mappack_list.Insert(str(item))
 
-    def show_add_window(self, event):
+    async def show_add_window(self, event):
         add_source_window=AddSourceWindow(parent=None)
         for item in data.TournamentJson.items():
             add_tournament_panel=gui.ListPanel(add_source_window.m_tournament)
@@ -76,12 +70,17 @@ class MainWindow(gui.Main):
             tournament_key=item[0] + ": "+ item[1][0]
             
             add_source_window.m_tournament.AddPage(add_tournament_panel, tournament_key)
+
+        for i, item in enumerate(data.MappackJson["0"].items()):
+            add_source_window.m_mappack_list.Insert(str(item[0] + f" ({len(item[1])} beatmapsets)"), i)
         add_source_window.Show()
         # bind the buttons to their respective callbacks
         AsyncBind(wx.EVT_BUTTON, add_source_window.add_userpage, add_source_window.m_add_userpage)
         AsyncBind(wx.EVT_BUTTON, add_source_window.add_tournament, add_source_window.m_add_tournament)
         AsyncBind(wx.EVT_BUTTON, add_source_window.add_mappack, add_source_window.m_add_mappack)
         AsyncBind(wx.EVT_BUTTON, add_source_window.add_osucollector, add_source_window.m_add_osucollector)
+        AsyncBind(wx.EVT_CHOICE, add_source_window.change_mappack_section, add_source_window.m_mappack_section)
+        
 
 # Used for AddSourceWindow to call functions in main window
 # There can be only one instance at all times
@@ -119,6 +118,12 @@ class AddSourceWindow(gui.AddSource):
         self.Destroy()
         data.get_sources().add_osucollector_source(links)
         main_window.update_sources(None)
+
+    async def change_mappack_section(self, event):
+        selection=str(self.m_mappack_section.GetSelection())
+        self.m_mappack_list.Clear()
+        for i, item in enumerate(data.MappackJson[selection].items()):
+            self.m_mappack_list.Insert(str(item[0] + f" ({len(item[1])} beatmapsets)"), i)
 
 async def main():
     main_window.Show()
