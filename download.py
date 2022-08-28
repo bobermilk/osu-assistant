@@ -13,12 +13,16 @@ async def create_session():
     # aiohttp session
     session = aiohttp.ClientSession()
 
+# The exit codes are as follows
+# 0: Failed to download
+# 1: Success from chimu
+# 2. Success from osu
 async def download_beatmap(beatmapset_id):
     global session
     if session == None:
         await create_session()
 
-    success=False
+    success=0
     settings=data.get_settings()
     filename = os.path.join(settings.osu_install_folder, "Songs", str(beatmapset_id) + ".osz")
 
@@ -34,9 +38,11 @@ async def download_beatmap(beatmapset_id):
                         await f.write(await s.read())
             if os.path.isfile(filename) and os.stat(filename).st_size == 0:
                 os.remove(filename)
-            success=os.path.isfile(filename)
+                success=0 # Empty file (no bytes received)
+            else:
+                success=1
         except:
-            return False # download failed
+            return success # download failed
 
     if not success and settings.download_from_osu and settings.valid_osu_cookies():
         url=constants.osu_beatmap_url_download.format(beatmapset_id)
@@ -48,8 +54,10 @@ async def download_beatmap(beatmapset_id):
                     await f.write(await s.read())
             if os.path.isfile(filename) and os.stat(filename).st_size == 0:
                 os.remove(filename)
-            success=os.path.isfile(filename)
+                success=0 # Empty file (no bytes received)
+            else:
+                success=2
         except:
-            return False
+            return success
 
     return success

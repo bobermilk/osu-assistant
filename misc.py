@@ -29,7 +29,13 @@ async def do_job(job):
         # Start downloading
         if is_hosted:
             success=await download.download_beatmap(beatmap[0])
-            await asyncio.sleep(data.get_settings().download_interval/1000)
+            
+            # Intervals between jobs
+            download_interval=data.get_settings().download_interval/1000
+            if success==2:
+                download_interval+=3 # add 3 seconds if its downloading from osu website
+            await asyncio.sleep(download_interval)
+
             if not success:
                 source.cache_missing_beatmap(beatmap)
             else:
