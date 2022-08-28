@@ -6,10 +6,7 @@ import os
 import requests
 import time
 
-def download_beatmap(beatmapset_id, hosted):
-    if not hosted:
-        return False
-
+def download_beatmap(beatmapset_id):
     success=False
     settings=data.get_settings()
     filename = os.path.join(settings.osu_install_folder, "Songs", str(beatmapset_id) + ".osz")
@@ -32,7 +29,7 @@ def download_beatmap(beatmapset_id, hosted):
                 with open(filename, "wb") as f:
                     f.write(r.content)
                 time.sleep(settings.download_interval/1000)
-                success=io.file_exist(filename)
+                success=os.path.isfile(filename)
             except:
                 pass
 
@@ -45,7 +42,7 @@ def download_beatmap(beatmapset_id, hosted):
             with open(filename, "wb") as f:
                 f.write(r.content)
             time.sleep(settings.download_interval/1000)
-            success=io.file_exist(filename)
+            success=os.path.isfile(filename)
         except:
             pass
 

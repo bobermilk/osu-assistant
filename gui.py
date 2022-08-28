@@ -414,7 +414,7 @@ class AddSource ( wx.Frame ):
 
 		bSizer341 = wx.BoxSizer( wx.VERTICAL )
 
-		self.m_staticText41231 = wx.StaticText( self.m_panel8, wx.ID_ANY, u"Mappack gamemode", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText41231 = wx.StaticText( self.m_panel8, wx.ID_ANY, u"Mappack section", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText41231.Wrap( -1 )
 
 		bSizer341.Add( self.m_staticText41231, 0, wx.TOP|wx.RIGHT|wx.LEFT, 5 )
@@ -436,7 +436,7 @@ class AddSource ( wx.Frame ):
 		bSizer141.Add( self.m_staticText17, 0, wx.ALL, 5 )
 
 		m_mappack_listChoices = []
-		self.m_mappack_list = wx.ListBox( self.m_panel8, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_mappack_listChoices, 0 )
+		self.m_mappack_list = wx.ListBox( self.m_panel8, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_mappack_listChoices, wx.LB_MULTIPLE )
 		bSizer141.Add( self.m_mappack_list, 1, wx.ALL|wx.EXPAND, 5 )
 
 		self.m_add_mappack = wx.Button( self.m_panel8, wx.ID_ANY, u"Add Mappack(s)", wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -479,6 +479,7 @@ class AddSource ( wx.Frame ):
 
 		# Connect Events
 		self.m_subscribed_mappers.Bind( wx.EVT_BUTTON, self.open_subscribed_mappers )
+		self.m_mappack_section.Bind( wx.EVT_CHOICE, self.change_mappack_section )
 
 	def __del__( self ):
 		pass
@@ -486,6 +487,9 @@ class AddSource ( wx.Frame ):
 
 	# Virtual event handlers, override them in your derived class
 	def open_subscribed_mappers( self, event ):
+		event.Skip()
+
+	def change_mappack_section( self, event ):
 		event.Skip()
 
 

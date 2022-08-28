@@ -8,7 +8,8 @@ from copy import copy
 class Beatmaps():
     def __init__(self):
         self.all_beatmaps=set()
-        self.unavailable_beatmaps=set()
+        self.unavailable_beatmaps=set() # if api checksum is none, the beatmap will not be there forever
+        self.missing_beatmaps=set() # used solely for showing beatmap status on the sources tab
         
     # def get_all_beatmapset(self):
     #     return self.all_beatmaps
@@ -21,9 +22,12 @@ class Beatmaps():
         return beatmapset_id not in self.unavailable_beatmaps
 
     # caches api queries for beatmaps
-    def cache_beatmaps(self, all_beatmaps, unavailable_beatmaps):
+    def cache_beatmaps(self, all_beatmaps):
         self.all_beatmaps=all_beatmaps
-        self.unavailable_beatmaps=unavailable_beatmaps
+    
+    def cache_unavailable_beatmap(self, unavailable_beatmap):
+        self.unavailable_beatmaps.add(unavailable_beatmap)
+    
         
 # Note: ids is a set of pairs (user_id, gamemode)
 class UserpageSource(Beatmaps):
@@ -94,14 +98,17 @@ class Sources():
     async def refresh(self):
         # TODO: api shit, call query_osu and store beatmaps in source.all_beatmaps as a triple (beatmapsetid, beatmapid, checksum)
         for source in self.user_source:
-            all_beatmaps, unavailable_beatmaps=scraper.get_userpage_beatmaps(source)
-            source.cache_beatmaps(all_beatmaps, unavailable_beatmaps)
+            all_beatmaps=scraper.get_userpage_beatmaps(source)
+            source.cache_beatmaps(all_beatmaps)
         for source in self.tournament_source:
-            pass
+            all_beatmaps=scraper.get_tournament_beatmaps(source)
+            source.cache_beatmaps(all_beatmaps)
         for source in self.mappack_source:
-            pass
+            all_beatmaps=scraper.get_mappack_beatmaps(source)
+            source.cache_beatmaps(all_beatmaps)
         for source in self.osucollector_source:
-            beatmaps=scraper.get_osucollector_beatmaps(source)
+            all_beatmaps=scraper.get_osucollector_beatmaps(source)
+            source.cache_beatmaps(all_beatmaps)
 
         # refresh the jobs
         await data.get_jobs().refresh()
@@ -115,43 +122,43 @@ class Sources():
     def add_user_source(self, links, scope):
         key, source=misc.create_userpage_source(links, scope)
         all_beatmaps=scraper.get_userpage_beatmaps(source)
-        source.cache_beatmaps(all_beatmaps,set())
+        source.cache_beatmaps(all_beatmaps)
         self.user_source[key]=source
 
     def add_tournament_source(self, selection):
         tournament_id=selection.split(":")[0]
         key, source=misc.create_tournament_source(tournament_id, selection)
         all_beatmaps=scraper.get_tournament_beatmaps(source)
-        source.cache_beatmaps(all_beatmaps,set())
+        source.cache_beatmaps(all_beatmaps)
         self.tournament_source[key]=source
 
     def add_mappack_source(self, ids, gamemode):
         key, source=misc.create_mappack_source(ids, gamemode)
         all_beatmaps=scraper.get_mappack_beatmaps(source)
-        source.cache_beatmaps(all_beatmaps,set())
+        source.cache_beatmaps(all_beatmaps)
         self.mappack_source[key]=source
 
     def add_osucollector_source(self, link):
         key, source=misc.create_osucollector_source(link)
         all_beatmaps=scraper.get_osucollector_beatmaps(source)
-        source.cache_beatmaps(all_beatmaps,set())
+        source.cache_beatmaps(all_beatmaps)
         self.osucollector_source[key]=source
 
 # Job
 class Job:
     # source_key is the key used to get source by data.get_sources().get_source()
-    def __init__(self, source_key, beatmapset_ids):
+    def __init__(self, source_key, downloads):
         self.job_source_key=source_key
-        self.beatmapset_ids=beatmapset_ids
+        self.job_downloads=downloads
         self.status=constants.job_status[1] # status: invalid, pending, downloading, downloaded
+    def get_job_downloads(self):
+        return self.job_downloads
+    def set_job_downloads(self, downloads):
+        self.job_downloads=downloads
     def get_job_source_key(self):
         return self.job_source_key
-    def set_job_source(self, source):
-        self.job_source=source
-    def get_beatmapset_ids(self):
-        return self.beatmapset_ids
-    def set_beatmapset_ids(self, beatmapset_ids):
-        self.beatmapset_ids=beatmapset_ids
+    def set_job_source_key(self, source):
+        self.job_source_key=source
     def get_status(self):
         return self.status
     def set_status(self, status_id):
@@ -171,15 +178,15 @@ class Jobs:
         #job_queue_copy.pop() -> maps=diff(job.beatmapsetids , db.get_data())
         job_queue=[]
         for source_key, source in data.get_sources().read():
-            pending_downloads=misc.diff_local_and_source(source)
-            job_queue.append(Job(source_key, pending_downloads))
+            downloads=misc.diff_local_and_source(source)
+            job_queue.append(Job(source_key, downloads))
 
         self.job_queue=job_queue
         pub.sendMessage("update.activity")
 
     async def start_jobs(self):
         # refresh --> job_queue.pop() -> download(maps) -> write_collections -> progressbar+=1 
-        print("Jobs: " + str([x.get_beatmapset_ids() for x in self.read()]))
+        await self.refresh()
         while len(self.job_queue) > 0:
             job=self.job_queue.pop(0)
             misc.do_job(job) # TODO: use the success/failure of the job to show notification or something

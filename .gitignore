@@ -2,3 +2,5 @@ sensitive_data.py
 __pycache__/
 osu!.db
 cache.db
+tournament.json
+mappack.json

@@ -16,6 +16,10 @@ Sources=entity.Sources()
 Jobs=entity.Jobs()
 Settings=entity.Settings()
 
+# Database
+osudb_beatmap_ids=set()
+osudb_beatmapset_ids=set()
+
 # User toggles
 cancel_jobs_toggle=False
 

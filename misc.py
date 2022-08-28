@@ -9,6 +9,7 @@ import scraper
 async def init():
     # Get the jsons
     data.TournamentJson=requests.get("https://raw.githubusercontent.com/bobermilk/osu-assistant-data/main/tournament.json").json()
+    #data.TournamentJson=requests.get("https://raw.githubusercontent.com/bobermilk/osu-assistant-data/main/mappack.json").json()
     # Initialize the cache db
     #await database.create_osudb()
     # Refresh sources and jobs (the views will update)
@@ -16,27 +17,34 @@ async def init():
     
 # WARNING: this function WILL hang the main thread, so remember to make it async in production
 def do_job(job):
-    downloads=job.get_beatmapset_ids()
+    downloads=job.get_job_downloads()
 
     source=data.get_sources().get_source(job.get_job_source_key())
-    for beatmapset_id in downloads:
+    for beatmap in downloads:
         # Check if cancel button has been pressed (user cancelled opration)
         if data.cancel_jobs_toggle:
             return False
         # Check source beatmap cache for availability of beatmap
-        is_hosted=source.query_cache(beatmapset_id)
+        is_hosted=source.query_cache(beatmap)
         # Start downloading
-        download.download_beatmap(beatmapset_id, is_hosted)
+        if is_hosted:
+            success=download.download_beatmap(beatmap[0])
+            if not success:
+                source.cache_missing_beatmap(beatmap)
+            else:
+                source.uncache_missing_beatmap(beatmap)
+        else:
+            source.cache_unavailable_beatmap(beatmap)
     
     return True  
 
 # called by job refresh to find out what to download
 def diff_local_and_source(source):
-    missing_beatmapset_ids=[]
+    missing_beatmap=[]
     for beatmap in source.get_available_beatmaps():
         if not database.query_osudb(beatmap):
-            missing_beatmapset_ids.append(beatmap)
-    return missing_beatmapset_ids
+            missing_beatmap.append(beatmap)
+    return missing_beatmap
 
 # The following creates source objects to be inserted into the Sources entities
 def create_userpage_source(links, scope):

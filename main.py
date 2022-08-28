@@ -58,12 +58,17 @@ class MainWindow(gui.Main):
             self.m_toggle_downloading.SetLabelText(constants.activity_start)
         elif not data.cancel_jobs_toggle:
             self.m_toggle_downloading.SetLabelText(constants.activity_stop)
-            data.get_jobs().start_jobs()
+            await data.get_jobs().start_jobs()
             
+    def change_mappack_section(self, event):
+        selection=str(self.change_mappack_section.GetSelection())
+        self.m_mappack_list.Clear()
+        for key, item in data.MappackJson.items()[selection]:
+            print(str(key))
+        self.m_mappack_list.Insert(str(item))
 
     def show_add_window(self, event):
         add_source_window=AddSourceWindow(parent=None)
-        add_source_window.Show()
         for item in data.TournamentJson.items():
             add_tournament_panel=gui.ListPanel(add_source_window.m_tournament)
             for j, beatmap in enumerate(item[1][1]):
@@ -71,6 +76,7 @@ class MainWindow(gui.Main):
             tournament_key=item[0] + ": "+ item[1][0]
             
             add_source_window.m_tournament.AddPage(add_tournament_panel, tournament_key)
+        add_source_window.Show()
         # bind the buttons to their respective callbacks
         AsyncBind(wx.EVT_BUTTON, add_source_window.add_userpage, add_source_window.m_add_userpage)
         AsyncBind(wx.EVT_BUTTON, add_source_window.add_tournament, add_source_window.m_add_tournament)
