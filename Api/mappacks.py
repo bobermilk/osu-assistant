@@ -47,7 +47,7 @@ for i, site in enumerate(sites):
                     beatmaps.append(int(url[-1]))
             except:
                 pass                
-            pack_ids[pack.find("div", {"class", "beatmap-pack__name"}).getText()]=beatmaps
+            pack_ids[mappack_id]=[pack.find("div", {"class", "beatmap-pack__name"}).getText(), beatmaps]
     mappacks[i]=pack_ids
     
 with open("mappack.json", "w") as f:
