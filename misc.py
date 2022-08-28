@@ -1,8 +1,7 @@
 import entity
 import requests
-import download, api
+import download
 import data, database, constants, strings
-import scraper
 
 # Update sources/jobs on startup
 # 
@@ -16,7 +15,7 @@ async def init():
     await data.Sources.refresh()
     
 # WARNING: this function WILL hang the main thread, so remember to make it async in production
-def do_job(job):
+async def do_job(job):
     downloads=job.get_job_downloads()
 
     source=data.get_sources().get_source(job.get_job_source_key())
@@ -28,7 +27,7 @@ def do_job(job):
         is_hosted=source.query_cache(beatmap)
         # Start downloading
         if is_hosted:
-            success=download.download_beatmap(beatmap[0])
+            success=await download.download_beatmap(beatmap[0])
             if not success:
                 source.cache_missing_beatmap(beatmap)
             else:

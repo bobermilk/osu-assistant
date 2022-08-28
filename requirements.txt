@@ -1,3 +1,5 @@
 requests
 pypubsub
 wx
+aiofiles
+aiohttp

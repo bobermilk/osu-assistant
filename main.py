@@ -55,11 +55,14 @@ class MainWindow(gui.Main):
     # TODO: 
     async def toggle_jobs(self, event):
         if self.m_toggle_downloading.GetLabel() == constants.activity_stop:
-            data.cancel_jobs_toggle=True
-            self.m_toggle_downloading.SetLabelText(constants.activity_start)
+            if len(data.get_jobs().job_queue)>0:
+                data.cancel_jobs_toggle=True
+                self.m_toggle_downloading.SetLabelText(constants.activity_start)
+            else:
+                self.m_toggle_downloading.SetLabelText(constants.activity_start)
         elif not data.cancel_jobs_toggle:
             self.m_toggle_downloading.SetLabelText(constants.activity_stop)
-            # await data.get_jobs().start_jobs()
+            await data.get_jobs().start_jobs()
 
     async def show_add_window(self, event):
         add_source_window=AddSourceWindow(parent=None)

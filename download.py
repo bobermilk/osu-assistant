@@ -1,12 +1,13 @@
 # downloading from mirror
 # returns (success, )
-import constants, data, io
-import api
+import constants, data
 import os
 import requests
 import time
+import aiofiles
+import aiohttp
 
-def download_beatmap(beatmapset_id):
+async def download_beatmap(beatmapset_id):
     success=False
     settings=data.get_settings()
     filename = os.path.join(settings.osu_install_folder, "Songs", str(beatmapset_id) + ".osz")
@@ -24,10 +25,11 @@ def download_beatmap(beatmapset_id):
             return False
 
         if r.status_code==200:
-            try:
-                r = requests.get(r.url, allow_redirects=True, headers=beatconnect_header)
-                with open(filename, "wb") as f:
-                    f.write(r.content)
+            try: 
+                async with aiohttp.ClientSession() as session:
+                    async with session.get(r.url, allow_redirects=True, headers=beatconnect_header) as r:
+                        async with aiofiles.open(filename, mode="wb") as f:
+                            await f.write(r.content)
                 time.sleep(settings.download_interval/1000)
                 success=os.path.isfile(filename)
             except:
@@ -39,8 +41,10 @@ def download_beatmap(beatmapset_id):
         osu_header={ "referer":constants.osu_beatmap_url.format(beatmapset_id) }
         try:
             r = requests.get(url, allow_redirects=True, cookies=cookie, headers=osu_header)
-            with open(filename, "wb") as f:
-                f.write(r.content)
+            async with aiohttp.ClientSession() as session:
+                async with session.get(r.url, allow_redirects=True, headers=beatconnect_header) as r:
+                    async with aiofiles.open(filename, mode="wb") as f:
+                        await f.write(r.content)
             time.sleep(settings.download_interval/1000)
             success=os.path.isfile(filename)
         except:
