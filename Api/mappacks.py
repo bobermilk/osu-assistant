@@ -40,14 +40,15 @@ for i, site in enumerate(sites):
                 urls.pop(0) # remove mediafire link
                 for url in urls:
                     url=url.replace('#', '/').split("/")
-                    if url[-3]!="osu.ppy.sh":
-                        beatmaps.append((url[-3], url[-1], url[-2])) # beatmapset_id, beatmap_id, gamemode
-                    else:
-                        beatmaps.append((url[-1], None, None))
+                    # if url[-3]!="osu.ppy.sh":
+                    #     beatmaps.append((url[-3], url[-1], url[-2])) # beatmapset_id, beatmap_id, gamemode
+                    # else:
+                    #     beatmaps.append((url[-1], None, None))
+                    beatmaps.append(int(url[-1]))
             except:
                 pass                
             pack_ids[pack.find("div", {"class", "beatmap-pack__name"}).getText()]=beatmaps
     mappacks[i]=pack_ids
     
-with open("mappacks.json", "w") as f:
+with open("mappack.json", "w") as f:
     f.write(json.dumps(mappacks))
