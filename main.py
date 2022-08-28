@@ -59,7 +59,7 @@ class MainWindow(gui.Main):
             self.m_toggle_downloading.SetLabelText(constants.activity_start)
         elif not data.cancel_jobs_toggle:
             self.m_toggle_downloading.SetLabelText(constants.activity_stop)
-            await data.get_jobs().start_jobs()
+            # await data.get_jobs().start_jobs()
 
     async def show_add_window(self, event):
         add_source_window=AddSourceWindow(parent=None)
@@ -98,26 +98,22 @@ class AddSourceWindow(gui.AddSource):
         scope=[self.m_user_top100.GetValue(), self.m_user_favourites.GetValue(), self.m_user_everything.GetValue(),
                 self.m_user_ranked.GetValue(), self.m_user_loved.GetValue(), self.m_user_pending.GetValue(), self.m_user_graveyarded.GetValue()]
         self.Destroy()
-        data.get_sources().add_user_source(links, scope)
-        main_window.update_sources(None)
+        await data.get_sources().add_user_source(links, scope)
         
     async def add_tournament(self, event):
         selection=self.m_tournament.GetPageText(self.m_tournament.GetSelection())
         self.Destroy()
-        data.get_sources().add_tournament_source(selection)
-        main_window.update_sources(None)
+        await data.get_sources().add_tournament_source(selection)
 
     async def add_mappack(self, event):
         ids=self.m_mappack_list.GetSelections()
         self.Destroy()
-        data.get_sources().add_mappack_source(ids)
-        main_window.update_sources(None)
+        await data.get_sources().add_mappack_source(ids)
 
     async def add_osucollector(self, event):
         links=self.m_osu_collector.GetValue()
         self.Destroy()
-        data.get_sources().add_osucollector_source(links)
-        main_window.update_sources(None)
+        await data.get_sources().add_osucollector_source(links)
 
     async def change_mappack_section(self, event):
         selection=str(self.m_mappack_section.GetSelection())

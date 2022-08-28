@@ -255,7 +255,6 @@ class Main ( wx.Frame ):
 		self.Centre( wx.BOTH )
 
 		# Connect Events
-		self.m_toggle_downloading.Bind( wx.EVT_BUTTON, self.start_download )
 		self.m_osu_dir.Bind( wx.EVT_DIRPICKER_CHANGED, self.update_osu_folder )
 		self.m_autoupdate_sources.Bind( wx.EVT_CHECKBOX, self.autoupdate_toggle )
 		self.m_autodownload_toggle.Bind( wx.EVT_CHECKBOX, self.autodownload_toggle )
@@ -275,9 +274,6 @@ class Main ( wx.Frame ):
 
 
 	# Virtual event handlers, override them in your derived class
-	def start_download( self, event ):
-		event.Skip()
-
 	def update_osu_folder( self, event ):
 		event.Skip()
 

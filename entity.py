@@ -118,35 +118,51 @@ class Sources():
         await data.get_jobs().refresh()
         # Update the views
         pub.sendMessage("update.sources")
-        pub.sendMessage("update.activity")
         # Initiate automatic downloads
         if data.get_settings().download_on_start:
             await data.get_jobs().start_jobs()
 
-    def add_user_source(self, links, scope):
+    async def add_user_source(self, links, scope):
         key, source=misc.create_userpage_source(links, scope)
         all_beatmaps=scraper.get_userpage_beatmaps(source)
         source.cache_beatmaps(all_beatmaps)
         self.user_source[key]=source
+        # refresh the jobs
+        await data.get_jobs().refresh()
+        # Update the views
+        pub.sendMessage("update.sources")
+        
 
-    def add_tournament_source(self, selection):
+    async def add_tournament_source(self, selection):
         tournament_id=selection.split(":")[0]
         key, source=misc.create_tournament_source(tournament_id, selection)
         all_beatmaps=scraper.get_tournament_beatmaps(source)
         source.cache_beatmaps(all_beatmaps)
         self.tournament_source[key]=source
+        # refresh the jobs
+        await data.get_jobs().refresh()
+        # Update the views
+        pub.sendMessage("update.sources")
 
-    def add_mappack_source(self, ids, gamemode):
+    async def add_mappack_source(self, ids, gamemode):
         key, source=misc.create_mappack_source(ids, gamemode)
         all_beatmaps=scraper.get_mappack_beatmaps(source)
         source.cache_beatmaps(all_beatmaps)
         self.mappack_source[key]=source
+        # refresh the jobs
+        await data.get_jobs().refresh()
+        # Update the views
+        pub.sendMessage("update.sources")
 
-    def add_osucollector_source(self, link):
+    async def add_osucollector_source(self, link):
         key, source=misc.create_osucollector_source(link)
         all_beatmaps=scraper.get_osucollector_beatmaps(source)
         source.cache_beatmaps(all_beatmaps)
         self.osucollector_source[key]=source
+        # refresh the jobs
+        await data.get_jobs().refresh()
+        # Update the views
+        pub.sendMessage("update.sources")
 
 # Job
 class Job:
@@ -190,7 +206,6 @@ class Jobs:
 
     async def start_jobs(self):
         # refresh --> job_queue.pop() -> download(maps) -> write_collections -> progressbar+=1 
-        await self.refresh()
         while len(self.job_queue) > 0:
             job=self.job_queue.pop(0)
             misc.do_job(job) # TODO: use the success/failure of the job to show notification or something

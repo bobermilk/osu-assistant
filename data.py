@@ -1,6 +1,6 @@
 # data provider (store variables, hardcode things and functions to get and set data)
 import entity
-import  constants
+import constants
 
 import fake_provider as fake
 
@@ -30,13 +30,12 @@ cancel_jobs_toggle=False
 def get_sources():
     if constants.DEBUG:
         return Sources
-        return fake.Sources
     else:
         return Sources
 
 def get_jobs():
     if constants.DEBUG:
-        return fake.Jobs
+        return Jobs
     else:
         return Jobs
         
