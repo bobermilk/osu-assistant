@@ -28,8 +28,8 @@ for i, site in enumerate(sites):
         pausechamp(r)
         soup = BeautifulSoup(r.text, "html.parser")
         packs = soup.find_all("a", {"class", "beatmap-pack__header js-accordion__item-header"})
-        beatmaps=[]
         for pack in packs:
+            beatmaps=[]
             try:
                 soup=BeautifulSoup(r.text, "lxml", parse_only=SoupStrainer('a'))
                 mappack_id=pack['href'].split("/")[-1]
