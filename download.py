@@ -29,9 +29,10 @@ async def download_beatmap(beatmapset_id):
         try: 
             url=constants.chimu_beatmap_url.format(beatmapset_id)
             async with session.get(url, allow_redirects=True) as s:
-                async with aiofiles.open(filename, mode="wb") as f:
-                    await f.write(await s.read())
-            if os.stat(filename).st_size == 0:
+                if s.status==200:
+                    async with aiofiles.open(filename, mode="wb") as f:
+                        await f.write(await s.read())
+            if os.path.isfile(filename) and os.stat(filename).st_size == 0:
                 os.remove(filename)
             success=os.path.isfile(filename)
         except:
@@ -45,7 +46,7 @@ async def download_beatmap(beatmapset_id):
             async with session.get(url, allow_redirects=True, cookies=cookie, headers=osu_header) as s:
                 async with aiofiles.open(filename, mode="wb") as f:
                     await f.write(await s.read())
-            if os.stat(filename).st_size == 0:
+            if os.path.isfile(filename) and os.stat(filename).st_size == 0:
                 os.remove(filename)
             success=os.path.isfile(filename)
         except:
