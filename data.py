@@ -1,7 +1,6 @@
 # data provider (store variables, hardcode things and functions to get and set data)
 import entity
 import constants
-
 import fake_provider as fake
 
 # Credentials

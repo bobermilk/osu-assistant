@@ -24,7 +24,7 @@ osucollector_url="https://osucollector.com/api/collections/{}/beatmapsv2?perPage
 OSU_API_URL = "https://osu.ppy.sh/api/v2"
 OSU_TOKEN_URL = 'https://osu.ppy.sh/oauth/token'
 
-beatconnect_beatmap_url="https://beatconnect.io/b/{}"
+chimu_beatmap_url="https://chimu.moe/d/{}"
 osu_beatmap_url="https://osu.ppy.sh/beatmapsets/{}"
 osu_beatmap_url_download="https://osu.ppy.sh/beatmapsets/{}/download"
 osu_beatmap_url_full="https://osu.ppy.sh/beatmapsets/{}#{}/{}"

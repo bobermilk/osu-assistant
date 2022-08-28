@@ -15,6 +15,7 @@ class Beatmaps():
     #     return self.all_beatmaps
     def get_available_beatmaps(self):
         return list(self.all_beatmaps-self.unavailable_beatmaps)
+        
     def get_unavailable_beatmaps(self):
         return self.unavailable_beatmaps
 
@@ -144,8 +145,8 @@ class Sources():
         # Update the views
         pub.sendMessage("update.sources")
 
-    async def add_mappack_source(self, ids, gamemode):
-        key, source=misc.create_mappack_source(ids, gamemode)
+    async def add_mappack_source(self, ids):
+        key, source=misc.create_mappack_source(ids)
         all_beatmaps=scraper.get_mappack_beatmaps(source)
         source.cache_beatmaps(all_beatmaps)
         self.mappack_source[key]=source

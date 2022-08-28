@@ -1,6 +1,7 @@
 import entity
 import requests
 import download
+import asyncio
 import data, database, constants, strings
 
 # Update sources/jobs on startup
@@ -10,7 +11,7 @@ async def init():
     data.TournamentJson=requests.get("https://raw.githubusercontent.com/bobermilk/osu-assistant-data/main/tournament.json").json()
     data.MappackJson=requests.get("https://raw.githubusercontent.com/bobermilk/osu-assistant-data/main/mappack.json").json()
     # Initialize the cache db
-    await database.create_osudb()
+    #await database.create_osudb()
     # Refresh sources and jobs (the views will update)
     await data.Sources.refresh()
     
@@ -28,6 +29,7 @@ async def do_job(job):
         # Start downloading
         if is_hosted:
             success=await download.download_beatmap(beatmap[0])
+            await asyncio.sleep(data.get_settings().download_interval/1000)
             if not success:
                 source.cache_missing_beatmap(beatmap)
             else:
@@ -63,6 +65,7 @@ def create_tournament_source(tournament_id, source_key):
 def create_mappack_source(ids):
     #Example
     # Mappack mode=m #109 #108
+    
     source_key=strings.generate_mappack_source_key(ids)
 
     return (source_key, entity.MappackSource(ids))
