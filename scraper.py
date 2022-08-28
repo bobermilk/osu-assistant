@@ -123,7 +123,7 @@ def get_userpage_beatmaps(source):
 def get_tournament_beatmaps(source):
     all_beatmaps=set()
     for beatmap in data.TournamentJson[source.get_id()][1]:
-        all_beatmaps.add((beatmap[0], beatmap[1], beatmap[2]))
+        all_beatmaps.add((beatmap[0], beatmap[1], None))
     return all_beatmaps
 
 def get_mappack_beatmaps(source):

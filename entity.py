@@ -27,7 +27,11 @@ class Beatmaps():
     
     def cache_unavailable_beatmap(self, unavailable_beatmap):
         self.unavailable_beatmaps.add(unavailable_beatmap)
-    
+    def cache_missing_beatmap(self, beatmap):
+        self.missing_beatmaps.add(beatmap)
+    def uncache_missing_beatmap(self, beatmap):
+        if beatmap in self.missing_beatmaps:
+            self.missing_beatmaps.remove(beatmap)
         
 # Note: ids is a set of pairs (user_id, gamemode)
 class UserpageSource(Beatmaps):

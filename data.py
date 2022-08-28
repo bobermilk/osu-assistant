@@ -16,7 +16,7 @@ Sources=entity.Sources()
 Jobs=entity.Jobs()
 Settings=entity.Settings()
 
-# Database
+# Database of integers of ids
 osudb_beatmap_ids=set()
 osudb_beatmapset_ids=set()
 
