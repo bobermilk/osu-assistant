@@ -212,6 +212,7 @@ class Jobs:
         while self.get_job_cnt() > 0:
             job=self.job_queue.pop(0)
             pub.sendMessage("update.progress", value=0, range=0, progress_message=f"Downloading {job.get_job_source_key()} ({initial_job_cnt-self.get_job_cnt()}/{initial_job_cnt} jobs)")
+            pub.sendMessage("enable.job_toggle_button")
             success=await misc.do_job(job)
             if data.cancel_jobs_toggle:
                 break # Terminate all jobs

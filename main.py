@@ -71,10 +71,10 @@ class MainWindow(gui.Main):
     # toggle jobs
     # TODO: 
     async def toggle_jobs(self, event):
+        self.m_toggle_downloading.Disable()
         if self.m_toggle_downloading.GetLabel() == constants.activity_stop:
             if len(data.get_jobs().job_queue)>0:
                 data.cancel_jobs_toggle=True
-                self.m_toggle_downloading.Disable()
                 self.m_toggle_downloading.SetLabelText(constants.activity_start)
             else:
                 self.m_toggle_downloading.SetLabelText(constants.activity_start)
