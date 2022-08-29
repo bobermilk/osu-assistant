@@ -173,55 +173,59 @@ async def create_osudb():
 # Taken from https://raw.githubusercontent.com/jaasonw/osu-db-tools/master/read_collection.py
 def collection_to_dict():
     collections = {};
-    with open(os.path.join(data.get_settings().osu_install_folder, "collection.db"), "rb") as db:
-        collections["version"] = buffer.read_uint(db)
-        collections["num_collections"] = buffer.read_uint(db)
-        collections["collections"] = []
-        for i in range(collections["num_collections"]):
-            collection = {}
-            collection["name"] = buffer.read_string(db)
-            collection["size"] = buffer.read_uint(db)
-            collection["hashes"] = []
-            for i in range(collection["size"]):
-                collection["hashes"].append(buffer.read_string(db))
-            collections["collections"].append(collection)
+    try:
+        with open(os.path.join(data.get_settings().osu_install_folder, "collection.db"), "rb") as db:
+            collections["version"] = buffer.read_uint(db)
+            collections["num_collections"] = buffer.read_uint(db)
+            collections["collections"] = []
+            for i in range(collections["num_collections"]):
+                collection = {}
+                collection["name"] = buffer.read_string(db)
+                collection["size"] = buffer.read_uint(db)
+                collection["hashes"] = []
+                for i in range(collection["size"]):
+                    collection["hashes"].append(buffer.read_string(db))
+                collections["collections"].append(collection)
+    except:
+        # Invalid osu folder, can't write to collections
+        return False
     return collections
 
 
 def update_collections(new_collections):
     if data.get_settings().osu_install_folder != None:
         current_collections=collection_to_dict()
-        b = buffer.WriteBuffer()
-        b.write_uint(current_collections["version"])
+        if not isinstance(current_collections, bool):
+            b = buffer.WriteBuffer()
+            b.write_uint(current_collections["version"])
 
-        # Weed out the shit we gonna replace
-        existing_collections={}
-        for collection in current_collections["collections"]:
-            if collection["name"] not in new_collections.keys():
-                existing_collections[collection["name"]]=collection["hashes"]
+            # Weed out the shit we gonna replace
+            existing_collections={}
+            for collection in current_collections["collections"]:
+                if collection["name"] not in new_collections.keys():
+                    existing_collections[collection["name"]]=collection["hashes"]
 
-        b.write_uint(len(new_collections)+len(existing_collections))
+            b.write_uint(len(new_collections)+len(existing_collections))
 
-        # Write the new collections
-        for name, checksums in existing_collections.items():
-            b.write_string(name)
-            b.write_uint(len(checksums))
-            for checksum in checksums:
-                b.write_string(checksum)
-                
-        # Write the existing collections
-        for name, checksums in new_collections.items():
-            b.write_string(name)
-            b.write_uint(len(checksums))
-            for checksum in checksums:
-                b.write_string(checksum)
-        
-        osu_folder=data.get_settings().osu_install_folder
-        collection_file=os.path.join(osu_folder,"collection.db")
-        backup_file=os.path.join(osu_folder, "collection_backup.db")
-        if os.path.isfile(collection_file):
-            shutil.copy2(collection_file, backup_file)
-        with open(collection_file, "wb") as db:
-            db.write(b.data)
-            db.close()
-    
+            # Write the new collections
+            for name, checksums in existing_collections.items():
+                b.write_string(name)
+                b.write_uint(len(checksums))
+                for checksum in checksums:
+                    b.write_string(checksum)
+                    
+            # Write the existing collections
+            for name, checksums in new_collections.items():
+                b.write_string(name)
+                b.write_uint(len(checksums))
+                for checksum in checksums:
+                    b.write_string(checksum)
+            
+            osu_folder=data.get_settings().osu_install_folder
+            collection_file=os.path.join(osu_folder,"collection.db")
+            backup_file=os.path.join(osu_folder, "collection_backup.db")
+            if os.path.isfile(collection_file):
+                shutil.copy2(collection_file, backup_file)
+            with open(collection_file, "wb") as db:
+                db.write(b.data)
+                db.close()

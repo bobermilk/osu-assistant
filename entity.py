@@ -227,10 +227,10 @@ class Jobs:
             pub.sendMessage("update.activity")
         # Check last success to see if we should show the No pending downloads
         if success:
-            print(collections)
             database.update_collections(collections)
             pub.sendMessage("update.progress", value=None, range=None, progress_message=f"{initial_job_cnt} jobs completed successfully")
             pub.sendMessage("update.activity")
+            pub.sendMessage("reset.job_toggle_button_text")
         else:
             data.cancel_jobs_toggle=False
             pub.sendMessage("update.progress", value=None, range=None, progress_message=f"Cancelled running job")

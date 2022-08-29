@@ -29,9 +29,15 @@ def update_progress(value, range, progress_message):
         main_window.m_activity_progress.SetLabelText(progress_message)
 
 def enable_job_toggle_button():
+    # called when you are allowed to stop jobs
     main_window.m_toggle_downloading.Enable()
 
+def reset_job_toggle_button_text():
+    # called when jobs are completed
+    main_window.m_toggle_downloading.SetLabelText(constants.activity_start)
+
 def show_update_dialogue():
+    # called when new release dropped on github
     update_dialogue=gui.UpdateDialogue(main_window)
     update_dialogue.Show()
 
@@ -48,6 +54,7 @@ class MainWindow(gui.Main):
         pub.subscribe(update_activity, "update.activity")
         pub.subscribe(update_progress, "update.progress")
         pub.subscribe(enable_job_toggle_button, "enable.job_toggle_button")
+        pub.subscribe(reset_job_toggle_button_text, "reset.job_toggle_button_text")
         pub.subscribe(show_update_dialogue, "show.update_available_window")
         AsyncBind(wx.EVT_BUTTON, self.show_add_window, self.m_add_source)
         AsyncBind(wx.EVT_BUTTON, self.toggle_jobs, self.m_toggle_downloading)

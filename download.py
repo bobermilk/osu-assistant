@@ -24,6 +24,9 @@ async def download_beatmap(beatmapset_id):
     success=0
     settings=data.get_settings()
     filename = os.path.join(settings.osu_install_folder, "Songs", str(beatmapset_id) + ".osz")
+    if not os.path.isdir(os.path.join(settings.osu_install_folder, "Songs")):
+        # If osu install folder is none, it will just download at current directory
+        os.mkdir(os.path.join(settings.osu_install_folder, "Songs"))
 
     if os.path.isfile(filename):
         success = True
