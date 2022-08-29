@@ -42,6 +42,7 @@ class MainWindow(gui.Main):
         pub.subscribe(update_sources, "update.sources")
         pub.subscribe(update_activity, "update.activity")
         pub.subscribe(update_progress, "update.progress")
+        pub.subscribe(update_progress, "update.progress")
         pub.subscribe(enable_job_toggle_button, "enable.job_toggle_button")
         AsyncBind(wx.EVT_BUTTON, self.show_add_window, self.m_add_source)
         AsyncBind(wx.EVT_BUTTON, self.toggle_jobs, self.m_toggle_downloading)
@@ -82,32 +83,11 @@ class MainWindow(gui.Main):
             await data.get_jobs().start_jobs()
 
     async def show_add_window(self, event):
+        global add_source_window
         add_source_window=AddSourceWindow(parent=None)
-        for item in data.TournamentJson.items():
-            add_tournament_panel=gui.ListPanel(add_source_window.m_tournament)
-            for j, beatmap in enumerate(item[1][1]):
-                add_tournament_panel.m_list.Insert(constants.osu_beatmap_url_full.format(beatmap[0], beatmap[2], beatmap[1]), j)
-            tournament_key=item[0] + ": "+ item[1][0]
-            
-            add_source_window.m_tournament.AddPage(add_tournament_panel, tournament_key)
-
-        i=0
-        for source_key, item in data.MappackJson["0"].items():
-            source_name=item[0]
-            add_source_window.m_mappack_list.Insert(f"{source_key}: {source_name} ({len(item[1])} beatmapsets)", i)
-            i+=1
         add_source_window.Show()
-        # bind the buttons to their respective callbacks
-        AsyncBind(wx.EVT_BUTTON, add_source_window.add_userpage, add_source_window.m_add_userpage)
-        AsyncBind(wx.EVT_BUTTON, add_source_window.add_tournament, add_source_window.m_add_tournament)
-        AsyncBind(wx.EVT_BUTTON, add_source_window.add_mappack, add_source_window.m_add_mappack)
-        AsyncBind(wx.EVT_BUTTON, add_source_window.add_osucollector, add_source_window.m_add_osucollector)
-        AsyncBind(wx.EVT_CHOICE, add_source_window.change_mappack_section, add_source_window.m_mappack_section)
-        
-
-# Used for AddSourceWindow to call functions in main window
-# There can be only one instance at all times
-main_window = MainWindow()
+        self.m_add_source.Disable()
+        await add_source_window.populate_add_window(add_source_window)
 
 class AddSourceWindow(gui.AddSource):
     """
@@ -115,7 +95,20 @@ class AddSourceWindow(gui.AddSource):
     """
     def __init__(self, parent=None):
         super(AddSourceWindow, self).__init__(parent)
-    
+        # bind the buttons to their respective callbacks
+        AsyncBind(wx.EVT_BUTTON, self.add_userpage, self.m_add_userpage)
+        AsyncBind(wx.EVT_BUTTON, self.add_tournament, self.m_add_tournament)
+        AsyncBind(wx.EVT_BUTTON, self.add_mappack, self.m_add_mappack)
+        AsyncBind(wx.EVT_BUTTON, self.add_osucollector, self.m_add_osucollector)
+        AsyncBind(wx.EVT_CHOICE, self.change_mappack_section, self.m_mappack_section)
+        AsyncBind(wx.EVT_WINDOW_DESTROY, self.onDestroy, self)
+
+    async def onDestroy(self, event):
+        global add_source_window
+        global main_window
+        add_source_window=None
+        main_window.m_add_source.Enable()
+
     async def add_userpage(self, event):
         links=self.m_userpages.GetValue()
         scope=[self.m_user_top100.GetValue(), self.m_user_favourites.GetValue(), self.m_user_everything.GetValue(),
@@ -147,6 +140,30 @@ class AddSourceWindow(gui.AddSource):
             source_name=item[0]
             self.m_mappack_list.Insert(f"{source_key}: {source_name} ({len(item[1])} beatmapsets)", i)
             i+=1
+
+    async def populate_add_window(self, event):
+        for item in data.TournamentJson.items():
+            beatmap_list=[]
+            add_tournament_panel=gui.ListPanel(self.m_tournament)
+            for beatmap in item[1][1]:
+                beatmap_list.append(constants.osu_beatmap_url_full.format(beatmap[0], beatmap[2], beatmap[1]))
+            tournament_key=item[0] + ": "+ item[1][0]
+            if len(beatmap_list)>0:
+                add_tournament_panel.m_list.InsertItems(beatmap_list,0)
+            
+            self.m_tournament.AddPage(add_tournament_panel, tournament_key)
+        
+        mappack_list=[]
+        for source_key, item in data.MappackJson["0"].items():
+            source_name=item[0]
+            mappack_list.append(f"{source_key}: {source_name} ({len(item[1])} beatmapsets)")
+        if len(mappack_list)>0:
+            self.m_mappack_list.InsertItems(mappack_list,0)
+
+# Used for AddSourceWindow to call functions in main window
+# There can be only one instance at all times
+main_window = MainWindow()
+add_source_window=None
 
 async def main():
     main_window.Show()

@@ -402,25 +402,15 @@ class AddSource ( wx.Frame ):
 		self.m_panel8 = wx.Panel( self.m_notebook2, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		bSizer141 = wx.BoxSizer( wx.VERTICAL )
 
-		bSizer151 = wx.BoxSizer( wx.HORIZONTAL )
-
-		bSizer341 = wx.BoxSizer( wx.VERTICAL )
-
 		self.m_staticText41231 = wx.StaticText( self.m_panel8, wx.ID_ANY, u"Mappack section", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText41231.Wrap( -1 )
 
-		bSizer341.Add( self.m_staticText41231, 0, wx.TOP|wx.RIGHT|wx.LEFT, 5 )
+		bSizer141.Add( self.m_staticText41231, 0, wx.TOP|wx.RIGHT|wx.LEFT, 5 )
 
 		m_mappack_sectionChoices = [ u"Standard", u"Spotlight", u"Theme", u"Artist/Album" ]
 		self.m_mappack_section = wx.Choice( self.m_panel8, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_mappack_sectionChoices, 0 )
 		self.m_mappack_section.SetSelection( 0 )
-		bSizer341.Add( self.m_mappack_section, 0, wx.ALL|wx.EXPAND, 5 )
-
-
-		bSizer151.Add( bSizer341, 1, wx.EXPAND, 5 )
-
-
-		bSizer141.Add( bSizer151, 0, wx.EXPAND, 5 )
+		bSizer141.Add( self.m_mappack_section, 0, wx.ALL|wx.EXPAND, 5 )
 
 		self.m_staticText17 = wx.StaticText( self.m_panel8, wx.ID_ANY, u"Search results", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText17.Wrap( -1 )
@@ -490,14 +480,14 @@ class ListPanel ( wx.Panel ):
 	def __init__( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( 500,300 ), style = wx.TAB_TRAVERSAL, name = wx.EmptyString ):
 		wx.Panel.__init__ ( self, parent, id = id, pos = pos, size = size, style = style, name = name )
 
-		bSizer33 = wx.BoxSizer( wx.VERTICAL )
+		bSizer31 = wx.BoxSizer( wx.VERTICAL )
 
 		m_listChoices = []
 		self.m_list = wx.ListBox( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_listChoices, 0 )
-		bSizer33.Add( self.m_list, 1, wx.ALL|wx.EXPAND, 5 )
+		bSizer31.Add( self.m_list, 1, wx.ALL|wx.EXPAND, 5 )
 
 
-		self.SetSizer( bSizer33 )
+		self.SetSizer( bSizer31 )
 		self.Layout()
 
 	def __del__( self ):

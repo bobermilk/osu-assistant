@@ -27,9 +27,6 @@ def query_osu_user_beatmapsets(user_id, type):
             break
         jsons.append(j)
         page+=1
-    
-    with open("test.json", "w") as f:
-        f.write(str(jsons))
     return jsons
 
 

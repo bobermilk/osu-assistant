@@ -7,19 +7,19 @@ import aiohttp
 
 session=None
 
-async def create_session():
+async def get_session():
     global session
     # aiohttp session
-    session = aiohttp.ClientSession()
+    if session==None:
+        session = aiohttp.ClientSession()
+    return session
 
 # The exit codes are as follows
 # 0: Failed to download
 # 1: Success from chimu
 # 2. Success from osu
 async def download_beatmap(beatmapset_id):
-    global session
-    if session == None:
-        await create_session()
+    session=get_session()
 
     success=0
     settings=data.get_settings()
