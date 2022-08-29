@@ -1,6 +1,6 @@
 import entity as e
 import os
-import sensitive_data
+#import sensitive_data
 
 class Sources(e.Sources):
     def __init__(self):
@@ -35,9 +35,9 @@ class Settings(e.Settings):
     def __init__(self):
         super().__init__()
         self.osu_install_folder=os.getcwd()
-        self.oauth=(sensitive_data.oauth_client_id, sensitive_data.oauth_client_secret)
-        self.xsrf_token=sensitive_data.xsrf_token
-        self.osu_session=sensitive_data.osu_session
+        #self.oauth=(sensitive_data.oauth_client_id, sensitive_data.oauth_client_secret)
+        #self.xsrf_token=sensitive_data.xsrf_token
+        #self.osu_session=sensitive_data.osu_session
         self.download_from_osu=True
         self.download_interval=2000
 
