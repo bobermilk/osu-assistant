@@ -28,6 +28,9 @@ def update_progress(value, range, progress_message):
     if progress_message != None:
         main_window.m_activity_progress.SetLabelText(progress_message)
 
+def enable_job_toggle_button():
+    main_window.m_toggle_downloading.Enable()
+
 class MainWindow(gui.Main):
     """
     Main window bro
@@ -39,6 +42,7 @@ class MainWindow(gui.Main):
         pub.subscribe(update_sources, "update.sources")
         pub.subscribe(update_activity, "update.activity")
         pub.subscribe(update_progress, "update.progress")
+        pub.subscribe(enable_job_toggle_button, "enable.job_toggle_button")
         AsyncBind(wx.EVT_BUTTON, self.show_add_window, self.m_add_source)
         AsyncBind(wx.EVT_BUTTON, self.toggle_jobs, self.m_toggle_downloading)
 
@@ -70,6 +74,7 @@ class MainWindow(gui.Main):
         if self.m_toggle_downloading.GetLabel() == constants.activity_stop:
             if len(data.get_jobs().job_queue)>0:
                 data.cancel_jobs_toggle=True
+                self.m_toggle_downloading.Disable()
                 self.m_toggle_downloading.SetLabelText(constants.activity_start)
             else:
                 self.m_toggle_downloading.SetLabelText(constants.activity_start)

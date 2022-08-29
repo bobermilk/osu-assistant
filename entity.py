@@ -214,7 +214,6 @@ class Jobs:
             pub.sendMessage("update.progress", value=0, range=0, progress_message=f"Downloading {job.get_job_source_key()} ({initial_job_cnt-self.get_job_cnt()}/{initial_job_cnt} jobs)")
             success=await misc.do_job(job)
             if data.cancel_jobs_toggle:
-                data.cancel_jobs_toggle=False
                 break # Terminate all jobs
             pub.sendMessage("update.activity")
         # Check last success to see if we should show the No pending downloads
@@ -223,8 +222,10 @@ class Jobs:
             pub.sendMessage("update.activity")
         else:
             data.cancel_jobs_toggle=False
-            pub.sendMessage("update.progress", value=None, range=None, progress_message=f"{self.get_job_cnt()} jobs cancelled")
+            pub.sendMessage("update.progress", value=None, range=None, progress_message=f"Cancelled running job")
+            await self.refresh()
             pub.sendMessage("update.activity")
+            pub.sendMessage("enable.job_toggle_button")
 
 
 # Settings
