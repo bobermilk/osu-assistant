@@ -55,7 +55,9 @@ class MainWindow(gui.Main):
             for i, beatmap in enumerate(source.get_available_beatmaps()):
                 source_panel.m_list.Insert("beatmapset_id="+str(beatmap[0]) + " beatmap_id="+str(beatmap[1]),i)
             for i, beatmap in enumerate(source.get_unavailable_beatmaps()):
-                source_panel.m_list.Insert("beatmapset_id="+str(beatmap[0]) + " beatmap_id="+str(beatmap[1]),i)
+                source_panel.m_list.Insert("beatmapset_id="+str(beatmap[0]) + " beatmap_id="+str(beatmap[1] + " (unavailable for download)"),i)
+            for i, beatmap in enumerate(source.get_missing_beatmaps()):
+                source_panel.m_list.Insert("beatmapset_id="+str(beatmap[0]) + " beatmap_id="+str(beatmap[1] + " (missing)"),i)
             self.m_source_list.AddPage(source_panel, source_key)
 
     # used to repopulate the activity list after download completes
@@ -89,8 +91,11 @@ class MainWindow(gui.Main):
             
             add_source_window.m_tournament.AddPage(add_tournament_panel, tournament_key)
 
-        for i, item in enumerate(data.MappackJson["0"].items()):
-            add_source_window.m_mappack_list.Insert(str(item[0] + f" ({len(item[1])} beatmapsets)"), i)
+        i=0
+        for source_key, item in enumerate(data.MappackJson["0"].items()):
+            source_name=item[1][0]
+            add_source_window.m_mappack_list.Insert(f"{source_key}: {source_name} ({len(item[1][1])} beatmapsets)", i)
+            i+=1
         add_source_window.Show()
         # bind the buttons to their respective callbacks
         AsyncBind(wx.EVT_BUTTON, add_source_window.add_userpage, add_source_window.m_add_userpage)
@@ -136,8 +141,11 @@ class AddSourceWindow(gui.AddSource):
     async def change_mappack_section(self, event):
         selection=str(self.m_mappack_section.GetSelection())
         self.m_mappack_list.Clear()
-        for i, item in enumerate(data.MappackJson[selection].items()):
-            self.m_mappack_list.Insert(str(item[0] + f" ({len(item[1])} beatmapsets)"), i)
+        i=0
+        for source_key, item in enumerate(data.MappackJson[selection].items()):
+            source_name=item[1][0]
+            self.m_mappack_list.Insert(f"{source_key}: {source_name} ({len(item[1][1])} beatmapsets)", i)
+            i+=1
 
 async def main():
     main_window.Show()
