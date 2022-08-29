@@ -209,9 +209,6 @@ class Main ( wx.Frame ):
 		self.m_panel_help.SetScrollRate( 5, 5 )
 		bSizer24 = wx.BoxSizer( wx.VERTICAL )
 
-		self.m_youtube = wx.Button( self.m_panel_help, wx.ID_ANY, u"       --> Youtube video guide if you don't want to read <---       ", wx.DefaultPosition, wx.DefaultSize, 0 )
-		bSizer24.Add( self.m_youtube, 0, wx.ALL, 5 )
-
 		bSizer281 = wx.BoxSizer( wx.HORIZONTAL )
 
 		self.m_website = wx.Button( self.m_panel_help, wx.ID_ANY, u"Wiki", wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -258,7 +255,6 @@ class Main ( wx.Frame ):
 		self.m_import_assistant.Bind( wx.EVT_BUTTON, self.import_assistant_configuration )
 		self.m_export_assistant.Bind( wx.EVT_BUTTON, self.export_assistant_configuration )
 		self.m_save_settings.Bind( wx.EVT_BUTTON, self.save_settings )
-		self.m_youtube.Bind( wx.EVT_BUTTON, self.open_youtube )
 		self.m_website.Bind( wx.EVT_BUTTON, self.open_website )
 		self.m_discord.Bind( wx.EVT_BUTTON, self.open_discord )
 		self.m_github.Bind( wx.EVT_BUTTON, self.open_github )
@@ -284,9 +280,6 @@ class Main ( wx.Frame ):
 
 
 	def save_settings( self, event ):
-		event.Skip()
-
-	def open_youtube( self, event ):
 		event.Skip()
 
 	def open_website( self, event ):

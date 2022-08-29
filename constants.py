@@ -37,3 +37,10 @@ gamemode_dict={ "osu":1, "taiko":2, "fruits":3, "mania":4 }
 # strings
 activity_stop="Stop Downloading"
 activity_start="Start Downloading (top to bottom)"
+
+#links
+link_discord="https://discord.gg/GqVzWMUw"
+link_paypal="https://paypal.me/bobermilk"
+link_github="https://github.com/bobermilk/osu-assistant"
+link_website="https://milkies.ml/osu-assistant"
+link_mappers="https://osu.ppy.sh/home/follows/mapping"

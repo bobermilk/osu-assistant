@@ -1,3 +1,4 @@
+import webbrowser
 import wx
 import gui
 from wxasync import AsyncBind, WxAsyncApp
@@ -91,7 +92,6 @@ class MainWindow(gui.Main):
             await database.create_osudb()
     
     # toggle jobs
-    # TODO: 
     async def toggle_jobs(self, event):
         self.m_toggle_downloading.Disable()
         if self.m_toggle_downloading.GetLabel() == constants.activity_stop:
@@ -107,6 +107,15 @@ class MainWindow(gui.Main):
         add_source_window.Show()
         self.m_add_source.Disable()
         await add_source_window.populate_add_window(add_source_window)
+    
+    def open_discord(self, event):
+        webbrowser.open(constants.link_discord)
+    def open_donate(self, event):
+        webbrowser.open(constants.link_paypal)
+    def open_github(self, event):
+        webbrowser.open(constants.link_github)
+    def open_website(self, event):
+        webbrowser.open(constants.link_website)
 
 class AddSourceWindow(gui.AddSource):
     """
@@ -178,6 +187,8 @@ class AddSourceWindow(gui.AddSource):
             mappack_list.append(f"{source_key}: {source_name} ({len(item[1])} beatmapsets)")
         if len(mappack_list)>0:
             self.m_mappack_list.InsertItems(mappack_list,0)
+    def open_subscribed_mappers(self, event):
+        webbrowser.open(constants.link_mappers)
 
 # Used for AddSourceWindow to call functions in main window
 # There can be only one instance at all times
