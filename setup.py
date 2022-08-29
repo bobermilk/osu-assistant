@@ -3,7 +3,7 @@ from cx_Freeze import setup, Executable
 
 # Dependencies are automatically detected, but it might need fine tuning.
 # "packages": ["os"] is used as example only
-build_exe_options = {"packages": ["os"], "excludes": ["tkinter"]}
+build_exe_options = {"packages": ["os"], "excludes": ["tkinter"], 'include_files': ["assets"]}
 
 # base="Win32GUI" should be used only for Windows GUI app
 base = None
@@ -15,5 +15,5 @@ setup(
     version="0.1",
     description="beatmap aggregator",
     options={"build_exe": build_exe_options},
-    executables=[Executable("main.py", base=base, icon="osu.ico")],
+    executables=[Executable("main.py", base=base, icon="assets/osu.ico")],
 )
