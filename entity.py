@@ -18,6 +18,9 @@ class Beatmaps():
         
     def get_unavailable_beatmaps(self):
         return self.unavailable_beatmaps
+        
+    def get_missing_beatmaps(self):
+        return self.unavailable_beatmaps
 
     def query_cache(self, beatmapset_id):
         return beatmapset_id not in self.unavailable_beatmaps

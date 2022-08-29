@@ -127,7 +127,15 @@ def get_tournament_beatmaps(source):
     return all_beatmaps
 
 def get_mappack_beatmaps(source):
-    pass
+    all_beatmaps=set()
+    for id in source.get_ids():
+        for i in range(0, 4):
+            if str(id) in data.MappackJson[str(i)].keys():
+                for beatmapset_id in data.MappackJson[str(i)][str(id)][1]:
+                    all_beatmaps.add((beatmapset_id, None, None))
+                break # move on to next id
+    return all_beatmaps
+
 def get_osucollector_beatmaps(source):
     all_beatmaps=set()
     for source_id in source.get_ids():

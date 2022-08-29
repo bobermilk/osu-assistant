@@ -92,9 +92,9 @@ class MainWindow(gui.Main):
             add_source_window.m_tournament.AddPage(add_tournament_panel, tournament_key)
 
         i=0
-        for source_key, item in enumerate(data.MappackJson["0"].items()):
-            source_name=item[1][0]
-            add_source_window.m_mappack_list.Insert(f"{source_key}: {source_name} ({len(item[1][1])} beatmapsets)", i)
+        for source_key, item in data.MappackJson["0"].items():
+            source_name=item[0]
+            add_source_window.m_mappack_list.Insert(f"{source_key}: {source_name} ({len(item[1])} beatmapsets)", i)
             i+=1
         add_source_window.Show()
         # bind the buttons to their respective callbacks
@@ -129,7 +129,8 @@ class AddSourceWindow(gui.AddSource):
         await data.get_sources().add_tournament_source(selection)
 
     async def add_mappack(self, event):
-        ids=self.m_mappack_list.GetSelections()
+        labels=[self.m_mappack_list.GetString(x) for x in self.m_mappack_list.GetSelections()]
+        ids=[int(x.split(":")[0]) for x in labels]
         self.Destroy()
         await data.get_sources().add_mappack_source(ids)
 
@@ -142,9 +143,9 @@ class AddSourceWindow(gui.AddSource):
         selection=str(self.m_mappack_section.GetSelection())
         self.m_mappack_list.Clear()
         i=0
-        for source_key, item in enumerate(data.MappackJson[selection].items()):
-            source_name=item[1][0]
-            self.m_mappack_list.Insert(f"{source_key}: {source_name} ({len(item[1][1])} beatmapsets)", i)
+        for source_key, item in data.MappackJson[selection].items():
+            source_name=item[0]
+            self.m_mappack_list.Insert(f"{source_key}: {source_name} ({len(item[1])} beatmapsets)", i)
             i+=1
 
 async def main():

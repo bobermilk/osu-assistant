@@ -31,9 +31,9 @@ def generate_userpage_source_key(users, scope):
     if ids[-1]==",":
         ids=ids[:-1]
     return f"User: {played} {status} {ids}"
-def generate_mappack_source_key(ids):
+def generate_mappack_source_key(mappack_ids):
     ids="ids="
-    for id in ids:
+    for id in mappack_ids:
         ids+=str(id)
         ids+=","
     if ids[-1]==",":

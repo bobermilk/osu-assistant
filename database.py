@@ -7,11 +7,10 @@ import buffer, data, misc
 
 
 def query_osudb(beatmap):
-    beatmap_id=int(beatmap[1])
     beatmapset_id=int(beatmap[0])
-    if beatmap_id is not None and beatmap_id in data.osudb_beatmap_ids:
+    if beatmap[1] is not None and int(beatmap[1]) in data.osudb_beatmap_ids:
         return True
-    if beatmap_id is None and beatmapset_id in data.osudb_beatmapset_ids:
+    if beatmap[1] is None and beatmapset_id in data.osudb_beatmapset_ids:
         return True
     return False
 
