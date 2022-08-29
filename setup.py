@@ -15,5 +15,5 @@ setup(
     version="0.1",
     description="beatmap aggregator",
     options={"build_exe": build_exe_options},
-    executables=[Executable("main.py", base=base)],
+    executables=[Executable("main.py", base=base, icon="osu.png")],
 )
