@@ -19,7 +19,7 @@ async def get_session():
 # 1: Success from chimu
 # 2. Success from osu
 async def download_beatmap(beatmapset_id):
-    session=get_session()
+    session=await get_session()
 
     success=0
     settings=data.get_settings()

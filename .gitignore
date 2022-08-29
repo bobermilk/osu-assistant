@@ -1,6 +1,6 @@
 sensitive_data.py
 __pycache__/
 osu!.db
-cache.db
+collection.db
 tournament.json
 mappack.json

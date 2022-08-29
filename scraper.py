@@ -6,11 +6,6 @@ import data
 import constants
 # returns https://osu.ppy.sh/beatmapsets/<beatmapset_id>
 
-def pausechamp(r):
-    if r.status_code != 200:
-        raise Exception()
-    time.sleep(constants.api_get_interval)
-
 # TODO: write test
 def get_userpage_beatmaps(source):
     all_beatmaps=set()

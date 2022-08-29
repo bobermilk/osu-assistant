@@ -1,5 +1,5 @@
 import scraper
-import constants, misc, data
+import database, misc, data
 from pubsub import pub
 from copy import copy
 
@@ -212,9 +212,14 @@ class Jobs:
         # refresh --> job_queue.pop() -> download(maps) -> write_collections -> progressbar+=1 
         initial_job_cnt=self.get_job_cnt()
         success=1
+        collections={}
         while self.get_job_cnt() > 0:
             job=self.job_queue.pop(0)
-            pub.sendMessage("update.progress", value=0, range=0, progress_message=f"Downloading {job.get_job_source_key()} ({initial_job_cnt-self.get_job_cnt()}/{initial_job_cnt} jobs)")
+            job_source_key=job.get_job_source_key()
+            job_source=data.get_sources().get_source(job_source_key)
+            if isinstance(job_source, UserpageSource) or isinstance(job_source, TournamentSource) or isinstance(job_source, OsucollectorSource):
+                collections[job_source_key]=[x[2] for x in job_source.get_available_beatmaps()]
+            pub.sendMessage("update.progress", value=0, range=0, progress_message=f"Downloading {job_source_key} ({initial_job_cnt-self.get_job_cnt()}/{initial_job_cnt} jobs)")
             pub.sendMessage("enable.job_toggle_button")
             success=await misc.do_job(job)
             if data.cancel_jobs_toggle:
@@ -222,6 +227,8 @@ class Jobs:
             pub.sendMessage("update.activity")
         # Check last success to see if we should show the No pending downloads
         if success:
+            print(collections)
+            database.update_collections(collections)
             pub.sendMessage("update.progress", value=None, range=None, progress_message=f"{initial_job_cnt} jobs completed successfully")
             pub.sendMessage("update.activity")
         else:
