@@ -72,6 +72,8 @@ def get_token():
         'scope': 'public'
     }
     response=requests.post(constants.OSU_TOKEN_URL, data=credentials)
-
-    data.OAUTH_TOKEN=response.json().get('access_token')
+    try:
+        data.OAUTH_TOKEN=response.json().get('access_token')
+    except:
+        raise Exception("Invaild oauth token, osu assistant can't work without it")
     return data.OAUTH_TOKEN
