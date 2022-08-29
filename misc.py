@@ -3,6 +3,7 @@ import requests
 import download
 import asyncio
 import data, database, constants, strings
+from pubsub import pub
 
 # Update sources/jobs on startup
 # 
@@ -20,7 +21,7 @@ async def do_job(job):
     downloads=job.get_job_downloads()
 
     source=data.get_sources().get_source(job.get_job_source_key())
-    for beatmap in downloads:
+    for i, beatmap in enumerate(downloads, 1):
         # Check if cancel button has been pressed (user cancelled opration)
         if data.cancel_jobs_toggle:
             return False
@@ -42,6 +43,9 @@ async def do_job(job):
                 source.uncache_missing_beatmap(beatmap)
         else:
             source.cache_unavailable_beatmap(beatmap)
+        
+        # Update progressbar
+        pub.sendMessage("update.progress", value=i, range=len(downloads), progress_message=None)
     
     return True  
 

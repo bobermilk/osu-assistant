@@ -62,8 +62,7 @@ class MainWindow(gui.Main):
         while len(job_list) > 0:
             job=job_list.pop(0)
             job_source_key=job.get_job_source_key()
-            job_status=job.get_status()
-            self.m_activity_list.Insert(str(job_source_key+f" ({job_status})"), i)
+            self.m_activity_list.Insert(str(job_source_key+f" ({job.get_job_downloads_cnt()} beatmaps)"), i)
 
     # toggle jobs
     # TODO: 

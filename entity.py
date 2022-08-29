@@ -171,6 +171,8 @@ class Job:
     def __init__(self, source_key, downloads):
         self.job_source_key=source_key
         self.job_downloads=downloads
+    def get_job_downloads_cnt(self):
+        return len(self.job_downloads)
     def get_job_downloads(self):
         return self.job_downloads
     def set_job_downloads(self, downloads):
@@ -206,17 +208,23 @@ class Jobs:
     async def start_jobs(self):
         # refresh --> job_queue.pop() -> download(maps) -> write_collections -> progressbar+=1 
         initial_job_cnt=self.get_job_cnt()
-        pub.sendMessage("update.progress", arg1=0, arg2=initial_job_cnt, arg3=None)
+        success=1
         while self.get_job_cnt() > 0:
             job=self.job_queue.pop(0)
-            pub.sendMessage("update.progress", arg1=initial_job_cnt-self.get_job_cnt(), arg2=None, arg3=f"Downloading {job.get_job_source_key()}")
+            pub.sendMessage("update.progress", value=0, range=0, progress_message=f"Downloading {job.get_job_source_key()} ({initial_job_cnt-self.get_job_cnt()}/{initial_job_cnt} jobs)")
             success=await misc.do_job(job)
-            if not success:
+            if data.cancel_jobs_toggle:
                 data.cancel_jobs_toggle=False
-                pub.sendMessage("update.progress", arg1=None, arg2=None, arg3=f"{self.get_job_cnt()} downloads cancelled")
                 break # Terminate all jobs
             pub.sendMessage("update.activity")
-        pub.sendMessage("update.activity")
+        # Check last success to see if we should show the No pending downloads
+        if success:
+            pub.sendMessage("update.progress", value=None, range=None, progress_message=f"{initial_job_cnt} jobs completed successfully")
+            pub.sendMessage("update.activity")
+        else:
+            data.cancel_jobs_toggle=False
+            pub.sendMessage("update.progress", value=None, range=None, progress_message=f"{self.get_job_cnt()} jobs cancelled")
+            pub.sendMessage("update.activity")
 
 
 # Settings
