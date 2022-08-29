@@ -3,3 +3,4 @@ pypubsub
 wxPython
 aiofiles
 aiohttp
+wxasync
