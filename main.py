@@ -30,6 +30,10 @@ def update_progress(value, range, progress_message):
 def enable_job_toggle_button():
     main_window.m_toggle_downloading.Enable()
 
+def show_update_dialogue():
+    update_dialogue=gui.UpdateDialogue(main_window)
+    update_dialogue.Show()
+
 class MainWindow(gui.Main):
     """
     Main window bro
@@ -43,6 +47,7 @@ class MainWindow(gui.Main):
         pub.subscribe(update_activity, "update.activity")
         pub.subscribe(update_progress, "update.progress")
         pub.subscribe(enable_job_toggle_button, "enable.job_toggle_button")
+        pub.subscribe(show_update_dialogue, "show.update_available_window")
         AsyncBind(wx.EVT_BUTTON, self.show_add_window, self.m_add_source)
         AsyncBind(wx.EVT_BUTTON, self.toggle_jobs, self.m_toggle_downloading)
         AsyncBind(wx.EVT_BUTTON, self.update_settings, self.m_save_settings)
@@ -84,7 +89,7 @@ class MainWindow(gui.Main):
         if s.osu_install_folder!=None:
             # Initialize the cache db
             await database.create_osudb()
-
+    
     # toggle jobs
     # TODO: 
     async def toggle_jobs(self, event):

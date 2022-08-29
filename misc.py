@@ -8,6 +8,11 @@ from pubsub import pub
 # Update sources/jobs on startup
 # 
 async def init():
+    # Check for update
+
+    if requests.get("https://raw.githubusercontent.com/bobermilk/osu-assistant-data/main/update.json").json()["latest"]>constants.APP_VERSION:
+        pub.sendMessage("show.update_available_window")
+
     # Get the jsons
     data.TournamentJson=requests.get("https://raw.githubusercontent.com/bobermilk/osu-assistant-data/main/tournament.json").json()
     data.MappackJson=requests.get("https://raw.githubusercontent.com/bobermilk/osu-assistant-data/main/mappack.json").json()
