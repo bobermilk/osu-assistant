@@ -1,5 +1,5 @@
 import os
-DEBUG=True
+DEBUG=False
 
 test_folder=os.getcwd()
 request_timeout=10

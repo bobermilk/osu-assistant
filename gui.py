@@ -105,12 +105,7 @@ class Main ( wx.Frame ):
 
 		bSizer25.Add( bSizer2611, 0, wx.EXPAND, 5 )
 
-		self.m_autoupdate_sources = wx.CheckBox( self.m_panel_settings, wx.ID_ANY, u"Show missing/failed/unavailable beatmaps in sources", wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_autoupdate_sources.SetValue(True)
-		bSizer25.Add( self.m_autoupdate_sources, 0, wx.ALL, 5 )
-
 		self.m_autodownload_toggle = wx.CheckBox( self.m_panel_settings, wx.ID_ANY, u"Automatically start downloading from sources on application start", wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_autodownload_toggle.SetValue(True)
 		bSizer25.Add( self.m_autodownload_toggle, 0, wx.ALL, 5 )
 
 		bSizer5511 = wx.BoxSizer( wx.HORIZONTAL )
@@ -134,8 +129,8 @@ class Main ( wx.Frame ):
 
 		bSizer23.Add( self.m_staticText9, 0, wx.ALL, 5 )
 
-		self.m_checkBox11 = wx.CheckBox( self.m_collapsiblePane1.GetPane(), wx.ID_ANY, u"Use osu website as mirror if beatconnect does not have beatmap (botting is against TOS)", wx.DefaultPosition, wx.DefaultSize, 0 )
-		bSizer23.Add( self.m_checkBox11, 0, wx.ALL, 5 )
+		self.m_use_osu_mirror = wx.CheckBox( self.m_collapsiblePane1.GetPane(), wx.ID_ANY, u"Use osu website as mirror if beatconnect does not have beatmap (botting is against TOS)", wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer23.Add( self.m_use_osu_mirror, 0, wx.ALL, 5 )
 
 		bSizer34 = wx.BoxSizer( wx.HORIZONTAL )
 
@@ -256,7 +251,6 @@ class Main ( wx.Frame ):
 
 		# Connect Events
 		self.m_osu_dir.Bind( wx.EVT_DIRPICKER_CHANGED, self.update_osu_folder )
-		self.m_autoupdate_sources.Bind( wx.EVT_CHECKBOX, self.autoupdate_toggle )
 		self.m_autodownload_toggle.Bind( wx.EVT_CHECKBOX, self.autodownload_toggle )
 		self.m_export_to_collection.Bind( wx.EVT_BUTTON, self.import_assistant_configuration )
 		self.m_export_to_beatmap.Bind( wx.EVT_BUTTON, self.export_assistant_configuration )
@@ -275,9 +269,6 @@ class Main ( wx.Frame ):
 
 	# Virtual event handlers, override them in your derived class
 	def update_osu_folder( self, event ):
-		event.Skip()
-
-	def autoupdate_toggle( self, event ):
 		event.Skip()
 
 	def autodownload_toggle( self, event ):

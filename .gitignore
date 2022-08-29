@@ -1,5 +1,6 @@
 sensitive_data.py
 __pycache__/
+build/
 osu!.db
 collection.db
 tournament.json

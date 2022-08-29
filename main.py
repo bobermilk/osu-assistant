@@ -1,9 +1,8 @@
-from asyncio import coroutines
 import wx
 import gui
 from wxasync import AsyncBind, WxAsyncApp
 import asyncio
-import data, constants, misc
+import data, constants, misc, database
 from pubsub import pub
 
 app = WxAsyncApp()
@@ -42,10 +41,10 @@ class MainWindow(gui.Main):
         pub.subscribe(update_sources, "update.sources")
         pub.subscribe(update_activity, "update.activity")
         pub.subscribe(update_progress, "update.progress")
-        pub.subscribe(update_progress, "update.progress")
         pub.subscribe(enable_job_toggle_button, "enable.job_toggle_button")
         AsyncBind(wx.EVT_BUTTON, self.show_add_window, self.m_add_source)
         AsyncBind(wx.EVT_BUTTON, self.toggle_jobs, self.m_toggle_downloading)
+        AsyncBind(wx.EVT_BUTTON, self.update_settings, self.m_save_settings)
 
     # used to repopulate the source list after a edit
     def update_sources(self, event):
@@ -70,6 +69,20 @@ class MainWindow(gui.Main):
             job=job_list.pop(0)
             job_source_key=job.get_job_source_key()
             self.m_activity_list.Insert(str(job_source_key+f" ({job.get_job_downloads_cnt()} beatmaps)"), i)
+
+    async def update_settings(self, event):
+        s=data.get_settings()
+        s.osu_install_folder=self.m_osu_dir.GetPath()
+        s.oauth=(self.m_client_id.GetValue(), self.m_client_secret.GetValue())
+        s.download_on_start=self.m_autodownload_toggle.GetValue()
+        s.download_from_osu=self.m_use_osu_mirror.GetValue()
+        s.xsrf_token=self.m_settings_xsrf_token.GetValue()
+        s.osu_session=self.m_settings_osu_session.GetValue()
+        s.download_interval=self.m_download_interval.GetValue()
+
+        if s.osu_install_folder!=None:
+            # Initialize the cache db
+            await database.create_osudb()
 
     # toggle jobs
     # TODO: 

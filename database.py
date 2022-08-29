@@ -189,37 +189,39 @@ def collection_to_dict():
 
 
 def update_collections(new_collections):
-    current_collections=collection_to_dict()
-    b = buffer.WriteBuffer()
-    b.write_uint(current_collections["version"])
+    if data.get_settings().osu_install_folder != None:
+        current_collections=collection_to_dict()
+        b = buffer.WriteBuffer()
+        b.write_uint(current_collections["version"])
 
-    # Weed out the shit we gonna replace
-    existing_collections={}
-    for collection in current_collections["collections"]:
-        if collection["name"] not in new_collections.keys():
-            existing_collections[collection["name"]]=collection["hashes"]
+        # Weed out the shit we gonna replace
+        existing_collections={}
+        for collection in current_collections["collections"]:
+            if collection["name"] not in new_collections.keys():
+                existing_collections[collection["name"]]=collection["hashes"]
 
-    b.write_uint(len(new_collections)+len(existing_collections))
+        b.write_uint(len(new_collections)+len(existing_collections))
 
-    # Write the new collections
-    for name, checksums in existing_collections.items():
-        b.write_string(name)
-        b.write_uint(len(checksums))
-        for checksum in checksums:
-            b.write_string(checksum)
-            
-    # Write the existing collections
-    for name, checksums in new_collections.items():
-        b.write_string(name)
-        b.write_uint(len(checksums))
-        for checksum in checksums:
-            b.write_string(checksum)
+        # Write the new collections
+        for name, checksums in existing_collections.items():
+            b.write_string(name)
+            b.write_uint(len(checksums))
+            for checksum in checksums:
+                b.write_string(checksum)
+                
+        # Write the existing collections
+        for name, checksums in new_collections.items():
+            b.write_string(name)
+            b.write_uint(len(checksums))
+            for checksum in checksums:
+                b.write_string(checksum)
+        
+        osu_folder=data.get_settings().osu_install_folder
+        collection_file=os.path.join(osu_folder,"collection.db")
+        backup_file=os.path.join(osu_folder, "collection_backup.db")
+        if os.path.isfile(collection_file):
+            shutil.copy2(collection_file, backup_file)
+        with open(collection_file, "wb") as db:
+            db.write(b.data)
+            db.close()
     
-    osu_folder=data.get_settings().osu_install_folder
-    collection_file=os.path.join(osu_folder,"collection.db")
-    backup_file=os.path.join(osu_folder, "collection_backup.db")
-    if os.path.isfile(collection_file):
-        shutil.copy2(collection_file, backup_file)
-    with open(collection_file, "wb") as db:
-        db.write(b.data)
-        db.close()

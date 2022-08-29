@@ -218,7 +218,7 @@ class Jobs:
             job_source_key=job.get_job_source_key()
             job_source=data.get_sources().get_source(job_source_key)
             if isinstance(job_source, UserpageSource) or isinstance(job_source, TournamentSource) or isinstance(job_source, OsucollectorSource):
-                collections[job_source_key]=[x[2] for x in job_source.get_available_beatmaps()]
+                collections[job_source_key]=[x[2] for x in job_source.get_available_beatmaps() if x[2] != None]
             pub.sendMessage("update.progress", value=0, range=0, progress_message=f"Downloading {job_source_key} ({initial_job_cnt-self.get_job_cnt()}/{initial_job_cnt} jobs)")
             pub.sendMessage("enable.job_toggle_button")
             success=await misc.do_job(job)
@@ -245,7 +245,7 @@ class Settings:
         self.osu_install_folder=None
         self.oauth=None
         self.source_show_missing=True
-        self.download_on_start=True
+        self.download_on_start=False
         self.download_from_osu=False
         self.xsrf_token=""
         self.osu_session=""
