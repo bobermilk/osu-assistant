@@ -36,6 +36,7 @@ class MainWindow(gui.Main):
     """
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
+        self.Maximize(True)
         self.update_sources(self)
         self.update_activity(self)
         pub.subscribe(update_sources, "update.sources")
