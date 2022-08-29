@@ -51,10 +51,10 @@ class Main ( wx.Frame ):
 		self.m_activity_list = wx.ListBox( self.m_panel_activity, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_activity_listChoices, 0 )
 		bSizer5.Add( self.m_activity_list, 1, wx.ALL|wx.EXPAND, 5 )
 
-		self.m_activity_progress = wx.StaticText( self.m_panel_activity, wx.ID_ANY, u"No active downloads!", wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_CENTER_HORIZONTAL )
+		self.m_activity_progress = wx.StaticText( self.m_panel_activity, wx.ID_ANY, u"No active downloads!", wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_CENTER_HORIZONTAL|wx.ST_NO_AUTORESIZE )
 		self.m_activity_progress.Wrap( -1 )
 
-		bSizer5.Add( self.m_activity_progress, 0, wx.ALIGN_CENTER_VERTICAL|wx.TOP|wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL, 5 )
+		bSizer5.Add( self.m_activity_progress, 0, wx.ALIGN_CENTER_VERTICAL|wx.TOP|wx.EXPAND, 5 )
 
 		self.m_progressbar = wx.Gauge( self.m_panel_activity, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL )
 		self.m_progressbar.SetValue( 0 )
