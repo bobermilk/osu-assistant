@@ -2,7 +2,6 @@
 # returns (success, )
 import constants, data
 import os
-import asyncio
 import aiofiles
 import aiohttp
 
