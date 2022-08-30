@@ -9,7 +9,6 @@
 
 import wx
 import wx.xrc
-import wx.adv
 
 ###########################################################################
 ## Class Main
@@ -474,33 +473,6 @@ class ListPanel ( wx.Panel ):
 
 		self.SetSizer( bSizer31 )
 		self.Layout()
-
-	def __del__( self ):
-		pass
-
-
-###########################################################################
-## Class UpdateDialogue
-###########################################################################
-
-class UpdateDialogue ( wx.Dialog ):
-
-	def __init__( self, parent ):
-		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Update Available!", pos = wx.DefaultPosition, size = wx.DefaultSize, style = wx.DEFAULT_DIALOG_STYLE|wx.STAY_ON_TOP )
-
-		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
-
-		bSizer28 = wx.BoxSizer( wx.VERTICAL )
-
-		self.m_hyperlink2 = wx.adv.HyperlinkCtrl( self, wx.ID_ANY, u"Download new release from github", u"https://github.com/bobermilk/osu-assistant/releases", wx.DefaultPosition, wx.DefaultSize, wx.adv.HL_DEFAULT_STYLE )
-		bSizer28.Add( self.m_hyperlink2, 0, wx.ALL|wx.EXPAND, 5 )
-
-
-		self.SetSizer( bSizer28 )
-		self.Layout()
-		bSizer28.Fit( self )
-
-		self.Centre( wx.BOTH )
 
 	def __del__( self ):
 		pass

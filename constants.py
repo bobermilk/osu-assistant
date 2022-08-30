@@ -1,6 +1,6 @@
 import os
 
-APP_VERSION=1
+APP_VERSION=0
 DEBUG=False
 
 test_folder=os.getcwd()
@@ -42,5 +42,6 @@ activity_start="Start Downloading (top to bottom)"
 link_discord="https://discord.gg/GqVzWMUw"
 link_paypal="https://paypal.me/bobermilk"
 link_github="https://github.com/bobermilk/osu-assistant"
+link_github_releases="https://github.com/bobermilk/osu-assistant/releases"
 link_website="https://milkies.ml/osu-assistant"
 link_mappers="https://osu.ppy.sh/home/follows/mapping"

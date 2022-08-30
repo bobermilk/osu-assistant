@@ -1,4 +1,5 @@
 # data provider (store variables, hardcode things and functions to get and set data)
+import pickle
 import entity
 import constants
 import fake_provider as fake
@@ -43,3 +44,6 @@ def get_settings():
         return fake.Settings
     else:
         return Settings
+
+async def save_data():
+    pass

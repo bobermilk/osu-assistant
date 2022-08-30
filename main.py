@@ -4,6 +4,7 @@ import gui
 from wxasync import AsyncBind, WxAsyncApp
 import asyncio
 import data, constants, misc, database
+from download import destroy_client
 from pubsub import pub
 
 app = WxAsyncApp()
@@ -36,10 +37,17 @@ def reset_job_toggle_button_text():
     # called when jobs are completed
     main_window.m_toggle_downloading.SetLabelText(constants.activity_start)
 
-def show_update_dialogue():
+def show_dialogue(msg, ok=None):
     # called when new release dropped on github
-    update_dialogue=gui.UpdateDialogue(main_window)
-    update_dialogue.Show()
+    dlg = wx.MessageDialog(main_window, 
+        msg,
+        "Ok", wx.OK|wx.CANCEL|wx.ICON_QUESTION)
+    result = dlg.ShowModal()
+    if result == wx.ID_OK:
+        if ok != None:
+            ok()
+    dlg.Destroy()
+    return result == wx.ID_OK
 
 class MainWindow(gui.Main):
     """
@@ -55,10 +63,21 @@ class MainWindow(gui.Main):
         pub.subscribe(update_progress, "update.progress")
         pub.subscribe(enable_job_toggle_button, "enable.job_toggle_button")
         pub.subscribe(reset_job_toggle_button_text, "reset.job_toggle_button_text")
-        pub.subscribe(show_update_dialogue, "show.update_available_window")
+        pub.subscribe(show_dialogue, "show.dialogue")
         AsyncBind(wx.EVT_BUTTON, self.show_add_window, self.m_add_source)
         AsyncBind(wx.EVT_BUTTON, self.toggle_jobs, self.m_toggle_downloading)
         AsyncBind(wx.EVT_BUTTON, self.update_settings, self.m_save_settings)
+        AsyncBind(wx.EVT_CLOSE, self.onDestroy, self)
+
+    async def onDestroy(self, event):
+        if show_dialogue("Are you sure you want to close the application?"):
+            # pickle the data
+            await destroy_client()
+            await data.save_data()      
+            
+            if add_source_window!=None:
+                add_source_window.Destroy()
+            self.Destroy()
 
     # used to repopulate the source list after a edit
     def update_sources(self, event):
@@ -110,10 +129,13 @@ class MainWindow(gui.Main):
 
     async def show_add_window(self, event):
         global add_source_window
-        add_source_window=AddSourceWindow(parent=None)
-        add_source_window.Show()
-        self.m_add_source.Disable()
-        await add_source_window.populate_add_window(add_source_window)
+        if data.get_settings().osu_install_folder!=None and data.get_settings().oauth != None:
+            add_source_window=AddSourceWindow(parent=None)
+            add_source_window.Show()
+            self.m_add_source.Disable()
+            await add_source_window.populate_add_window(add_source_window)
+        else:
+            show_dialogue("You must set your osu install folder and do oauth authentication first!")
     
     def open_discord(self, event):
         webbrowser.open(constants.link_discord)
@@ -123,7 +145,7 @@ class MainWindow(gui.Main):
         webbrowser.open(constants.link_github)
     def open_website(self, event):
         webbrowser.open(constants.link_website)
-
+        
 class AddSourceWindow(gui.AddSource):
     """
     Window for adding a new source
@@ -142,7 +164,9 @@ class AddSourceWindow(gui.AddSource):
         global add_source_window
         global main_window
         add_source_window=None
-        main_window.m_add_source.Enable()
+        #User closed application
+        if main_window != None:
+            main_window.m_add_source.Enable()
 
     async def add_userpage(self, event):
         links=self.m_userpages.GetValue()

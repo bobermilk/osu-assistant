@@ -14,6 +14,11 @@ async def get_session():
         session = aiohttp.ClientSession()
     return session
 
+async def destroy_client():
+    global session
+    if session != None:
+        session.close()
+    
 # The exit codes are as follows
 # 0: Failed to download
 # 1: Success from chimu

@@ -1,3 +1,4 @@
+import webbrowser
 import entity
 import requests
 import download
@@ -11,7 +12,7 @@ async def init():
     # Check for update
 
     if requests.get("https://raw.githubusercontent.com/bobermilk/osu-assistant-data/main/update.json").json()["latest"]>constants.APP_VERSION:
-        pub.sendMessage("show.update_available_window")
+        pub.sendMessage("show.dialogue", msg="New update available! Download from github?", ok=lambda: webbrowser.open(constants.link_github_releases))
 
     # Get the jsons
     data.TournamentJson=requests.get("https://raw.githubusercontent.com/bobermilk/osu-assistant-data/main/tournament.json").json()
