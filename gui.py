@@ -396,7 +396,7 @@ class AddSource ( wx.Frame ):
 		self.m_mappack_section.SetSelection( 0 )
 		bSizer141.Add( self.m_mappack_section, 0, wx.ALL|wx.EXPAND, 5 )
 
-		self.m_staticText17 = wx.StaticText( self.m_panel8, wx.ID_ANY, u"Search results", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText17 = wx.StaticText( self.m_panel8, wx.ID_ANY, u"Search results (hold control and click to select multiple packs)", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText17.Wrap( -1 )
 
 		bSizer141.Add( self.m_staticText17, 0, wx.ALL, 5 )
