@@ -258,6 +258,7 @@ main_window = MainWindow()
 add_source_window=None
 
 async def main():
+    main_window.SetIcon(wx.Icon("assets/osu.ico"))
     main_window.Show()
     app.SetTopWindow(main_window)
     await misc.init()
