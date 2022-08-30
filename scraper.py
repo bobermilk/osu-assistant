@@ -21,7 +21,7 @@ def get_userpage_beatmaps(source):
             else:
                 url=constants.scrape_top_plays.format(user_id, gamemode, on_page*100, (on_page-1)*100)
             r=requests.get(url)
-            time.sleep(3)
+            time.sleep(constants.osu_get_interval)
             for item in r.json():
                 beatmap_id=item['beatmap_id']
                 beatmap_checksum, beatmapset_id = api.query_osu_beatmap(beatmap_id)

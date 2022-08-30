@@ -61,8 +61,6 @@ class MainWindow(gui.Main):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.Maximize(True)
-        self.update_sources(self)
-        self.update_activity(self)
         pub.subscribe(update_sources, "update.sources")
         pub.subscribe(update_activity, "update.activity")
         pub.subscribe(update_progress, "update.progress")
@@ -162,6 +160,8 @@ class MainWindow(gui.Main):
 
         if s.download_from_osu==True:
             await check_cookies()
+        
+        data.save_data()      
     
     # toggle jobs
     async def toggle_jobs(self, event):

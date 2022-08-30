@@ -105,16 +105,16 @@ class Sources():
 
     async def refresh(self):
         # TODO: api shit, call query_osu and store beatmaps in source.all_beatmaps as a triple (beatmapsetid, beatmapid, checksum)
-        for source in self.user_source:
+        for source in self.user_source.values():
             all_beatmaps=scraper.get_userpage_beatmaps(source)
             source.cache_beatmaps(all_beatmaps)
-        for source in self.tournament_source:
+        for source in self.tournament_source.values():
             all_beatmaps=scraper.get_tournament_beatmaps(source)
             source.cache_beatmaps(all_beatmaps)
-        for source in self.mappack_source:
+        for source in self.mappack_source.values():
             all_beatmaps=scraper.get_mappack_beatmaps(source)
             source.cache_beatmaps(all_beatmaps)
-        for source in self.osucollector_source:
+        for source in self.osucollector_source.values():
             all_beatmaps=scraper.get_osucollector_beatmaps(source)
             source.cache_beatmaps(all_beatmaps)
 

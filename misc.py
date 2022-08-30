@@ -19,8 +19,7 @@ async def init():
     data.TournamentJson=requests.get("https://raw.githubusercontent.com/bobermilk/osu-assistant-data/main/tournament.json").json()
     data.MappackJson=requests.get("https://raw.githubusercontent.com/bobermilk/osu-assistant-data/main/mappack.json").json()
     # Refresh sources and jobs (the views will update)
-    if data.get_settings().download_on_start:
-        await data.Sources.refresh()
+    await data.Sources.refresh()
     
 # WARNING: this function WILL hang the main thread, so remember to make it async in production
 async def do_job(job):
@@ -40,7 +39,7 @@ async def do_job(job):
             # Intervals between jobs
             download_interval=data.get_settings().download_interval/1000
             if success==2:
-                download_interval+=2 # add 2 seconds if its downloading from osu website
+                download_interval+=constants.osu_get_interval # add 3 seconds if its downloading from osu website
             await asyncio.sleep(download_interval)
 
             if not success:
