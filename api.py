@@ -1,9 +1,9 @@
 # for flask and osu api requests
-
+import aiohttp
 import time
 import requests
 import json
-import data, constants
+import data, constants, download
 
 # FLASK API
 def query_flask_tournaments(tournament_id):
@@ -77,3 +77,17 @@ def get_token():
     except:
         raise Exception("Invaild oauth token, osu assistant can't work without it")
     return data.OAUTH_TOKEN
+
+async def check_cookies():
+    url=constants.osu_beatmap_url_download.format(1)
+    settings=data.get_settings()
+    cookie={"XSRF-TOKEN":settings.xsrf_token,"osu_session":settings.osu_session}
+    osu_header={ "referer":constants.osu_beatmap_url.format(1) }
+    session=await download.get_session()
+    try:
+        async with session.head(url, allow_redirects=True, cookies=cookie, headers=osu_header) as s:
+            if s.status==200:
+                return True
+    except:
+        return False
+    return False

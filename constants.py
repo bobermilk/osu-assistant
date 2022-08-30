@@ -28,7 +28,7 @@ OSU_TOKEN_URL = 'https://osu.ppy.sh/oauth/token'
 
 chimu_beatmap_url="https://chimu.moe/d/{}"
 osu_beatmap_url="https://osu.ppy.sh/beatmapsets/{}"
-osu_beatmap_url_download="https://osu.ppy.sh/beatmapsets/{}/download"
+osu_beatmap_url_download="https://osu.ppy.sh/beatmapsets/{}/download?noVideo=1"
 osu_beatmap_url_full="https://osu.ppy.sh/beatmapsets/{}#{}/{}"
 
 # dicts

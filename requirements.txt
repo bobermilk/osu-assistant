@@ -2,5 +2,5 @@ requests
 pypubsub
 wxPython
 aiofiles
-aiohttp
+aiohttp[speedups]
 wxasync

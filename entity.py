@@ -253,14 +253,4 @@ class Settings:
 
         # not user inputs
         self.valid_osu_directory=False
-
-    def valid_osu_cookies(self):
-        if self.xsrf_token=="" or self.xsrf_token.isspace():
-            return False
-        if self.osu_session=="" or self.osu_session.isspace():
-            return False
-        try:
-            r=requests.head("https://osu.ppy.sh/beatmapsets/1/download")
-        except:
-            return False
-        return True
+        self.valid_osu_cookies=False

@@ -1,5 +1,6 @@
 import webbrowser
 import wx
+from api import check_cookies
 import gui
 from wxasync import AsyncBind, WxAsyncApp
 import asyncio
@@ -116,6 +117,8 @@ class MainWindow(gui.Main):
         if s.osu_install_folder!=None:
             # Initialize the cache db
             await database.create_osudb()
+        if s.download_from_osu==True:
+            await check_cookies()
     
     # toggle jobs
     async def toggle_jobs(self, event):
