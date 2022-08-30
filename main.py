@@ -70,7 +70,7 @@ class MainWindow(gui.Main):
         AsyncBind(wx.EVT_CLOSE, self.onDestroy, self)
 
     async def onDestroy(self, event):
-        if show_dialogue("Are you sure you want to close the application?"):
+        if show_dialogue("Are you sure you want to close osu assistant?"):
             # pickle the data
             await destroy_client()
             await data.save_data()      

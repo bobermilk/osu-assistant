@@ -182,8 +182,8 @@ class Job:
         self.job_downloads=downloads
     def get_job_source_key(self):
         return self.job_source_key
-    def set_job_source_key(self, source):
-        self.job_source_key=source
+    def set_job_source_key(self, source_key):
+        self.job_source_key=source_key
 
 class Jobs:
     def __init__(self):
