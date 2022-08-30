@@ -96,10 +96,10 @@ class Main ( wx.Frame ):
 
 		bSizer2611.Add( self.m_staticText412, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-		self.m_client_id = wx.TextCtrl( self.m_panel_settings, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_client_id = wx.TextCtrl( self.m_panel_settings, wx.ID_ANY, u"client_id", wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer2611.Add( self.m_client_id, 1, wx.ALL, 5 )
 
-		self.m_client_secret = wx.TextCtrl( self.m_panel_settings, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_client_secret = wx.TextCtrl( self.m_panel_settings, wx.ID_ANY, u"client_secret", wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer2611.Add( self.m_client_secret, 1, wx.ALL, 5 )
 
 
@@ -136,10 +136,10 @@ class Main ( wx.Frame ):
 
 		bSizer26111.Add( self.m_staticText4121, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-		self.m_settings_xsrf_token = wx.TextCtrl( self.m_collapsiblePane1.GetPane(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_settings_xsrf_token = wx.TextCtrl( self.m_collapsiblePane1.GetPane(), wx.ID_ANY, u"XSRF_TOKEN", wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer26111.Add( self.m_settings_xsrf_token, 1, wx.ALL, 5 )
 
-		self.m_settings_osu_session = wx.TextCtrl( self.m_collapsiblePane1.GetPane(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_settings_osu_session = wx.TextCtrl( self.m_collapsiblePane1.GetPane(), wx.ID_ANY, u"osu_session", wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer26111.Add( self.m_settings_osu_session, 1, wx.ALL, 5 )
 
 

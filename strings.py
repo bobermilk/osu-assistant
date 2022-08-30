@@ -24,7 +24,7 @@ def generate_userpage_source_key(users, scope):
     if scope[6]:
         status+="g"
     if status[-1]=='&':
-        scope=scope[:-1]
+        status=status[:-1]
     ids="ids="
     for userid, gamemode in users:
         ids+=str(userid)

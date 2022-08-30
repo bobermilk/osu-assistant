@@ -65,17 +65,18 @@ def get_token():
     if data.OAUTH_TOKEN is not None:
         return data.OAUTH_TOKEN
 
-    credentials={
-        'client_id': data.get_settings().oauth[0],
-        'client_secret': data.get_settings().oauth[1],
-        'grant_type': 'client_credentials',
-        'scope': 'public'
-    }
-    response=requests.post(constants.OSU_TOKEN_URL, data=credentials)
-    try:
-        data.OAUTH_TOKEN=response.json().get('access_token')
-    except:
-        raise Exception("Invaild oauth token, osu assistant can't work without it")
+    if data.get_settings().oauth != None:
+        credentials={
+            'client_id': data.get_settings().oauth[0],
+            'client_secret': data.get_settings().oauth[1],
+            'grant_type': 'client_credentials',
+            'scope': 'public'
+        }
+        response=requests.post(constants.OSU_TOKEN_URL, data=credentials)
+        try:
+            data.OAUTH_TOKEN=response.json().get('access_token')
+        except:
+            raise Exception("Invaild oauth token, osu assistant can't work without it")
     return data.OAUTH_TOKEN
 
 async def check_cookies():

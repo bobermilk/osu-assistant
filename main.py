@@ -133,7 +133,7 @@ class MainWindow(gui.Main):
             self.m_client_secret.SetValue(s.oauth[1])
         else:
             self.m_client_id.SetValue("client_id")
-            self.m_client_id.SetValue("client_secret")
+            self.m_client_secret.SetValue("client_secret")
         self.m_autodownload_toggle.SetValue(s.download_on_start)
         self.m_use_osu_mirror.SetValue(s.download_from_osu)
         self.m_settings_xsrf_token.SetHelpText("Inspect element on osu website to obtain")
@@ -143,8 +143,8 @@ class MainWindow(gui.Main):
             self.m_settings_xsrf_token.SetValue("XRSF_TOKEN")
             self.m_settings_osu_session.SetValue("osu_session")
         else:
-            self.m_settings_xsrf_token.SetValue(s.xsrf_token)
-            self.m_settings_osu_session.SetValue(s.osu_session)
+            self.m_settings_xsrf_token.SetValue("XSRF_TOKEN")
+            self.m_settings_osu_session.SetValue("osu_session")
             
     async def update_settings(self, event):
         s=data.get_settings()
