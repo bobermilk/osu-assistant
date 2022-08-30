@@ -148,6 +148,9 @@ class MainWindow(gui.Main):
             self.m_settings_xsrf_token.SetValue("XSRF_TOKEN")
             self.m_settings_osu_session.SetValue("osu_session")
         
+        # Refresh sources and jobs (the views will update)
+        await data.Sources.refresh()
+
         # Initiate automatic downloads
         if s.download_on_start:
             pub.sendMessage("toggle.jobs")
@@ -333,7 +336,7 @@ async def main():
     main_window.SetIcon(wx.Icon("assets/osu.ico"))
     main_window.Show()
     app.SetTopWindow(main_window)
-    show_dialog("Note from developer:\n\nThis app has no loading screens and will not respond whenever it's working, including after you click OK\nYou may report bugs to milk#6867 on discord")
+    show_dialog("Note from developer:\n\nThis app has no loading screens and will not respond whenever it's working (including after you click OK)\nYou may join the discord server to report bugs")
     await misc.init()
     await main_window.restore_settings(None)
     await app.MainLoop()

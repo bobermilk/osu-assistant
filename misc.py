@@ -18,8 +18,6 @@ async def init():
     # Get the jsons
     data.TournamentJson=requests.get("https://raw.githubusercontent.com/bobermilk/osu-assistant-data/main/tournament.json").json()
     data.MappackJson=requests.get("https://raw.githubusercontent.com/bobermilk/osu-assistant-data/main/mappack.json").json()
-    # Refresh sources and jobs (the views will update)
-    await data.Sources.refresh()
     
 # WARNING: this function WILL hang the main thread, so remember to make it async in production
 async def do_job(job):
