@@ -25,10 +25,6 @@ def get_userpage_beatmaps(source):
             for item in r.json():
                 beatmap_id=item['beatmap_id']
                 beatmap_checksum, beatmapset_id = api.query_osu_beatmap(beatmap_id)
-                if beatmap_checksum==0:
-                    beatmap_checksum=None
-                if beatmapset_id==0:
-                    beatmapset_id=None
                 beatmap=(beatmapset_id, beatmap_id, beatmap_checksum)
                 beatmaps.add(beatmap)
         all_beatmaps.update(beatmaps)

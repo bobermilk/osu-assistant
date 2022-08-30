@@ -4,7 +4,7 @@ import webbrowser
 import wx
 from api import check_cookies, get_token
 import gui
-from wxasync import AsyncBind, WxAsyncApp
+from wxasync import AsyncBind, WxAsyncApp, StartCoroutine
 import asyncio
 import data, constants, misc, database
 from download import destroy_client
@@ -42,7 +42,7 @@ def reset_job_toggle_button_text():
     # called when jobs are completed
     main_window.m_toggle_downloading.SetLabelText(constants.activity_start)
 
-def show_dialogue(msg, ok=None):
+def show_dialog(msg, ok=None):
     # called when new release dropped on github
     dlg = wx.MessageDialog(main_window, 
         msg,
@@ -61,19 +61,20 @@ class MainWindow(gui.Main):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.Maximize(True)
+        self.m_version.SetLabelText("App version: {}".format(constants.APP_VERSION))
         pub.subscribe(update_sources, "update.sources")
         pub.subscribe(update_activity, "update.activity")
         pub.subscribe(update_progress, "update.progress")
         pub.subscribe(enable_job_toggle_button, "enable.job_toggle_button")
         pub.subscribe(reset_job_toggle_button_text, "reset.job_toggle_button_text")
-        pub.subscribe(show_dialogue, "show.dialogue")
+        pub.subscribe(show_dialog, "show.dialog")
         AsyncBind(wx.EVT_BUTTON, self.show_add_window, self.m_add_source)
         AsyncBind(wx.EVT_BUTTON, self.toggle_jobs, self.m_toggle_downloading)
         AsyncBind(wx.EVT_BUTTON, self.update_settings, self.m_save_settings)
         AsyncBind(wx.EVT_CLOSE, self.onDestroy, self)
 
     async def onDestroy(self, event):
-        if show_dialogue("Are you sure you want to close osu assistant?"):
+        if show_dialog("Are you sure you want to close osu assistant?"):
             # pickle the data
             await destroy_client()
             data.save_data()      
@@ -94,7 +95,7 @@ class MainWindow(gui.Main):
                 source_panel.m_list.Insert("beatmapset_id="+str(beatmap[0]) + " beatmap_id="+str(beatmap[1]) +" checksum="+str(beatmap[2])+ " (unavailable for download)",i)
             for i, beatmap in enumerate(source.get_missing_beatmaps()):
                 source_panel.m_list.Insert("beatmapset_id="+str(beatmap[0]) + " beatmap_id="+str(beatmap[1]) +" checksum="+str(beatmap[2])+  " (missing)",i)
-            self.m_source_list.AddPage(source_panel, source_key)
+            self.m_source_list.AddPage(source_panel, str(data.get_sources().collection_index[source_key])+": "+source_key)
 
     # used to repopulate the activity list after download completes
     def update_activity(self, event):
@@ -104,7 +105,7 @@ class MainWindow(gui.Main):
         while len(job_list) > 0:
             job=job_list.pop(0)
             job_source_key=job.get_job_source_key()
-            self.m_activity_list.Insert(str(job_source_key+f" ({job.get_job_downloads_cnt()} beatmaps)"), i)
+            self.m_activity_list.Insert(str(job_source_key+f" ({job.get_job_downloads_cnt()} beatmaps will be downloaded)"), i)
 
     def export_collection_to_beatmap(self, event):
         if data.get_settings().valid_osu_directory:
@@ -113,15 +114,18 @@ class MainWindow(gui.Main):
                 collection_window.SetIcon(wx.Icon("assets/osu.ico"))
                 collection_window.Show()
             else:
-                show_dialogue("You have provided a osu install directory, but there is no collection.db in it")
+                show_dialog("You have provided a osu install directory, but there is no collection.db in it")
         else:
-            show_dialogue("You need to set a osu install directory first")
+            show_dialog("You need to set a osu install directory first")
 
     async def restore_settings(self, event):
         get_token()
         await check_cookies()
 
         s=data.get_settings()
+        if s.osu_install_folder!=None:
+            # Initialize the cache db
+            await database.create_osudb()
         if s.osu_install_folder != None:
             self.m_osu_dir.SetPath(s.osu_install_folder)
         self.m_client_id.SetHelpText("osu oauth application client id")
@@ -137,12 +141,17 @@ class MainWindow(gui.Main):
         self.m_settings_xsrf_token.SetHelpText("Inspect element on osu website to obtain")
         self.m_settings_osu_session.SetHelpText("Inspect element on osu website to obtain")
         if s.oauth != None and s.valid_osu_cookies == False:
-            show_dialogue("XSRF-TOKEN or osu_session provided has expired. You have to replace them")
+            show_dialog("XSRF-TOKEN or osu_session provided has expired. You have to replace them")
             self.m_settings_xsrf_token.SetValue("XRSF_TOKEN")
             self.m_settings_osu_session.SetValue("osu_session")
         else:
             self.m_settings_xsrf_token.SetValue("XSRF_TOKEN")
             self.m_settings_osu_session.SetValue("osu_session")
+        
+        # Initiate automatic downloads
+        if s.download_on_start:
+            pub.sendMessage("toggle.jobs")
+            StartCoroutine(self.toggle_jobs, self)
             
     async def update_settings(self, event):
         s=data.get_settings()
@@ -164,7 +173,7 @@ class MainWindow(gui.Main):
         data.save_data()      
     
     # toggle jobs
-    async def toggle_jobs(self, event):
+    async def toggle_jobs(self, event=None):
         self.m_toggle_downloading.Disable()
         if self.m_toggle_downloading.GetLabel() == constants.activity_stop:
             data.cancel_jobs_toggle=True
@@ -182,7 +191,7 @@ class MainWindow(gui.Main):
             self.m_add_source.Disable()
             await add_source_window.populate_add_window(add_source_window)
         else:
-            show_dialogue("You must set your osu install folder and do oauth authentication first!")
+            show_dialog("You must set your osu install folder and do oauth authentication first!")
     
     def open_discord(self, event):
         webbrowser.open(constants.link_discord)
@@ -324,6 +333,7 @@ async def main():
     main_window.SetIcon(wx.Icon("assets/osu.ico"))
     main_window.Show()
     app.SetTopWindow(main_window)
+    show_dialog("Note from developer:\n\nThis app has no loading screens and will not respond whenever it's working, including after you click OK\nYou may report bugs to milk#6867 on discord")
     await misc.init()
     await main_window.restore_settings(None)
     await app.MainLoop()

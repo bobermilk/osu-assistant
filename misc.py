@@ -13,7 +13,7 @@ async def init():
     data.load_data()
     # Check for update
     if requests.get("https://raw.githubusercontent.com/bobermilk/osu-assistant-data/main/update.json").json()["latest"]>constants.APP_VERSION:
-        pub.sendMessage("show.dialogue", msg="New update available! Download from github?", ok=lambda: webbrowser.open(constants.link_github_releases))
+        pub.sendMessage("show.dialog", msg="New update available! Download from github?", ok=lambda: webbrowser.open(constants.link_github_releases))
 
     # Get the jsons
     data.TournamentJson=requests.get("https://raw.githubusercontent.com/bobermilk/osu-assistant-data/main/tournament.json").json()
@@ -58,7 +58,7 @@ async def do_job(job):
 def diff_local_and_source(source):
     missing_beatmap=[]
     for beatmap in source.get_available_beatmaps():
-        if not database.query_osudb(beatmap):
+        if beatmap[0] != None and not database.query_osudb(beatmap):
             missing_beatmap.append(beatmap)
     return missing_beatmap
 

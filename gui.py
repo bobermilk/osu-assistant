@@ -200,6 +200,11 @@ class Main ( wx.Frame ):
 
 		bSizer24.Add( self.m_instructions, 0, wx.ALL, 5 )
 
+		self.m_version = wx.StaticText( self.m_panel_help, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_version.Wrap( -1 )
+
+		bSizer24.Add( self.m_version, 0, wx.ALL, 5 )
+
 
 		self.m_panel_help.SetSizer( bSizer24 )
 		self.m_panel_help.Layout()

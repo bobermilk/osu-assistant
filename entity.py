@@ -11,14 +11,14 @@ class Beatmaps():
         self.unavailable_beatmaps=set() # if api checksum is none, the beatmap will not be there forever
         self.missing_beatmaps=set() # used solely for showing beatmap status on the sources tab
         
-    # def get_all_beatmapset(self):
-    #     return self.all_beatmaps
     def get_available_beatmaps(self):
         return list(self.all_beatmaps-self.unavailable_beatmaps)
         
+    # not hosted on server anymore
     def get_unavailable_beatmaps(self):
         return self.unavailable_beatmaps
-        
+    
+    # tried to download but failed
     def get_missing_beatmaps(self):
         return self.unavailable_beatmaps
 
@@ -86,6 +86,8 @@ class Sources():
         self.osucollector_source={}
         self.mappack_source={}
         self.tournament_source={}
+        self.collection_index={}
+        self.latest_collection_index=0
 
     # get source object by using source_key to query the source dicts
     def get_source(self, source_key):
@@ -122,15 +124,14 @@ class Sources():
         await data.get_jobs().refresh()
         # Update the views
         pub.sendMessage("update.sources")
-        # Initiate automatic downloads
-        if data.get_settings().download_on_start:
-            await data.get_jobs().start_jobs()
 
     async def add_user_source(self, links, scope):
         key, source=misc.create_userpage_source(links, scope)
         all_beatmaps=scraper.get_userpage_beatmaps(source)
         source.cache_beatmaps(all_beatmaps)
         self.user_source[key]=source
+        self.latest_collection_index+=1
+        self.collection_index[key]=self.latest_collection_index
         # refresh the jobs
         await data.get_jobs().refresh()
         # Update the views
@@ -143,6 +144,8 @@ class Sources():
         all_beatmaps=scraper.get_tournament_beatmaps(source)
         source.cache_beatmaps(all_beatmaps)
         self.tournament_source[key]=source
+        self.latest_collection_index+=1
+        self.collection_index[key]=self.latest_collection_index
         # refresh the jobs
         await data.get_jobs().refresh()
         # Update the views
@@ -153,6 +156,8 @@ class Sources():
         all_beatmaps=scraper.get_mappack_beatmaps(source)
         source.cache_beatmaps(all_beatmaps)
         self.mappack_source[key]=source
+        self.latest_collection_index+=1
+        self.collection_index[key]=self.latest_collection_index
         # refresh the jobs
         await data.get_jobs().refresh()
         # Update the views
@@ -163,6 +168,8 @@ class Sources():
         all_beatmaps=scraper.get_osucollector_beatmaps(source)
         source.cache_beatmaps(all_beatmaps)
         self.osucollector_source[key]=source
+        self.latest_collection_index+=1
+        self.collection_index[key]=self.latest_collection_index
         # refresh the jobs
         await data.get_jobs().refresh()
         # Update the views
@@ -233,7 +240,7 @@ class Jobs:
             pub.sendMessage("reset.job_toggle_button_text")
             pub.sendMessage("enable.job_toggle_button")
             if initial_job_cnt>0:
-                pub.sendMessage("show.dialogue", msg="Downloads complete! Open osu and check your collections")
+                pub.sendMessage("show.dialog", msg="Downloads complete! Open osu and check your collections")
         else:
             data.cancel_jobs_toggle=False
             pub.sendMessage("update.progress", value=None, range=None, progress_message=f"Cancelled running job")

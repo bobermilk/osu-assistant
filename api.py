@@ -45,7 +45,7 @@ def query_osu_beatmap(beatmap_id):
         return j["checksum"], j["beatmapset_id"]
     except:
         # The beatmap is not hosted
-        return 0,0
+        return None,None
 
 # check if beatmapset exist
 def query_osu_beatmapset(beatmapset_id):
@@ -91,4 +91,4 @@ async def check_cookies():
                 settings.valid_osu_cookies=True
     except:
         settings.valid_osu_cookies=False
-        pub.sendMessage("show.dialogue", msg="Invalid XSRF-TOKEN or osu_session provided")
+        pub.sendMessage("show.dialog", msg="Invalid XSRF-TOKEN or osu_session provided")
