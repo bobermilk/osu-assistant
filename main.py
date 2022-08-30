@@ -1,6 +1,6 @@
 import webbrowser
 import wx
-from api import check_cookies
+from api import check_cookies, get_token
 import gui
 from wxasync import AsyncBind, WxAsyncApp
 import asyncio
@@ -74,7 +74,7 @@ class MainWindow(gui.Main):
         if show_dialogue("Are you sure you want to close osu assistant?"):
             # pickle the data
             await destroy_client()
-            await data.save_data()      
+            data.save_data()      
             
             if add_source_window!=None:
                 add_source_window.Destroy()
@@ -104,6 +104,33 @@ class MainWindow(gui.Main):
             job_source_key=job.get_job_source_key()
             self.m_activity_list.Insert(str(job_source_key+f" ({job.get_job_downloads_cnt()} beatmaps)"), i)
 
+    async def restore_settings(self, event):
+        get_token()
+        await check_cookies()
+
+        s=data.get_settings()
+        if s.osu_install_folder != None:
+            self.m_osu_dir.SetPath(s.osu_install_folder)
+        self.m_client_id.SetHelpText("osu oauth application client id")
+        self.m_client_secret.SetHelpText("osu oauth application client secret")
+        if s.oauth != None:
+            self.m_client_id.SetValue(s.oauth[0])
+            self.m_client_secret.SetValue(s.oauth[1])
+        else:
+            self.m_client_id.SetValue("client_id")
+            self.m_client_id.SetValue("client_secret")
+        self.m_autodownload_toggle.SetValue(s.download_on_start)
+        self.m_use_osu_mirror.SetValue(s.download_from_osu)
+        self.m_settings_xsrf_token.SetHelpText("Inspect element on osu website to obtain")
+        self.m_settings_osu_session.SetHelpText("Inspect element on osu website to obtain")
+        if s.oauth != None and s.valid_osu_cookies == False:
+            show_dialogue("XSRF-TOKEN or osu_session provided has expired. You have to replace them")
+            self.m_settings_xsrf_token.SetValue("XRSF_TOKEN")
+            self.m_settings_osu_session.SetValue("osu_session")
+        else:
+            self.m_settings_xsrf_token.SetValue(s.xsrf_token)
+            self.m_settings_osu_session.SetValue(s.osu_session)
+            
     async def update_settings(self, event):
         s=data.get_settings()
         s.osu_install_folder=self.m_osu_dir.GetPath()
@@ -117,6 +144,7 @@ class MainWindow(gui.Main):
         if s.osu_install_folder!=None:
             # Initialize the cache db
             await database.create_osudb()
+
         if s.download_from_osu==True:
             await check_cookies()
     
@@ -233,6 +261,7 @@ async def main():
     main_window.Show()
     app.SetTopWindow(main_window)
     await misc.init()
+    await main_window.restore_settings(None)
     await app.MainLoop()
 
 asyncio.run(main())

@@ -17,7 +17,7 @@ async def get_session():
 async def destroy_client():
     global session
     if session != None:
-        session.close()
+        await session.close()
     
 # The exit codes are as follows
 # 0: Failed to download
@@ -51,7 +51,7 @@ async def download_beatmap(beatmapset_id):
         except:
             return success # download failed
 
-    if not success and settings.download_from_osu and settings.valid_osu_cookies():
+    if not success and settings.download_from_osu and settings.valid_osu_cookies:
         url=constants.osu_beatmap_url_download.format(beatmapset_id)
         cookie={"XSRF-TOKEN":settings.xsrf_token,"osu_session":settings.osu_session}
         osu_header={ "referer":constants.osu_beatmap_url.format(beatmapset_id) }

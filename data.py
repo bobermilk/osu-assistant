@@ -1,8 +1,10 @@
 # data provider (store variables, hardcode things and functions to get and set data)
+from genericpath import isfile
 import pickle
 import entity
 import constants
 import fake_provider as fake
+from pubsub import pub
 
 # Credentials
 OAUTH_TOKEN=None
@@ -45,5 +47,15 @@ def get_settings():
     else:
         return Settings
 
-async def save_data():
-    pass
+def save_data():
+    with open("osu-assistant.data", 'wb') as f:
+        pickle.dump((OAUTH_TOKEN, Sources, Settings), f)
+
+def load_data():
+    global OAUTH_TOKEN, Sources, Settings
+    if isfile("osu-assistant.data"):
+        try:
+            with open("osu-assistant.data", 'rb') as f:
+                OAUTH_TOKEN, Sources, Settings = pickle.load(f)
+        except:
+            pub.sendMessage("show.dialogue", msg="osu assistant data file is corrupted")

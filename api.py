@@ -1,5 +1,5 @@
 # for flask and osu api requests
-import aiohttp
+from pubsub import pub
 import time
 import requests
 import json
@@ -87,7 +87,7 @@ async def check_cookies():
     try:
         async with session.head(url, allow_redirects=True, cookies=cookie, headers=osu_header) as s:
             if s.status==200:
-                return True
+                settings.valid_osu_cookies=True
     except:
-        return False
-    return False
+        settings.valid_osu_cookies=False
+        pub.sendMessage("show.dialogue", msg="Invalid XSRF-TOKEN or osu_session provided")

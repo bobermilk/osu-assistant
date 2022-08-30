@@ -231,7 +231,8 @@ class Jobs:
             pub.sendMessage("update.progress", value=None, range=None, progress_message=f"{initial_job_cnt} jobs completed successfully")
             pub.sendMessage("update.activity")
             pub.sendMessage("reset.job_toggle_button_text")
-            pub.sendMessage("show.dialogue", msg="Downloads complete! Open osu and check your collections")
+            if initial_job_cnt>0:
+                pub.sendMessage("show.dialogue", msg="Downloads complete! Open osu and check your collections")
         else:
             data.cancel_jobs_toggle=False
             pub.sendMessage("update.progress", value=None, range=None, progress_message=f"Cancelled running job")

@@ -9,8 +9,9 @@ from pubsub import pub
 # Update sources/jobs on startup
 # 
 async def init():
+    # Load app data
+    data.load_data()
     # Check for update
-
     if requests.get("https://raw.githubusercontent.com/bobermilk/osu-assistant-data/main/update.json").json()["latest"]>constants.APP_VERSION:
         pub.sendMessage("show.dialogue", msg="New update available! Download from github?", ok=lambda: webbrowser.open(constants.link_github_releases))
 

@@ -91,15 +91,15 @@ class Main ( wx.Frame ):
 
 		bSizer2611 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticText412 = wx.StaticText( self.m_panel_settings, wx.ID_ANY, u"oauth app token:             \nused for osu api access", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText412 = wx.StaticText( self.m_panel_settings, wx.ID_ANY, u"oauth app credentials:      \nused for osu api access", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText412.Wrap( -1 )
 
 		bSizer2611.Add( self.m_staticText412, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-		self.m_client_id = wx.TextCtrl( self.m_panel_settings, wx.ID_ANY, u"client_id", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_client_id = wx.TextCtrl( self.m_panel_settings, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer2611.Add( self.m_client_id, 1, wx.ALL, 5 )
 
-		self.m_client_secret = wx.TextCtrl( self.m_panel_settings, wx.ID_ANY, u"client_secret", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_client_secret = wx.TextCtrl( self.m_panel_settings, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer2611.Add( self.m_client_secret, 1, wx.ALL, 5 )
 
 
@@ -132,36 +132,21 @@ class Main ( wx.Frame ):
 		self.m_use_osu_mirror = wx.CheckBox( self.m_collapsiblePane1.GetPane(), wx.ID_ANY, u"Use osu website as mirror if beatconnect does not have beatmap (botting is against TOS)", wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer23.Add( self.m_use_osu_mirror, 0, wx.ALL, 5 )
 
-		bSizer34 = wx.BoxSizer( wx.HORIZONTAL )
+		bSizer26111 = wx.BoxSizer( wx.HORIZONTAL )
 
-		bSizer261 = wx.BoxSizer( wx.HORIZONTAL )
+		self.m_staticText4121 = wx.StaticText( self.m_collapsiblePane1.GetPane(), wx.ID_ANY, u"if option above is checked:      \nobtain and fill (read help panel)\nXSRF_TOKEN and osu_session", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText4121.Wrap( -1 )
 
-		self.m_staticText41 = wx.StaticText( self.m_collapsiblePane1.GetPane(), wx.ID_ANY, u"XSRF-TOKEN:    ", wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_staticText41.Wrap( -1 )
-
-		bSizer261.Add( self.m_staticText41, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		bSizer26111.Add( self.m_staticText4121, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
 		self.m_settings_xsrf_token = wx.TextCtrl( self.m_collapsiblePane1.GetPane(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-		bSizer261.Add( self.m_settings_xsrf_token, 1, wx.ALL, 5 )
-
-
-		bSizer34.Add( bSizer261, 1, 0, 5 )
-
-		bSizer2612 = wx.BoxSizer( wx.HORIZONTAL )
-
-		self.m_staticText413 = wx.StaticText( self.m_collapsiblePane1.GetPane(), wx.ID_ANY, u"osu_session: ", wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_staticText413.Wrap( -1 )
-
-		bSizer2612.Add( self.m_staticText413, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		bSizer26111.Add( self.m_settings_xsrf_token, 1, wx.ALL, 5 )
 
 		self.m_settings_osu_session = wx.TextCtrl( self.m_collapsiblePane1.GetPane(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-		bSizer2612.Add( self.m_settings_osu_session, 1, wx.ALL, 5 )
+		bSizer26111.Add( self.m_settings_osu_session, 1, wx.ALL, 5 )
 
 
-		bSizer34.Add( bSizer2612, 1, 0, 5 )
-
-
-		bSizer23.Add( bSizer34, 0, wx.EXPAND, 5 )
+		bSizer23.Add( bSizer26111, 0, wx.EXPAND, 5 )
 
 		bSizer55 = wx.BoxSizer( wx.HORIZONTAL )
 
@@ -225,7 +210,7 @@ class Main ( wx.Frame ):
 
 		bSizer24.Add( bSizer281, 1, 0, 5 )
 
-		self.m_instructions = wx.StaticText( self.m_panel_help, wx.ID_ANY, u"osu! assistant allows you to watch beatmap sources and download and keep them updated without you having to do it manually.\n\nFollow instruction 1, 2 and 3 below and you should be able to get the beatmaps you want, completely free of charge. The instructions follow the format below.\n\n0. Example step\n    --> Tab (information about this tab)\n        - thing 1 to do in this tab\n        - thing 2 to do in this tab\n\nInstructions:\n\n1. Configuration\n    --> Settings (configurations stuff are here)\n        - set your osu installation folder\n        - set your client id and secret (osu settings -> New OAuth Application -> fill up with anything  and click register)\n        - Optional: enable download from osu, get XSRF-TOKEN and osu_session by inspect element -> network -> reload osu page ->\n                          find the entry with set-cookies -> you want everything between = and ;\n        - click save settings\n\n2. Telling osu! assistant where to get beatmaps:\n    --> Sources\n        - Click add a new source button (choose from the following)\n        --> Userpage (beatmaps from a osu player/mapper userpage):\n            - Paste the url of profiles you would like to download from\n            - Select user favourites/top plays\n            - Select mapper ranked/loved/guest participation/pending/graveyarded\n    \n         --> Tournament (beatmaps from tournament mappool):\n            - Specify game mode of tournament and whether it's official or unofficial\n            - Check the tournaments you want\n    \n          --> Mappacks (latest beatmaps from various sources)\n            - Specify the game mode and category of beatmaps you want \n            - Specify the number of latest beatmaps you want\n    \n          --> osu!Collector (beatmaps from osucollector.com)\n            - Paste the urls of osu!Collector collection pages, leave a new line or space after each link\n\n        - click add button\n\n3. Downloading the beatmaps you told osu assistant to get:\n    --> Activity (shows the download queue)\n        - Look at the job list. If you are satisfied, press start downloads.\n        - Start the download and wait until the progress bar reaches 100%\n        - Open the game and see your beatmaps import, and the source collection (except mappacks) \n             should be merged with your existing collections.db\n\n    --> Sources (shows the sources you added)\n        - Update ongoing changes from your sources here\n          (example: ongoing tournament released new beatmaps, new ranked maps by mapper, osu!Collector collection is updated)", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_instructions = wx.StaticText( self.m_panel_help, wx.ID_ANY, u"osu! assistant allows you to watch beatmap sources and download and keep them updated without you having to do it manually.\n\nFollow instruction 1, 2 and 3 below and you should be able to get the beatmaps you want, completely free of charge. The instructions follow the format below.\n\n0. Example step\n    --> Tab (information about this tab)\n        - thing 1 to do in this tab\n        - thing 2 to do in this tab\n\nInstructions:\n\n1. Configuration\n    --> Settings (configurations stuff are here)\n        - set your osu installation folder\n        - set your client id and secret (osu settings -> New OAuth Application -> fill up with anything and click register)\n        - Optional: enable download from osu, get XSRF-TOKEN and osu_session by inspect element -> network -> reload osu page ->\n                          find the entry with set-cookies -> you want everything between = and ;\n        - click save settings\n\n2. Telling osu! assistant where to get beatmaps:\n    --> Sources\n        - Click add a new source button (choose from the following)\n        --> Userpage (beatmaps from a osu player/mapper userpage):\n            - Paste the url of profiles you would like to download from\n            - Select user favourites/top plays\n            - Select mapper ranked/loved/guest participation/pending/graveyarded\n    \n         --> Tournament (beatmaps from tournament mappool):\n            - Specify game mode of tournament and whether it's official or unofficial\n            - Check the tournaments you want\n    \n          --> Mappacks (latest beatmaps from various sources)\n            - Specify the game mode and category of beatmaps you want \n            - Specify the number of latest beatmaps you want\n    \n          --> osu!Collector (beatmaps from osucollector.com)\n            - Paste the urls of osu!Collector collection pages, leave a new line or space after each link\n\n        - click add button\n\n3. Downloading the beatmaps you told osu assistant to get:\n    --> Activity (shows the download queue)\n        - Look at the job list. If you are satisfied, press start downloads.\n        - Start the download and wait until the progress bar reaches 100%\n        - Open the game and see your beatmaps import, and the source collection (except mappacks) \n             should be merged with your existing collections.db\n\n    --> Sources (shows the sources you added)\n        - Update ongoing changes from your sources here\n          (example: ongoing tournament released new beatmaps, new ranked maps by mapper, osu!Collector collection is updated)", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_instructions.Wrap( -1 )
 
 		self.m_instructions.SetFont( wx.Font( 16, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, "Arial" ) )
