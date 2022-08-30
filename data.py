@@ -57,5 +57,7 @@ def load_data():
         try:
             with open("osu-assistant.data", 'rb') as f:
                 OAUTH_TOKEN, Sources, Settings = pickle.load(f)
+                if not isinstance(Sources, entity.Sources) or not isinstance(Settings, entity.Settings):
+                    raise Exception("There was a change to the class, asking users to delete the file")
         except:
-            pub.sendMessage("show.dialogue", msg="osu assistant data file is corrupted")
+            pub.sendMessage("show.dialogue", msg="osu assistant data file is corrupted, please delete the osu-assistant.data file")

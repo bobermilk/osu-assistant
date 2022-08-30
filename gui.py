@@ -23,8 +23,8 @@ class Main ( wx.Frame ):
 
 		bSizer1 = wx.BoxSizer( wx.VERTICAL )
 
-		self.m_notebook2 = wx.Notebook( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_panel_sources = wx.Panel( self.m_notebook2, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
+		self.m_tabs = wx.Notebook( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_panel_sources = wx.Panel( self.m_tabs, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		bSizer4 = wx.BoxSizer( wx.VERTICAL )
 
 		self.m_source_list = wx.Listbook( self.m_panel_sources, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LB_DEFAULT )
@@ -38,8 +38,8 @@ class Main ( wx.Frame ):
 		self.m_panel_sources.SetSizer( bSizer4 )
 		self.m_panel_sources.Layout()
 		bSizer4.Fit( self.m_panel_sources )
-		self.m_notebook2.AddPage( self.m_panel_sources, u"Sources", False )
-		self.m_panel_activity = wx.Panel( self.m_notebook2, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
+		self.m_tabs.AddPage( self.m_panel_sources, u"Sources", False )
+		self.m_panel_activity = wx.Panel( self.m_tabs, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		bSizer5 = wx.BoxSizer( wx.VERTICAL )
 
 		self.m_staticText23 = wx.StaticText( self.m_panel_activity, wx.ID_ANY, u"Download queue (drag to change download sequence)", wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -72,8 +72,8 @@ class Main ( wx.Frame ):
 		self.m_panel_activity.SetSizer( bSizer5 )
 		self.m_panel_activity.Layout()
 		bSizer5.Fit( self.m_panel_activity )
-		self.m_notebook2.AddPage( self.m_panel_activity, u"Activity", False )
-		self.m_panel_settings = wx.Panel( self.m_notebook2, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
+		self.m_tabs.AddPage( self.m_panel_activity, u"Activity", False )
+		self.m_panel_settings = wx.Panel( self.m_tabs, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		bSizer25 = wx.BoxSizer( wx.VERTICAL )
 
 		bSizer26 = wx.BoxSizer( wx.HORIZONTAL )
@@ -110,10 +110,7 @@ class Main ( wx.Frame ):
 
 		bSizer5511 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_export_to_collection = wx.Button( self.m_panel_settings, wx.ID_ANY, u"Export sources to database", wx.DefaultPosition, wx.DefaultSize, 0 )
-		bSizer5511.Add( self.m_export_to_collection, 1, wx.ALL, 5 )
-
-		self.m_export_to_beatmap = wx.Button( self.m_panel_settings, wx.ID_ANY, u"Export all in-game collections to beatmap", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_export_to_beatmap = wx.Button( self.m_panel_settings, wx.ID_ANY, u"Convert a in-game collection to beatmap", wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer5511.Add( self.m_export_to_beatmap, 1, wx.ALL, 5 )
 
 
@@ -161,20 +158,6 @@ class Main ( wx.Frame ):
 
 		bSizer23.Add( bSizer55, 0, wx.EXPAND, 5 )
 
-		self.m_button13 = wx.Button( self.m_collapsiblePane1.GetPane(), wx.ID_ANY, u"Restore all settings to defaults", wx.DefaultPosition, wx.DefaultSize, 0 )
-		bSizer23.Add( self.m_button13, 0, wx.ALL|wx.EXPAND, 5 )
-
-		bSizer551 = wx.BoxSizer( wx.HORIZONTAL )
-
-		self.m_import_assistant = wx.Button( self.m_collapsiblePane1.GetPane(), wx.ID_ANY, u"Import osu!assistant configuration", wx.DefaultPosition, wx.DefaultSize, 0 )
-		bSizer551.Add( self.m_import_assistant, 1, wx.ALL, 5 )
-
-		self.m_export_assistant = wx.Button( self.m_collapsiblePane1.GetPane(), wx.ID_ANY, u"Export osu! assistant configuration", wx.DefaultPosition, wx.DefaultSize, 0 )
-		bSizer551.Add( self.m_export_assistant, 1, wx.ALL, 5 )
-
-
-		bSizer23.Add( bSizer551, 1, wx.EXPAND, 5 )
-
 
 		self.m_collapsiblePane1.GetPane().SetSizer( bSizer23 )
 		self.m_collapsiblePane1.GetPane().Layout()
@@ -188,8 +171,8 @@ class Main ( wx.Frame ):
 		self.m_panel_settings.SetSizer( bSizer25 )
 		self.m_panel_settings.Layout()
 		bSizer25.Fit( self.m_panel_settings )
-		self.m_notebook2.AddPage( self.m_panel_settings, u"Settings", False )
-		self.m_panel_help = wx.ScrolledWindow( self.m_notebook2, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.HSCROLL|wx.VSCROLL )
+		self.m_tabs.AddPage( self.m_panel_settings, u"Settings", False )
+		self.m_panel_help = wx.ScrolledWindow( self.m_tabs, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.HSCROLL|wx.VSCROLL )
 		self.m_panel_help.SetScrollRate( 5, 5 )
 		bSizer24 = wx.BoxSizer( wx.VERTICAL )
 
@@ -221,9 +204,9 @@ class Main ( wx.Frame ):
 		self.m_panel_help.SetSizer( bSizer24 )
 		self.m_panel_help.Layout()
 		bSizer24.Fit( self.m_panel_help )
-		self.m_notebook2.AddPage( self.m_panel_help, u"Help", True )
+		self.m_tabs.AddPage( self.m_panel_help, u"Help", True )
 
-		bSizer1.Add( self.m_notebook2, 1, wx.EXPAND |wx.ALL, 5 )
+		bSizer1.Add( self.m_tabs, 1, wx.EXPAND |wx.ALL, 5 )
 
 
 		self.SetSizer( bSizer1 )
@@ -234,10 +217,7 @@ class Main ( wx.Frame ):
 		# Connect Events
 		self.m_osu_dir.Bind( wx.EVT_DIRPICKER_CHANGED, self.update_osu_folder )
 		self.m_autodownload_toggle.Bind( wx.EVT_CHECKBOX, self.autodownload_toggle )
-		self.m_export_to_collection.Bind( wx.EVT_BUTTON, self.import_assistant_configuration )
-		self.m_export_to_beatmap.Bind( wx.EVT_BUTTON, self.export_assistant_configuration )
-		self.m_import_assistant.Bind( wx.EVT_BUTTON, self.import_assistant_configuration )
-		self.m_export_assistant.Bind( wx.EVT_BUTTON, self.export_assistant_configuration )
+		self.m_export_to_beatmap.Bind( wx.EVT_BUTTON, self.export_collection_to_beatmap )
 		self.m_save_settings.Bind( wx.EVT_BUTTON, self.save_settings )
 		self.m_website.Bind( wx.EVT_BUTTON, self.open_website )
 		self.m_discord.Bind( wx.EVT_BUTTON, self.open_discord )
@@ -255,13 +235,8 @@ class Main ( wx.Frame ):
 	def autodownload_toggle( self, event ):
 		event.Skip()
 
-	def import_assistant_configuration( self, event ):
+	def export_collection_to_beatmap( self, event ):
 		event.Skip()
-
-	def export_assistant_configuration( self, event ):
-		event.Skip()
-
-
 
 	def save_settings( self, event ):
 		event.Skip()
@@ -461,5 +436,43 @@ class ListPanel ( wx.Panel ):
 
 	def __del__( self ):
 		pass
+
+
+###########################################################################
+## Class CollectionsSelection
+###########################################################################
+
+class CollectionsSelection ( wx.Frame ):
+
+	def __init__( self, parent ):
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"Select collections to export to beatmap", pos = wx.DefaultPosition, size = wx.Size( 500,300 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
+
+		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+
+		bSizer24 = wx.BoxSizer( wx.VERTICAL )
+
+		m_collections_selectionChoices = []
+		self.m_collections_selection = wx.ListBox( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_collections_selectionChoices, wx.LB_MULTIPLE )
+		bSizer24.Add( self.m_collections_selection, 1, wx.ALL|wx.EXPAND, 5 )
+
+		self.m_collections_select_btn = wx.Button( self, wx.ID_ANY, u"Export selected collection(s)", wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer24.Add( self.m_collections_select_btn, 0, wx.ALL|wx.EXPAND, 5 )
+
+
+		self.SetSizer( bSizer24 )
+		self.Layout()
+
+		self.Centre( wx.BOTH )
+
+		# Connect Events
+		self.m_collections_select_btn.Bind( wx.EVT_BUTTON, self.export_collections_to_beatmap )
+
+	def __del__( self ):
+		pass
+
+
+	# Virtual event handlers, override them in your derived class
+	def export_collections_to_beatmap( self, event ):
+		event.Skip()
 
 

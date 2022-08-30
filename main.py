@@ -1,3 +1,5 @@
+from genericpath import isdir
+import shutil
 import webbrowser
 import wx
 from api import check_cookies, get_token
@@ -7,6 +9,8 @@ import asyncio
 import data, constants, misc, database
 from download import destroy_client
 from pubsub import pub
+from strings import generate_collection_name
+import os
 
 app = WxAsyncApp()
 
@@ -104,6 +108,17 @@ class MainWindow(gui.Main):
             job_source_key=job.get_job_source_key()
             self.m_activity_list.Insert(str(job_source_key+f" ({job.get_job_downloads_cnt()} beatmaps)"), i)
 
+    def export_collection_to_beatmap(self, event):
+        if data.get_settings().valid_osu_directory:
+            if os.path.isfile(os.path.join(data.get_settings().osu_install_folder, "collection.db")):
+                collection_window=CollectionSelectionWindow()
+                collection_window.SetIcon(wx.Icon("assets/osu.ico"))
+                collection_window.Show()
+            else:
+                show_dialogue("You have provided a osu install directory, but there is no collection.db in it")
+        else:
+            show_dialogue("You need to set a osu install directory first")
+
     async def restore_settings(self, event):
         get_token()
         await check_cookies()
@@ -162,6 +177,7 @@ class MainWindow(gui.Main):
         global add_source_window
         if data.get_settings().osu_install_folder!=None and data.get_settings().oauth != None:
             add_source_window=AddSourceWindow(parent=None)
+            add_source_window.SetIcon(wx.Icon("assets/osu.ico"))
             add_source_window.Show()
             self.m_add_source.Disable()
             await add_source_window.populate_add_window(add_source_window)
@@ -252,6 +268,53 @@ class AddSourceWindow(gui.AddSource):
     def open_subscribed_mappers(self, event):
         webbrowser.open(constants.link_mappers)
 
+class CollectionSelectionWindow(gui.CollectionsSelection):
+    """
+    Window for adding a new source
+    """
+    def __init__(self, parent=None):
+        super(CollectionSelectionWindow, self).__init__(parent)
+        self.current_collections=database.collection_to_dict()
+
+        if not isinstance(self.current_collections, bool):
+            for i, collection in enumerate(self.current_collections["collections"]):
+                self.m_collections_selection.Insert(str(f"{i}: {collection['name']}"), i)
+
+    def export_collections_to_beatmap(self, event):
+        settings=data.get_settings()
+        osudb=database.create_osudb2()
+        selections=self.m_collections_selection.GetSelections()
+        new_folder=os.path.join(settings.osu_install_folder, "Songs", generate_collection_name(8))
+        while os.path.isdir(new_folder):
+            new_folder=os.path.join(settings.osu_install_folder, "Songs", generate_collection_name(8))
+            
+        os.mkdir(new_folder)
+        print(new_folder)
+        if len(selections) > 0:
+            for i, collection in enumerate(self.current_collections["collections"]):
+                if i in selections:
+                    for checksum in collection["hashes"]:
+                        beatmap_id, song_title, mapper, folder = osudb[checksum]
+                        for dirpath, dirnames, filenames in os.walk(os.path.join(settings.osu_install_folder, "Songs", folder)):
+                            for filename in filenames:
+                                filename=str(filename)
+                                if filename.endswith(".osu"):
+                                    found=False
+                                    with open(os.path.join(settings.osu_install_folder, "Songs", folder, filename), "r") as f:
+                                        for line in f.readlines():
+                                            if "BeatmapID:{}".format(beatmap_id) in line:
+                                                found=True
+                                                break
+                                            if "Title:{}".format(song_title) in line and "Creator:{}".format(mapper):
+                                                found=True
+                                                break
+                                    if found:
+                                        shutil.copyfile(os.path.join(settings.osu_install_folder, "Songs", folder, filename), os.path.join(settings.osu_install_folder, "Songs", new_folder, filename))
+            self.Destroy()
+
+
+
+                
 # Used for AddSourceWindow to call functions in main window
 # There can be only one instance at all times
 main_window = MainWindow()

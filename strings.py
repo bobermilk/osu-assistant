@@ -1,6 +1,7 @@
 import re
 import data, constants
 import api
+import random, string
 
 # Create userpage ids
 def generate_userpage_source_key(users, scope):
@@ -85,3 +86,7 @@ def parse_osucollector_urlstrings(urlstring):
         collections.add(int(collection_id))
 
     return collections
+
+def generate_collection_name(length):
+   letters = string.ascii_lowercase
+   return ''.join(random.choice(letters) for i in range(length))
