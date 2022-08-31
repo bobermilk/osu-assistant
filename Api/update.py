@@ -44,10 +44,11 @@ while True:
                 for url in beatconnect_urls:
                     beatmaps.append((url.split("/")[-2], None, None))
                 tournaments[tournament_source_key]=[tournament_name, beatmaps]
-        tournament_json=json.dumps(tournaments)
-
-        with open("/home/milk/data/nginx/json/tournament.json", "w") as f:
-            f.write(json.dumps(tournament_json))
+        try:
+            with open("/home/milk/data/api/json/tournament.json", "w") as f:
+                json.dump(tournaments, f)
+        except:
+            pass
     print("updated tournament.json")
 
     mappacks={}
@@ -92,9 +93,11 @@ while True:
                 except:
                     raise Exception(f"{pack['href']} mappack failed, the script will now terminate")
         mappacks[i]=pack_ids
-        
-    with open("/home/milk/data/nginx/json/mappack.json", "w") as f:
-        f.write(json.dumps(mappacks))
+    try:
+        with open("/home/milk/data/api/json/mappack.json", "w") as f:
+            json.dump(mappacks, f)
+    except:
+        pass
     print("updated mappack.json")
 
     time.sleep(86400) # one day

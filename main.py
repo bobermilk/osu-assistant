@@ -8,7 +8,18 @@ import data, constants, buen, database, misc
 from download import destroy_client
 from pubsub import pub
 from strings import generate_collection_name
+import sys
 import os
+
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 app = WxAsyncApp()
 
@@ -93,7 +104,7 @@ class MainWindow(gui.Main):
                 source_panel.m_list.Insert("beatmapset_id="+str(beatmap[0]) + " beatmap_id="+str(beatmap[1]) +" checksum="+str(beatmap[2])+ " (unavailable for download)",i)
             for i, beatmap in enumerate(source.get_missing_beatmaps()):
                 source_panel.m_list.Insert("beatmapset_id="+str(beatmap[0]) + " beatmap_id="+str(beatmap[1]) +" checksum="+str(beatmap[2])+  " (missing)",i)
-            self.m_source_list.AddPage(source_panel, f"★ Collection {generate_collection_name(data.get_sources().collection_index[source_key])}: {source_key}")
+            self.m_source_list.AddPage(source_panel, f"#{data.get_sources().collection_index[source_key]}: {source_key}")
 
     # used to repopulate the activity list after download completes
     def update_activity(self, event):
@@ -108,9 +119,10 @@ class MainWindow(gui.Main):
     def export_collection_to_beatmap(self, event):
         if data.get_settings().valid_osu_directory:
             if os.path.isfile(os.path.join(data.get_settings().osu_install_folder, "collection.db")):
-                collection_window=CollectionSelectionWindow()
-                collection_window.SetIcon(wx.Icon("assets/osu.ico"))
-                collection_window.Show()
+                # collection_window=CollectionSelectionWindow()
+                # collection_window.SetIcon(wx.Icon(resource_path("osu.ico")))
+                # collection_window.Show()
+                show_dialog("This feature is not implemented yet...")
             else:
                 show_dialog("You have provided a osu install directory, but there is no collection.db in it")
         else:
@@ -187,7 +199,7 @@ class MainWindow(gui.Main):
         global add_source_window
         if data.get_settings().osu_install_folder!=None and data.get_settings().valid_oauth == True:
             add_source_window=AddSourceWindow(parent=None)
-            add_source_window.SetIcon(wx.Icon("assets/osu.ico"))
+            add_source_window.SetIcon(wx.Icon(resource_path("osu.ico")))
             add_source_window.Show()
             self.m_add_source.Disable()
             await add_source_window.populate_add_window(add_source_window)
@@ -295,8 +307,6 @@ class CollectionSelectionWindow(gui.CollectionsSelection):
         buen.generate_beatmaps(selections, self.current_collections)
         self.Destroy()
 
-
-
                 
 # Used for AddSourceWindow to call functions in main window
 # There can be only one instance at all times
@@ -304,7 +314,7 @@ main_window = MainWindow()
 add_source_window=None
 
 async def main():
-    main_window.SetIcon(wx.Icon("assets/osu.ico"))
+    main_window.SetIcon(wx.Icon(resource_path("osu.ico")))
     main_window.Show()
     app.SetTopWindow(main_window)
     show_dialog("Note from developer:\n\nThis app has no loading screens and will not respond whenever it's working (including after you click OK)\nYou may join the discord server to report bugs")
