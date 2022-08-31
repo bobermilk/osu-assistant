@@ -9,8 +9,8 @@ from urlextract import URLExtract
 
 def pausechamp(r):
     if r.status_code != 200:
-        raise Exception()
-    time.sleep(5)
+        print("missing pack but what the hell lol")
+    time.sleep(10)
 
 urlextractor=URLExtract()
 sync_cnt=0
@@ -100,6 +100,6 @@ while True:
         pass
     print("updated mappack.json")
 
-    time.sleep(86400) # one day
+    # time.sleep(86400) # one day
     sync_cnt+=1
     print("ouscollection sync #".format(sync_cnt))
