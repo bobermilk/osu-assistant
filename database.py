@@ -223,6 +223,7 @@ def update_collections(new_collections):
                     
             # Write the new collections
             for source_key, checksums in new_collections.items():
+                print("★ Collection: {}".format(data.get_sources().collection_index[source_key]))
                 b.write_string("★ Collection: {}".format(data.get_sources().collection_index[source_key]))
                 b.write_uint(len(checksums))
                 for checksum in checksums:

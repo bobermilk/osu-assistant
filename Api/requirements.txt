@@ -3,5 +3,4 @@ beautifulsoup4
 requests
 urlextract
 flask_restful
-selenium
-webdriver_manager
+lxml

@@ -46,8 +46,8 @@ while True:
                 tournaments[tournament_source_key]=[tournament_name, beatmaps]
         tournament_json=json.dumps(tournaments)
 
-    with open("/home/milk/data/nginx/json/tournament.json", "w") as f:
-        f.write(json.dumps(tournament_json))
+        with open("/home/milk/data/nginx/json/tournament.json", "w") as f:
+            f.write(json.dumps(tournament_json))
     print("updated tournament.json")
 
     mappacks={}
