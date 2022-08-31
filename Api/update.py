@@ -86,7 +86,8 @@ while True:
                         #     beatmaps.append((url[-3], url[-1], url[-2])) # beatmapset_id, beatmap_id, gamemode
                         # else:
                         #     beatmaps.append((url[-1], None, None))
-                        beatmaps.append(int(url[-1]))
+                        if url[-1]!="Game_modifier":
+                            beatmaps.append(int(url[-1]))
                     pack_ids[mappack_id]=[pack.find("div", {"class", "beatmap-pack__name"}).getText(), beatmaps]
                 except:
                     raise Exception(f"{pack['href']} mappack failed, the script will now terminate")

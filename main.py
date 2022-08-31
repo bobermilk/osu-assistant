@@ -311,9 +311,10 @@ class CollectionSelectionWindow(gui.CollectionsSelection):
                             for filename in filenames:
                                 filename=str(filename)
                                 if filename.endswith(".osu"):
+                                    lines=f.readlines()
                                     found=False
                                     with open(os.path.join(settings.osu_install_folder, "Songs", folder, filename), "r") as f:
-                                        for line in f.readlines():
+                                        for line in lines:
                                             if "BeatmapID:{}".format(beatmap_id) in line:
                                                 found=True
                                                 break
@@ -321,7 +322,10 @@ class CollectionSelectionWindow(gui.CollectionsSelection):
                                                 found=True
                                                 break
                                     if found:
-                                        shutil.copyfile(os.path.join(settings.osu_install_folder, "Songs", folder, filename), os.path.join(settings.osu_install_folder, "Songs", new_folder, filename))
+                                        dest=os.path.join(settings.osu_install_folder, "Songs", new_folder, filename)
+                                        with open(dest, "w+"):
+                                            pass
+
             self.Destroy()
 
 

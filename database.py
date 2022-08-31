@@ -207,7 +207,7 @@ def update_collections(new_collections):
 
             # Weed out the shit we gonna replace
             existing_collections={}
-            new_collection_names=["★ Collection #{}".format(data.get_sources().collection_index[x]) for x in new_collections.keys()]
+            new_collection_names=["★ Collection {}".format(data.get_sources().collection_index[x]) for x in new_collections.keys()]
             for collection in current_collections["collections"]:
                 if collection["name"] not in new_collection_names:
                     existing_collections[collection["name"]]=collection["hashes"]
@@ -223,8 +223,7 @@ def update_collections(new_collections):
                     
             # Write the new collections
             for source_key, checksums in new_collections.items():
-                print("★ Collection: {}".format(data.get_sources().collection_index[source_key]))
-                b.write_string("★ Collection: {}".format(data.get_sources().collection_index[source_key]))
+                b.write_string("★ Collection {}".format(data.get_sources().collection_index[source_key]))
                 b.write_uint(len(checksums))
                 for checksum in checksums:
                     b.write_string(checksum)
