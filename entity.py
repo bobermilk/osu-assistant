@@ -262,4 +262,5 @@ class Settings:
 
         # not user inputs
         self.valid_osu_directory=False
+        self.valid_oauth=False
         self.valid_osu_cookies=False

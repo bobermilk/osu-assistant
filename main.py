@@ -1,15 +1,13 @@
-from genericpath import isdir
-import shutil
 import webbrowser
 import wx
 from api import check_cookies, get_token
 import gui
 from wxasync import AsyncBind, WxAsyncApp, StartCoroutine
 import asyncio
-import data, constants, misc, database
+import data, constants, buen, database, misc
 from download import destroy_client
 from pubsub import pub
-from strings import generate_beatmap_name, generate_collection_name
+from strings import generate_collection_name
 import os
 
 app = WxAsyncApp()
@@ -187,7 +185,7 @@ class MainWindow(gui.Main):
 
     async def show_add_window(self, event):
         global add_source_window
-        if data.get_settings().osu_install_folder!=None and data.get_settings().oauth != None:
+        if data.get_settings().osu_install_folder!=None and data.get_settings().valid_oauth == True:
             add_source_window=AddSourceWindow(parent=None)
             add_source_window.SetIcon(wx.Icon("assets/osu.ico"))
             add_source_window.Show()
@@ -293,40 +291,9 @@ class CollectionSelectionWindow(gui.CollectionsSelection):
                 self.m_collections_selection.Insert(str(f"{i}: {collection['name']}"), i)
 
     def export_collections_to_beatmap(self, event):
-        settings=data.get_settings()
-        osudb=database.create_osudb2()
         selections=self.m_collections_selection.GetSelections()
-        new_folder=os.path.join(settings.osu_install_folder, "Songs", generate_beatmap_name(8))
-        while os.path.isdir(new_folder):
-            new_folder=os.path.join(settings.osu_install_folder, "Songs", generate_beatmap_name(8))
-            
-        os.mkdir(new_folder)
-        print(new_folder)
-        if len(selections) > 0:
-            for i, collection in enumerate(self.current_collections["collections"]):
-                if i in selections:
-                    for checksum in collection["hashes"]:
-                        beatmap_id, song_title, mapper, folder = osudb[checksum]
-                        for dirpath, dirnames, filenames in os.walk(os.path.join(settings.osu_install_folder, "Songs", folder)):
-                            for filename in filenames:
-                                filename=str(filename)
-                                if filename.endswith(".osu"):
-                                    lines=f.readlines()
-                                    found=False
-                                    with open(os.path.join(settings.osu_install_folder, "Songs", folder, filename), "r") as f:
-                                        for line in lines:
-                                            if "BeatmapID:{}".format(beatmap_id) in line:
-                                                found=True
-                                                break
-                                            if "Title:{}".format(song_title) in line and "Creator:{}".format(mapper):
-                                                found=True
-                                                break
-                                    if found:
-                                        dest=os.path.join(settings.osu_install_folder, "Songs", new_folder, filename)
-                                        with open(dest, "w+"):
-                                            pass
-
-            self.Destroy()
+        buen.generate_beatmaps(selections, self.current_collections)
+        self.Destroy()
 
 
 

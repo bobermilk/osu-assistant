@@ -75,8 +75,11 @@ def get_token():
         response=requests.post(constants.OSU_TOKEN_URL, data=credentials)
         try:
             data.OAUTH_TOKEN=response.json().get('access_token')
+            data.get_settings().valid_oauth=True
         except:
-            raise Exception("Invaild oauth token, osu assistant can't work without it")
+            #Invaild oauth token, osu assistant can't work without it
+            data.get_settings().valid_oauth=False
+            pass
     return data.OAUTH_TOKEN
 
 async def check_cookies():

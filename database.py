@@ -327,5 +327,5 @@ def create_osudb2():
                 visual_override = buffer.read_bool(db)
                 last_modified2 = buffer.read_uint(db)
                 scroll_speed = buffer.read_ubyte(db)
-                beatmaps[md5_hash]=(beatmap_id, song_title, mapper, folder_name)
+                beatmaps[md5_hash]=(beatmap_id, (song_title, song_title_unicode), mapper, folder_name)
     return beatmaps

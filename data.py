@@ -49,14 +49,14 @@ def get_settings():
 
 def save_data():
     with open("osu-assistant.data", 'wb') as f:
-        pickle.dump((OAUTH_TOKEN, Sources, Settings), f)
+        pickle.dump((Sources, Settings), f)
 
 def load_data():
-    global OAUTH_TOKEN, Sources, Settings
+    global Sources, Settings
     if isfile("osu-assistant.data"):
         try:
             with open("osu-assistant.data", 'rb') as f:
-                OAUTH_TOKEN, Sources, Settings = pickle.load(f)
+                Sources, Settings = pickle.load(f)
                 pub.sendMessage("update.sources")
         except:
             pub.sendMessage("show.dialog", msg="osu assistant data file is corrupted, please delete the osu-assistant.data file")
