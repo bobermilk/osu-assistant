@@ -176,6 +176,8 @@ class MainWindow(gui.Main):
         s.osu_session=self.m_settings_osu_session.GetValue()
         s.download_interval=self.m_download_interval.GetValue()
 
+        get_token()
+        
         if s.osu_install_folder!=None:
             # Initialize the cache db
             await database.create_osudb()
