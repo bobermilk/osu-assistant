@@ -9,7 +9,7 @@ import asyncio
 import data, constants, misc, database
 from download import destroy_client
 from pubsub import pub
-from strings import generate_collection_name
+from strings import generate_beatmap_name, generate_collection_name
 import os
 
 app = WxAsyncApp()
@@ -95,7 +95,7 @@ class MainWindow(gui.Main):
                 source_panel.m_list.Insert("beatmapset_id="+str(beatmap[0]) + " beatmap_id="+str(beatmap[1]) +" checksum="+str(beatmap[2])+ " (unavailable for download)",i)
             for i, beatmap in enumerate(source.get_missing_beatmaps()):
                 source_panel.m_list.Insert("beatmapset_id="+str(beatmap[0]) + " beatmap_id="+str(beatmap[1]) +" checksum="+str(beatmap[2])+  " (missing)",i)
-            self.m_source_list.AddPage(source_panel, str(data.get_sources().collection_index[source_key])+": "+source_key)
+            self.m_source_list.AddPage(source_panel, f"★ Collection {generate_collection_name(data.get_sources().collection_index[source_key])}: {source_key}")
 
     # used to repopulate the activity list after download completes
     def update_activity(self, event):
@@ -296,9 +296,9 @@ class CollectionSelectionWindow(gui.CollectionsSelection):
         settings=data.get_settings()
         osudb=database.create_osudb2()
         selections=self.m_collections_selection.GetSelections()
-        new_folder=os.path.join(settings.osu_install_folder, "Songs", generate_collection_name(8))
+        new_folder=os.path.join(settings.osu_install_folder, "Songs", generate_beatmap_name(8))
         while os.path.isdir(new_folder):
-            new_folder=os.path.join(settings.osu_install_folder, "Songs", generate_collection_name(8))
+            new_folder=os.path.join(settings.osu_install_folder, "Songs", generate_beatmap_name(8))
             
         os.mkdir(new_folder)
         print(new_folder)

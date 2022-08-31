@@ -87,6 +87,13 @@ def parse_osucollector_urlstrings(urlstring):
 
     return collections
 
-def generate_collection_name(length):
+def generate_beatmap_name(length):
    letters = string.ascii_lowercase
    return ''.join(random.choice(letters) for i in range(length))
+
+def generate_collection_name(n):
+    letters=''
+    while n:
+        letters+=(chr(64+n%25))
+        n//=25 # int division
+    return letters

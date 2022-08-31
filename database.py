@@ -4,6 +4,8 @@ import os
 import buffer, data
 import shutil
 
+from strings import generate_collection_name
+
 def query_osudb(beatmap):
     beatmapset_id=int(beatmap[0])
     if beatmap[1] is not None and int(beatmap[1]) in data.osudb_beatmap_ids:
@@ -207,7 +209,7 @@ def update_collections(new_collections):
 
             # Weed out the shit we gonna replace
             existing_collections={}
-            new_collection_names=["★ Collection {}".format(data.get_sources().collection_index[x]) for x in new_collections.keys()]
+            new_collection_names=["★ Collection {}".format(generate_collection_name(data.get_sources().collection_index[source_key])) for x in new_collections.keys()]
             for collection in current_collections["collections"]:
                 if collection["name"] not in new_collection_names:
                     existing_collections[collection["name"]]=collection["hashes"]
@@ -223,7 +225,8 @@ def update_collections(new_collections):
                     
             # Write the new collections
             for source_key, checksums in new_collections.items():
-                b.write_string("★ Collection {}".format(data.get_sources().collection_index[source_key]))
+                collection_name=generate_collection_name(data.get_sources().collection_index[source_key])
+                b.write_string("★ Collection {}".format(collection_name))
                 b.write_uint(len(checksums))
                 for checksum in checksums:
                     b.write_string(checksum)
