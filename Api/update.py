@@ -24,6 +24,9 @@ while True:
         tournament_dir=os.path.join(os.getcwd(),"osu-wiki", "wiki", "Tournaments")
         with open(os.path.join(tournament_dir,"en.md"), "r") as f:
             items=[x for x in f.read().split("\n") if len(x)>3 and x[:3]=='| [']
+            # Peppy didnt update the wiki :sadge:
+            items.append("| [Springtime osu!mania Free-for-all Tournament 4](SOFT/4) |")
+            items.append("| [Springtime osu!mania Free-for-all Tournament 5](SOFT/5) |")
             for item in items:
                 item=item.split("](")
                 beatmaps=[]
@@ -35,15 +38,16 @@ while True:
                 urls=urlextractor.find_urls(fcontent)
                 osu_urls=[x for x in urls if "beatmapsets" in x]
                 beatconnect_urls=[x for x in urls if "beatconnect" in x]
-                for url in osu_urls:
-                    url=url.replace('#', '/').split("/")
-                    if url[-3]!="osu.ppy.sh":
-                        beatmaps.append((url[-3], url[-1], url[-2])) # beatmapset_id, beatmap_id, gamemode
-                    else:
-                        beatmaps.append((url[-1], None, None))
-                for url in beatconnect_urls:
-                    beatmaps.append((url.split("/")[-2], None, None))
-                tournaments[tournament_source_key]=[tournament_name, beatmaps]
+                if len(osu_urls)>0:
+                    for url in osu_urls:
+                        url=url.replace('#', '/').split("/")
+                        if url[-3]!="osu.ppy.sh":
+                            beatmaps.append((url[-3], url[-1], url[-2])) # beatmapset_id, beatmap_id, gamemode
+                        else:
+                            beatmaps.append((url[-1], None, None))
+                    for url in beatconnect_urls:
+                        beatmaps.append((url.split("/")[-2], None, None))
+                    tournaments[tournament_source_key]=[tournament_name, beatmaps]
         try:
             with open("/home/milk/data/api/json/tournament.json", "w") as f:
                 json.dump(tournaments, f)
