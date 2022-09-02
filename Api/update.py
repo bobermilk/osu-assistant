@@ -15,6 +15,8 @@ def pausechamp(r):
 urlextractor=URLExtract()
 sync_cnt=0
 while True:
+    sync_cnt+=1
+    print("ouscollection sync #{}".format(sync_cnt))
     proc=subprocess.run([os.path.join(os.getcwd(), 'osu_wiki.sh')], check=True, capture_output=True, text=True)
     should_update=proc.stdout
     if should_update == "1":
@@ -55,7 +57,8 @@ while True:
             pass
     print("updated tournament.json")
 
-    mappacks={}
+    with open("/home/milk/data/api/json/mappack.json", "r") as f:
+        mappacks=json.load(f)
     sites = [
         "https://osu.ppy.sh/beatmaps/packs?type=standard&page={}",
         "https://osu.ppy.sh/beatmaps/packs?type=chart&page={}",
@@ -68,8 +71,11 @@ while True:
         pausechamp(r)
         soup = BeautifulSoup(r.text, "html.parser")
         page_cnt = int(soup.find_all("a", {"class": "pagination-v2__link"})[-2].text)
-        pack_ids={}
+        pack_ids=mappacks[str(i)]
+        stop=False
         for page_num in range(1, page_cnt + 1):
+            if stop:
+                break
             # get pack titles
             r=requests.get(site.format(page_num))
             pausechamp(r)
@@ -80,6 +86,10 @@ while True:
                 try:
                     soup=BeautifulSoup(r.text, "lxml", parse_only=SoupStrainer('a'))
                     mappack_id=pack['href'].split("/")[-1]
+                    if str(mappack_id) in pack_ids.keys():
+                        # We can stop here, we got the rest
+                        stop=True
+                        break
                     r=requests.get("https://osu.ppy.sh/beatmaps/packs/{}/raw".format(mappack_id))
                     pausechamp(r)
                     soup=BeautifulSoup(r.text, "lxml", parse_only=SoupStrainer('a'))
@@ -104,6 +114,4 @@ while True:
         pass
     print("updated mappack.json")
 
-    # time.sleep(86400) # one day
-    sync_cnt+=1
-    print("ouscollection sync #".format(sync_cnt))
+    time.sleep(86400) # one day
