@@ -8,6 +8,8 @@ request_timeout=10
 api_get_interval=1
 osu_get_interval=3 # osu site
 
+#oauth url
+oauth_url="https://osu.ppy.sh/oauth/authorize?client_id=17410&response_type=code&redirect_uri=https%3A%2F%2Fmilkies.ml%2Fosuauth"
 # scraper.py endpoints
 user_url="https://osu.ppy.sh/users/"
 #scrape_pinned=user_url+"{}/scores/pinned?mode={}&limit={}&offset={}"
@@ -40,7 +42,7 @@ activity_stop="Stop Downloading"
 activity_start="Start Downloading (top to bottom)"
 
 #links
-link_discord="https://discord.gg/GqVzWMUw"
+link_discord="https://discord.gg/PARv9mme9X"
 link_paypal="https://paypal.me/bobermilk"
 link_github="https://github.com/bobermilk/osu-assistant"
 link_github_releases="https://github.com/bobermilk/osu-assistant/releases"

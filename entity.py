@@ -253,7 +253,6 @@ class Jobs:
 class Settings:
     def __init__(self):
         self.osu_install_folder=None
-        self.oauth=None
         self.download_on_start=False
         self.download_from_osu=False
         self.xsrf_token=""

@@ -57,6 +57,8 @@ class Main ( wx.Frame ):
 		self.m_staticText23 = wx.StaticText( self.m_panel_activity, wx.ID_ANY, u"Download queue", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText23.Wrap( -1 )
 
+		self.m_staticText23.SetFont( wx.Font( 12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
+
 		activity_box.Add( self.m_staticText23, 0, wx.TOP|wx.RIGHT|wx.LEFT, 5 )
 
 		m_activity_listChoices = []
@@ -109,28 +111,6 @@ class Main ( wx.Frame ):
 
 		bSizer25.Add( bSizer26, 0, wx.EXPAND, 5 )
 
-		bSizer2611 = wx.BoxSizer( wx.HORIZONTAL )
-
-		self.m_staticText412 = wx.StaticText( self.m_panel_settings, wx.ID_ANY, u"oauth app credentials:      \nused for osu api access", wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_staticText412.Wrap( -1 )
-
-		self.m_staticText412.SetFont( wx.Font( 10, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
-
-		bSizer2611.Add( self.m_staticText412, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
-
-		self.m_client_id = wx.TextCtrl( self.m_panel_settings, wx.ID_ANY, u"client_id", wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_client_id.SetFont( wx.Font( 12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
-
-		bSizer2611.Add( self.m_client_id, 1, wx.ALL, 5 )
-
-		self.m_client_secret = wx.TextCtrl( self.m_panel_settings, wx.ID_ANY, u"client_secret", wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_client_secret.SetFont( wx.Font( 12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
-
-		bSizer2611.Add( self.m_client_secret, 1, wx.ALL, 5 )
-
-
-		bSizer25.Add( bSizer2611, 0, wx.EXPAND, 5 )
-
 		self.m_autodownload_toggle = wx.CheckBox( self.m_panel_settings, wx.ID_ANY, u"Automatically start downloading from sources on application start", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_autodownload_toggle.SetFont( wx.Font( 12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
 
@@ -138,16 +118,11 @@ class Main ( wx.Frame ):
 
 		bSizer5511 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_export_to_beatmap = wx.Button( self.m_panel_settings, wx.ID_ANY, u"Convert a in-game collection to beatmap", wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_export_to_beatmap.SetFont( wx.Font( 10, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
-
-		bSizer5511.Add( self.m_export_to_beatmap, 1, wx.ALL, 5 )
-
 
 		bSizer25.Add( bSizer5511, 0, wx.EXPAND, 5 )
 
 		self.m_collapsiblePane1 = wx.CollapsiblePane( self.m_panel_settings, wx.ID_ANY, u"Advanced settings", wx.DefaultPosition, wx.DefaultSize, wx.CP_DEFAULT_STYLE )
-		self.m_collapsiblePane1.Collapse( False )
+		self.m_collapsiblePane1.Collapse( True )
 
 		bSizer23 = wx.BoxSizer( wx.VERTICAL )
 
@@ -156,7 +131,7 @@ class Main ( wx.Frame ):
 
 		bSizer23.Add( self.m_staticText9, 0, wx.ALL, 5 )
 
-		self.m_use_osu_mirror = wx.CheckBox( self.m_collapsiblePane1.GetPane(), wx.ID_ANY, u"Use osu website as mirror if beatconnect does not have beatmap (botting is against TOS)", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_use_osu_mirror = wx.CheckBox( self.m_collapsiblePane1.GetPane(), wx.ID_ANY, u"Use osu website as mirror if chimu does not have beatmap (botting is against the osu terms of service, but there should be no issue with using this)", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_use_osu_mirror.SetFont( wx.Font( 12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
 
 		bSizer23.Add( self.m_use_osu_mirror, 0, wx.ALL, 5 )
@@ -197,6 +172,11 @@ class Main ( wx.Frame ):
 
 
 		bSizer23.Add( bSizer55, 0, wx.EXPAND, 5 )
+
+		self.m_export_to_beatmap = wx.Button( self.m_collapsiblePane1.GetPane(), wx.ID_ANY, u"Convert a in-game collection to beatmap", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_export_to_beatmap.SetFont( wx.Font( 12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
+
+		bSizer23.Add( self.m_export_to_beatmap, 0, wx.ALL|wx.EXPAND, 5 )
 
 
 		self.m_collapsiblePane1.GetPane().SetSizer( bSizer23 )
@@ -565,7 +545,7 @@ class CollectionsSelection ( wx.Frame ):
 class IntroWizard ( wx.adv.Wizard ):
 
 	def __init__( self, parent ):
-		wx.adv.Wizard.__init__ ( self, parent, id = wx.ID_ANY, title = wx.EmptyString, bitmap = wx.NullBitmap, pos = wx.DefaultPosition, style = wx.DEFAULT_DIALOG_STYLE )
+		wx.adv.Wizard.__init__ ( self, parent, id = wx.ID_ANY, title = wx.EmptyString, bitmap = wx.NullBitmap, pos = wx.DefaultPosition, style = wx.DEFAULT_DIALOG_STYLE|wx.MAXIMIZE_BOX|wx.STAY_ON_TOP )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 		self.m_pages = []
@@ -594,12 +574,12 @@ class IntroWizard ( wx.adv.Wizard ):
 
 		bSizer261.Add( self.m_staticText191, 0, wx.ALL|wx.EXPAND, 5 )
 
-		self.m_staticText161 = wx.StaticText( self.m_wizPage1, wx.ID_ANY, u"• Bulk downloading from beatmap sources\n• Writing downloaded beatmaps to in-game collections\n• Beatmap sources allow future updates to be synced automatically", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText161 = wx.StaticText( self.m_wizPage1, wx.ID_ANY, u"• Bulk downloading from beatmap sources\n• Writing downloaded beatmaps to in-game collections\n• Beatmap sources allow future updates to be synced automatically\n• No loading screens so whenever the app is loading it just hangs", wx.DefaultPosition, wx.Size( 1000,400 ), 0 )
 		self.m_staticText161.Wrap( -1 )
 
 		self.m_staticText161.SetFont( wx.Font( 16, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, "Arial" ) )
 
-		bSizer261.Add( self.m_staticText161, 1, wx.ALL|wx.EXPAND, 5 )
+		bSizer261.Add( self.m_staticText161, 0, wx.ALL, 5 )
 
 
 		self.m_wizPage1.SetSizer( bSizer261 )
@@ -621,7 +601,7 @@ class IntroWizard ( wx.adv.Wizard ):
 		self.m_staticline2 = wx.StaticLine( self.m_wizPage2, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
 		bSizer26.Add( self.m_staticline2, 0, wx.EXPAND |wx.ALL, 5 )
 
-		self.m_staticText19 = wx.StaticText( self.m_wizPage2, wx.ID_ANY, u"osu! assistant can update your beatmaps from:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText19 = wx.StaticText( self.m_wizPage2, wx.ID_ANY, u"osu! assistant adds beatmaps from:", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText19.Wrap( -1 )
 
 		self.m_staticText19.SetFont( wx.Font( 18, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, "Arial" ) )
@@ -691,7 +671,7 @@ class IntroWizard ( wx.adv.Wizard ):
 		self.m_staticline4 = wx.StaticLine( self.m_wizPage4, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
 		bSizer2621.Add( self.m_staticline4, 0, wx.EXPAND |wx.ALL, 5 )
 
-		self.m_staticText1921 = wx.StaticText( self.m_wizPage4, wx.ID_ANY, u"osu! assistant needs:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText1921 = wx.StaticText( self.m_wizPage4, wx.ID_ANY, u"osu! assistant needs 2 things:", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText1921.Wrap( -1 )
 
 		self.m_staticText1921.SetFont( wx.Font( 18, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, "Arial" ) )
@@ -701,21 +681,27 @@ class IntroWizard ( wx.adv.Wizard ):
 
 		bSizer263 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticText4 = wx.StaticText( self.m_wizPage4, wx.ID_ANY, u"osu install folder:             \nThe folder containing\nyour osu Skins folder", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText4 = wx.StaticText( self.m_wizPage4, wx.ID_ANY, u"1. osu install folder:\nThe folder containing\nyour osu Skins folder", wx.DefaultPosition, wx.Size( 150,100 ), 0 )
 		self.m_staticText4.Wrap( -1 )
 
-		bSizer263.Add( self.m_staticText4, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		self.m_staticText4.SetFont( wx.Font( 12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
+
+		bSizer263.Add( self.m_staticText4, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL|wx.EXPAND, 5 )
 
 		self.m_osu_dir = wx.DirPickerCtrl( self.m_wizPage4, wx.ID_ANY, wx.EmptyString, u"Select your osu install folder", wx.DefaultPosition, wx.DefaultSize, wx.DIRP_DEFAULT_STYLE )
-		bSizer263.Add( self.m_osu_dir, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		self.m_osu_dir.SetFont( wx.Font( 12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
+
+		bSizer263.Add( self.m_osu_dir, 1, wx.ALL, 5 )
 
 
 		bSizer2621.Add( bSizer263, 0, wx.EXPAND, 5 )
 
 		bSizer2611 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_button15 = wx.Button( self.m_wizPage4, wx.ID_ANY, u"Allow assistant to access the osu! api", wx.DefaultPosition, wx.DefaultSize, 0 )
-		bSizer2611.Add( self.m_button15, 1, wx.ALL, 5 )
+		self.m_oauth_btn = wx.Button( self.m_wizPage4, wx.ID_ANY, u"2. Grant assistant access to the osu! api", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_oauth_btn.SetFont( wx.Font( 12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
+
+		bSizer2611.Add( self.m_oauth_btn, 1, wx.ALL, 5 )
 
 
 		bSizer2621.Add( bSizer2611, 0, wx.EXPAND, 5 )

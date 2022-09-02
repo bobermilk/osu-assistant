@@ -1,13 +1,12 @@
 import webbrowser
 import wx
-from api import check_cookies, get_token
+from api import check_cookies, get_token, get_oauth
 import gui
 from wxasync import AsyncBind, WxAsyncApp, StartCoroutine
 import asyncio
 import data, constants, buen, database, misc
 from download import destroy_client
 from pubsub import pub
-from strings import generate_collection_name
 import sys
 import os
 
@@ -140,24 +139,13 @@ class MainWindow(gui.Main):
             await database.create_osudb()
         if s.osu_install_folder != None:
             self.m_osu_dir.SetPath(s.osu_install_folder)
-        self.m_client_id.SetHelpText("osu oauth application client id")
-        self.m_client_secret.SetHelpText("osu oauth application client secret")
-        if s.oauth != None:
-            self.m_client_id.SetValue(s.oauth[0])
-            self.m_client_secret.SetValue(s.oauth[1])
-        else:
-            self.m_client_id.SetValue("client_id")
-            self.m_client_secret.SetValue("client_secret")
         self.m_autodownload_toggle.SetValue(s.download_on_start)
         self.m_use_osu_mirror.SetValue(s.download_from_osu)
         self.m_settings_xsrf_token.SetHelpText("Inspect element on osu website to obtain")
         self.m_settings_osu_session.SetHelpText("Inspect element on osu website to obtain")
-        if s.oauth != None and s.valid_osu_cookies == False:
+        if s.xsrf_token!="" and s.osu_session!="" and s.valid_osu_cookies == False:
             show_dialog("XSRF-TOKEN or osu_session provided has expired. You have to replace them")
             self.m_settings_xsrf_token.SetValue("XRSF_TOKEN")
-            self.m_settings_osu_session.SetValue("osu_session")
-        else:
-            self.m_settings_xsrf_token.SetValue("XSRF_TOKEN")
             self.m_settings_osu_session.SetValue("osu_session")
         
         # Refresh sources and jobs (the views will update)
@@ -171,14 +159,17 @@ class MainWindow(gui.Main):
     async def update_settings(self, event):
         s=data.get_settings()
         s.osu_install_folder=self.m_osu_dir.GetPath()
-        s.oauth=(self.m_client_id.GetValue(), self.m_client_secret.GetValue())
         s.download_on_start=self.m_autodownload_toggle.GetValue()
         s.download_from_osu=self.m_use_osu_mirror.GetValue()
         s.xsrf_token=self.m_settings_xsrf_token.GetValue()
         s.osu_session=self.m_settings_osu_session.GetValue()
         s.download_interval=self.m_download_interval.GetValue()
 
-        get_token()
+        if not os.path.isfile(os.path.join(s.osu_install_folder, "osu!.db")):
+            show_dialog("Warning: The osu folder you selected is not the osu install directory. If you wish to just download beatmaps to the selected folder without collection updates, this is alright.")
+
+        if s.valid_oauth==False:
+            get_token()
         
         if s.osu_install_folder!=None:
             # Initialize the cache db
@@ -196,19 +187,23 @@ class MainWindow(gui.Main):
             data.cancel_jobs_toggle=True
             self.m_toggle_downloading.SetLabelText(constants.activity_start)
         elif not data.cancel_jobs_toggle:
-            self.m_toggle_downloading.SetLabelText(constants.activity_stop)
-            await data.get_jobs().start_jobs()
+            if data.get_settings().valid_osu_directory:
+                self.m_toggle_downloading.SetLabelText(constants.activity_stop)
+                await data.get_jobs().start_jobs()
+            else:
+                show_dialog("Set the correct osu install folder in settings!")
 
     async def show_add_window(self, event):
         global add_source_window
-        if data.get_settings().osu_install_folder!=None and data.get_settings().valid_oauth == True:
+        if data.get_settings().valid_oauth == True:
             add_source_window=AddSourceWindow(parent=None)
             add_source_window.SetIcon(wx.Icon(resource_path("osu.ico")))
             add_source_window.Show()
             self.m_add_source.Disable()
             await add_source_window.populate_add_window(add_source_window)
         else:
-            show_dialog("You must set your osu install folder and do oauth authentication first!")
+            if data.get_settings().valid_oauth==False:
+                get_token()
     
     def open_discord(self, event):
         webbrowser.open(constants.link_discord)
@@ -310,7 +305,6 @@ class CollectionSelectionWindow(gui.CollectionsSelection):
         selections=self.m_collections_selection.GetSelections()
         buen.generate_beatmaps(selections, self.current_collections)
         self.Destroy()
-
                 
 # Used for AddSourceWindow to call functions in main window
 # There can be only one instance at all times
@@ -321,15 +315,14 @@ async def main():
     main_window.SetIcon(wx.Icon(resource_path("osu.ico")))
     main_window.Show()
     app.SetTopWindow(main_window)
-    show_dialog("Note from developer:\n\nThis app has no loading screens and will not respond whenever it's working (including after you click OK)")
     has_savefile=await misc.init()
     
     if has_savefile==False:
         wizard=gui.IntroWizard(None)
+        wizard.FitToPage(wizard.m_wizPage1)
         wizard.SetIcon(wx.Icon(resource_path("osu.ico")))
-        wizard.GetPageAreaSizer().Add(wizard.m_wizPage1)
+        wizard.m_oauth_btn.Bind(wx.EVT_BUTTON, get_oauth)
         wizard.RunWizard(wizard.m_wizPage1)
-        
     await main_window.restore_settings(None)
     await app.MainLoop()
 asyncio.run(main())

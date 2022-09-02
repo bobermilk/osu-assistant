@@ -3,7 +3,8 @@ from pubsub import pub
 import time
 import requests
 import json
-import data, constants, download
+import data, constants, download, oauth
+import webbrowser
 
 # FLASK API
 def query_flask_tournaments(tournament_id):
@@ -60,27 +61,18 @@ def query_osu_beatmapset(beatmapset_id):
     j=json.loads(response.text)
     return "error" in j
 
+def get_oauth(self):
+    webbrowser.open(constants.oauth_url)
+    oauth.ask_token()
+
 # Generate a oauth token
 def get_token():
     if data.OAUTH_TOKEN is not None:
         return data.OAUTH_TOKEN
-
-    if data.get_settings().oauth != None:
-        credentials={
-            'client_id': data.get_settings().oauth[0],
-            'client_secret': data.get_settings().oauth[1],
-            'grant_type': 'client_credentials',
-            'scope': 'public'
-        }
-        response=requests.post(constants.OSU_TOKEN_URL, data=credentials)
-        try:
-            data.OAUTH_TOKEN=response.json().get('access_token')
-            data.get_settings().valid_oauth=True
-        except:
-            #Invaild oauth token, osu assistant can't work without it
-            data.get_settings().valid_oauth=False
-            pass
-    return data.OAUTH_TOKEN
+    else:
+        get_oauth(None)
+        pub.sendMessage("show.dialog", msg="Api access is required and is not granted. Please go to your web browser and click allow")
+        return None
 
 async def check_cookies():
     url=constants.osu_beatmap_url_download.format(1)
