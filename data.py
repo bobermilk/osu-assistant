@@ -60,3 +60,6 @@ def load_data():
                 pub.sendMessage("update.sources")
         except:
             pub.sendMessage("show.dialog", msg="osu assistant data file is corrupted, please delete the osu-assistant.data file")
+        return True
+    else:
+        return False # first time

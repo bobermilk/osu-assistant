@@ -95,6 +95,8 @@ class MainWindow(gui.Main):
     # used to repopulate the source list after a edit
     def update_sources(self, event):
         self.m_source_list.DeleteAllPages()
+        self.m_source_list.GetListView().Size=(800,-1)
+
         source_list=data.get_sources().read()
         for source_key, source in source_list:
             source_panel=gui.ListPanel(self.m_source_list)
@@ -319,9 +321,15 @@ async def main():
     main_window.SetIcon(wx.Icon(resource_path("osu.ico")))
     main_window.Show()
     app.SetTopWindow(main_window)
-    show_dialog("Note from developer:\n\nThis app has no loading screens and will not respond whenever it's working (including after you click OK)\nYou may join the discord server to report bugs")
-    await misc.init()
+    show_dialog("Note from developer:\n\nThis app has no loading screens and will not respond whenever it's working (including after you click OK)")
+    has_savefile=await misc.init()
+    
+    if has_savefile==False:
+        wizard=gui.IntroWizard(None)
+        wizard.SetIcon(wx.Icon(resource_path("osu.ico")))
+        wizard.GetPageAreaSizer().Add(wizard.m_wizPage1)
+        wizard.RunWizard(wizard.m_wizPage1)
+        
     await main_window.restore_settings(None)
     await app.MainLoop()
-
 asyncio.run(main())

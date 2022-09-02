@@ -11,7 +11,7 @@ from pubsub import pub
 # 
 async def init():
     # Load app data
-    data.load_data()
+    has_savefile=data.load_data()
     # Check for update
     if requests.get("https://milkies.ml/json/osu-assistant.json").json()["latest"]>constants.APP_VERSION:
         pub.sendMessage("show.dialog", msg="New update available! Download from github?", ok=lambda: webbrowser.open(constants.link_github_releases))
@@ -19,6 +19,7 @@ async def init():
     # Get the jsons
     data.TournamentJson=requests.get("https://milkies.ml/json/tournament.json").json()
     data.MappackJson=requests.get("https://milkies.ml/json/mappack.json").json()
+    return has_savefile
     
 # WARNING: this function WILL hang the main thread, so remember to make it async in production
 async def do_job(job):
