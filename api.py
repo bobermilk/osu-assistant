@@ -61,13 +61,26 @@ def query_osu_beatmapset(beatmapset_id):
     j=json.loads(response.text)
     return "error" in j
 
+def test_oauth(oauth):
+    headers={
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Authorization": f"Bearer {oauth}"
+    }
+    response=requests.get(f"https://osu.ppy.sh/api/v2/beatmapsets/1", headers=headers)
+    try:
+        response.json()["artist"]
+    except:
+        return False
+    return True
+
 def get_oauth(self):
     webbrowser.open(constants.oauth_url)
     oauth.ask_token()
 
 # Generate a oauth token
 def get_token():
-    if data.OAUTH_TOKEN is not None:
+    if data.OAUTH_TOKEN is not None and test_oauth(data.OAUTH_TOKEN):
         return data.OAUTH_TOKEN
     else:
         get_oauth(None)

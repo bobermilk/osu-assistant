@@ -122,7 +122,7 @@ class Main ( wx.Frame ):
 		bSizer25.Add( bSizer5511, 0, wx.EXPAND, 5 )
 
 		self.m_collapsiblePane1 = wx.CollapsiblePane( self.m_panel_settings, wx.ID_ANY, u"Advanced settings", wx.DefaultPosition, wx.DefaultSize, wx.CP_DEFAULT_STYLE )
-		self.m_collapsiblePane1.Collapse( True )
+		self.m_collapsiblePane1.Collapse( False )
 
 		bSizer23 = wx.BoxSizer( wx.VERTICAL )
 

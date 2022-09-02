@@ -41,7 +41,6 @@ def ask_token():
     global running
     if not running:
         thread = threading.Thread(target = webServer.serve_forever)
-        thread.daemon = True
         thread.start()
         running=True
     

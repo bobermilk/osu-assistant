@@ -323,6 +323,7 @@ async def main():
         wizard.SetIcon(wx.Icon(resource_path("osu.ico")))
         wizard.m_oauth_btn.Bind(wx.EVT_BUTTON, get_oauth)
         wizard.RunWizard(wizard.m_wizPage1)
+        data.get_settings().osu_install_folder=wizard.m_osu_dir.GetPath()
     await main_window.restore_settings(None)
     await app.MainLoop()
 asyncio.run(main())
