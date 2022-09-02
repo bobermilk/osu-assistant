@@ -240,8 +240,11 @@ class AddSourceWindow(gui.AddSource):
         links=self.m_userpages.GetValue()
         scope=[self.m_user_top100.GetValue(), self.m_user_favourites.GetValue(), self.m_user_everything.GetValue(),
                 self.m_user_ranked.GetValue(), self.m_user_loved.GetValue(), self.m_user_pending.GetValue(), self.m_user_graveyarded.GetValue()]
-        self.Destroy()
-        await data.get_sources().add_user_source(links, scope)
+        if all(x==0 for x in scope):
+            show_dialog("You need to select something to download from the userpage!")
+        else:
+            self.Destroy()
+            await data.get_sources().add_user_source(links, scope)
         
     async def add_tournament(self, event):
         selection=self.m_tournament.GetPageText(self.m_tournament.GetSelection())
