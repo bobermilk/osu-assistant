@@ -1,6 +1,6 @@
 import os
 
-APP_VERSION=1
+APP_VERSION=2
 DEBUG=False
 
 test_folder=os.getcwd()

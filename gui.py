@@ -38,7 +38,7 @@ class Main ( wx.Frame ):
 
 		bSizer241 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_add_source = wx.Button( self.m_panel_sources, wx.ID_ANY, u"    Add source    ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_add_source = wx.Button( self.m_panel_sources, wx.ID_ANY, u"    Add source    ", wx.DefaultPosition, wx.Size( -1,60 ), 0 )
 		self.m_add_source.SetFont( wx.Font( 21, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
 
 		bSizer241.Add( self.m_add_source, 1, wx.ALL, 5 )
@@ -78,7 +78,7 @@ class Main ( wx.Frame ):
 
 		bSizer6 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_toggle_downloading = wx.Button( self.m_panel_activity, wx.ID_ANY, u"Start Downloading", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_toggle_downloading = wx.Button( self.m_panel_activity, wx.ID_ANY, u"Start Downloading", wx.DefaultPosition, wx.Size( -1,60 ), 0 )
 		self.m_toggle_downloading.SetFont( wx.Font( 21, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
 
 		bSizer6.Add( self.m_toggle_downloading, 1, wx.ALL, 5 )
@@ -219,7 +219,7 @@ class Main ( wx.Frame ):
 
 		bSizer25.Add( bSizer24, 1, wx.EXPAND, 5 )
 
-		self.m_save_settings = wx.Button( self.m_panel_settings, wx.ID_ANY, u"Save settings", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_save_settings = wx.Button( self.m_panel_settings, wx.ID_ANY, u"Save settings", wx.DefaultPosition, wx.Size( -1,60 ), 0 )
 		self.m_save_settings.SetFont( wx.Font( 21, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
 
 		bSizer25.Add( self.m_save_settings, 0, wx.ALL|wx.EXPAND, 5 )
@@ -362,7 +362,7 @@ class AddSource ( wx.Frame ):
 
 		bSizer7.Add( bSizer101, 0, wx.EXPAND, 5 )
 
-		self.m_add_userpage = wx.Button( self.m_panel6, wx.ID_ANY, u"Add Userpage(s)", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_add_userpage = wx.Button( self.m_panel6, wx.ID_ANY, u"Add Userpage(s)", wx.DefaultPosition, wx.Size( -1,60 ), 0 )
 		self.m_add_userpage.SetFont( wx.Font( 21, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
 
 		bSizer7.Add( self.m_add_userpage, 0, wx.ALL|wx.EXPAND, 5 )
@@ -381,7 +381,7 @@ class AddSource ( wx.Frame ):
 
 		bSizer14.Add( self.m_tournament, 1, wx.EXPAND |wx.ALL, 5 )
 
-		self.m_add_tournament = wx.Button( self.m_panel7, wx.ID_ANY, u"Add Tournament", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_add_tournament = wx.Button( self.m_panel7, wx.ID_ANY, u"Add Tournament", wx.DefaultPosition, wx.Size( -1,60 ), 0 )
 		self.m_add_tournament.SetFont( wx.Font( 21, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
 
 		bSizer14.Add( self.m_add_tournament, 0, wx.ALL|wx.EXPAND, 5 )
@@ -421,7 +421,7 @@ class AddSource ( wx.Frame ):
 
 		bSizer141.Add( self.m_mappack_list, 1, wx.ALL|wx.EXPAND, 5 )
 
-		self.m_add_mappack = wx.Button( self.m_panel8, wx.ID_ANY, u"Add Mappack(s)", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_add_mappack = wx.Button( self.m_panel8, wx.ID_ANY, u"Add Mappack(s)", wx.DefaultPosition, wx.Size( -1,60 ), 0 )
 		self.m_add_mappack.SetFont( wx.Font( 21, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
 
 		bSizer141.Add( self.m_add_mappack, 0, wx.ALL|wx.EXPAND, 5 )
@@ -446,7 +446,7 @@ class AddSource ( wx.Frame ):
 
 		bSizer241.Add( self.m_osu_collector, 1, wx.ALL|wx.EXPAND, 5 )
 
-		self.m_add_osucollector = wx.Button( self.m_panel9, wx.ID_ANY, u"Add Collection(s)", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_add_osucollector = wx.Button( self.m_panel9, wx.ID_ANY, u"Add Collection(s)", wx.DefaultPosition, wx.Size( -1,60 ), 0 )
 		self.m_add_osucollector.SetFont( wx.Font( 21, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
 
 		bSizer241.Add( self.m_add_osucollector, 0, wx.ALL|wx.EXPAND, 5 )
@@ -681,12 +681,12 @@ class IntroWizard ( wx.adv.Wizard ):
 
 		bSizer263 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticText4 = wx.StaticText( self.m_wizPage4, wx.ID_ANY, u"1. osu install folder:\nThe folder containing\nyour osu Skins folder", wx.DefaultPosition, wx.Size( 150,100 ), 0 )
-		self.m_staticText4.Wrap( -1 )
+		self.m_staticText25 = wx.StaticText( self.m_wizPage4, wx.ID_ANY, u"1. osu install folder:\nThe folder containing\nyour osu Skins folder", wx.DefaultPosition, wx.Size( 150,100 ), 0 )
+		self.m_staticText25.Wrap( -1 )
 
-		self.m_staticText4.SetFont( wx.Font( 12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
+		self.m_staticText25.SetFont( wx.Font( 12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
 
-		bSizer263.Add( self.m_staticText4, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL|wx.EXPAND, 5 )
+		bSizer263.Add( self.m_staticText25, 0, wx.ALL, 5 )
 
 		self.m_osu_dir = wx.DirPickerCtrl( self.m_wizPage4, wx.ID_ANY, wx.EmptyString, u"Select your osu install folder", wx.DefaultPosition, wx.DefaultSize, wx.DIRP_DEFAULT_STYLE )
 		self.m_osu_dir.SetFont( wx.Font( 12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
