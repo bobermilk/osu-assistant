@@ -22,7 +22,8 @@ while True:
     if should_update == "1":
         # How to parse markdown 101
         # list of (tournament_name, beatmaps)
-        tournaments={}
+        with open("extras.json", "r") as f:
+            tournaments=json.load(f)
         tournament_dir=os.path.join(os.getcwd(),"osu-wiki", "wiki", "Tournaments")
         with open(os.path.join(tournament_dir,"en.md"), "r") as f:
             items=[x for x in f.read().split("\n") if len(x)>3 and x[:3]=='| [']
