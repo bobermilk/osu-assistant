@@ -4,4 +4,3 @@ wxPython
 aiofiles
 aiohttp[speedups]
 wxasync
-pickle
