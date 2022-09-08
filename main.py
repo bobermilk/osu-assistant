@@ -1,3 +1,4 @@
+import threading
 import webbrowser
 import wx
 from api import check_cookies, get_token, get_oauth
@@ -62,6 +63,17 @@ def show_dialog(msg, ok=None):
     dlg.Destroy()
     return result == wx.ID_OK
 
+loading=None
+def show_loading(msg):
+    global loading
+    if loading==None:
+        loading=wx.BusyInfo(msg)
+    
+    if msg==None:
+        del loading
+    else:
+        loading.UpdateText(msg)
+
 class MainWindow(gui.Main):
     """
     Main window bro
@@ -76,6 +88,7 @@ class MainWindow(gui.Main):
         pub.subscribe(enable_job_toggle_button, "enable.job_toggle_button")
         pub.subscribe(reset_job_toggle_button_text, "reset.job_toggle_button_text")
         pub.subscribe(show_dialog, "show.dialog")
+        pub.subscribe(show_loading, "show.loading")
         AsyncBind(wx.EVT_BUTTON, self.show_add_window, self.m_add_source)
         AsyncBind(wx.EVT_BUTTON, self.toggle_jobs, self.m_toggle_downloading)
         AsyncBind(wx.EVT_BUTTON, self.update_settings, self.m_save_settings)
@@ -136,7 +149,9 @@ class MainWindow(gui.Main):
         s=data.get_settings()
         if s.osu_install_folder!=None:
             # Initialize the cache db
-            await database.create_osudb()
+            thread=threading.Thread(target=database.create_osudb())
+            thread.daemon=True
+            thread.start()
         if s.osu_install_folder != None:
             self.m_osu_dir.SetPath(s.osu_install_folder)
         self.m_autodownload_toggle.SetValue(s.download_on_start)

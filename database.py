@@ -3,7 +3,7 @@
 import os
 import buffer, data
 import shutil
-import aiofiles
+from pubsub import pub
 
 from strings import generate_collection_name
 
@@ -17,7 +17,7 @@ def query_osudb(beatmap):
 
 # cache_db=os.path.join(misc.get_install_directory(), "cache.db")
 # Taken from https://github.com/jaasonw/osu-db-tools/blob/master/osu_to_sqlite.py
-async def create_osudb():
+def create_osudb():
     settings=data.get_settings()
     osu_db_directory=os.path.join(settings.osu_install_folder, "osu!.db")
     if not os.path.isfile(osu_db_directory):
@@ -34,7 +34,8 @@ async def create_osudb():
             buffer.read_string(db)
             num_beatmaps = buffer.read_uint(db)
 
-            for _ in range(num_beatmaps):
+            for i in range(num_beatmaps):
+                pub.sendMessage("show.loading", msg=f"Scanning osu database {i}/{num_beatmaps} beatmaps")
                 buffer.read_string(db)
                 buffer.read_string(db)
                 buffer.read_string(db)
@@ -107,7 +108,7 @@ async def create_osudb():
                 buffer.read_ubyte(db)
                 data.osudb_beatmap_ids.add(beatmap_id)
                 data.osudb_beatmapset_ids.add(beatmapset_id)
-
+    pub.sendMessage("show.loading", msg=None)
 # Taken from https://raw.githubusercontent.com/jaasonw/osu-db-tools/master/read_collection.py
 def collection_to_dict():
     collections = {}

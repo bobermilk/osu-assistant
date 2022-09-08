@@ -37,5 +37,6 @@ api.add_resource(Mappack, '/mappack', endpoint='mappack')
 
 if __name__ == '__main__':
     p1=Thread(target=update_data)
+    p1.daemon=True
     p1.start()
     start()
