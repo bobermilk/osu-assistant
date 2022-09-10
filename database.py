@@ -108,7 +108,7 @@ def create_osudb():
                 buffer.read_ubyte(db)
                 data.osudb_beatmap_ids.add(beatmap_id)
                 data.osudb_beatmapset_ids.add(beatmapset_id)
-    pub.sendMessage("show.loading", msg=None)
+        pub.sendMessage("show.loading", msg=None)
 # Taken from https://raw.githubusercontent.com/jaasonw/osu-db-tools/master/read_collection.py
 def collection_to_dict():
     collections = {}

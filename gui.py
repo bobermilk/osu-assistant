@@ -96,7 +96,7 @@ class Main ( wx.Frame ):
 
 		bSizer26 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticText4 = wx.StaticText( self.m_panel_settings, wx.ID_ANY, u"osu install folder:             \none directory above \nthe skins folder", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText4 = wx.StaticText( self.m_panel_settings, wx.ID_ANY, u"osu install folder:\n(example: C:\\Users\\foo\\AppData\\Local\\osu!)", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText4.Wrap( -1 )
 
 		self.m_staticText4.SetFont( wx.Font( 12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
@@ -681,7 +681,7 @@ class IntroWizard ( wx.adv.Wizard ):
 
 		bSizer263 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticText25 = wx.StaticText( self.m_wizPage4, wx.ID_ANY, u"1. osu install folder:\nThe folder containing\nyour osu Skins folder", wx.DefaultPosition, wx.Size( 150,100 ), 0 )
+		self.m_staticText25 = wx.StaticText( self.m_wizPage4, wx.ID_ANY, u"1. osu install folder:\n(example: C:\\Users\\foo\\AppData\\Local\\osu!)", wx.DefaultPosition, wx.Size( 150,100 ), 0 )
 		self.m_staticText25.Wrap( -1 )
 
 		self.m_staticText25.SetFont( wx.Font( 12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
