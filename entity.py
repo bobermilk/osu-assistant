@@ -108,10 +108,10 @@ class Sources():
     async def refresh(self):
         # TODO: api shit, call query_osu and store beatmaps in source.all_beatmaps as a triple (beatmapsetid, beatmapid, checksum)
         for source in self.user_source.values():
-            all_beatmaps=scraper.get_userpage_beatmaps(source)
+            all_beatmaps=await scraper.get_userpage_beatmaps(source)
             source.cache_beatmaps(all_beatmaps)
         for source in self.tournament_source.values():
-            all_beatmaps=scraper.get_tournament_beatmaps(source)
+            all_beatmaps=await scraper.get_tournament_beatmaps(source)
             source.cache_beatmaps(all_beatmaps)
         for source in self.mappack_source.values():
             all_beatmaps=scraper.get_mappack_beatmaps(source)
@@ -127,7 +127,7 @@ class Sources():
 
     async def add_user_source(self, links, scope):
         key, source=misc.create_userpage_source(links, scope)
-        all_beatmaps=scraper.get_userpage_beatmaps(source)
+        all_beatmaps=await scraper.get_userpage_beatmaps(source)
         source.cache_beatmaps(all_beatmaps)
         self.user_source[key]=source
         self.latest_collection_index+=1
@@ -141,7 +141,7 @@ class Sources():
     async def add_tournament_source(self, selection):
         tournament_id=selection.split(":")[0]
         key, source=misc.create_tournament_source(tournament_id, selection)
-        all_beatmaps=scraper.get_tournament_beatmaps(source)
+        all_beatmaps=await scraper.get_tournament_beatmaps(source)
         source.cache_beatmaps(all_beatmaps)
         self.tournament_source[key]=source
         self.latest_collection_index+=1

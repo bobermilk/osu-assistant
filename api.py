@@ -3,16 +3,12 @@ from pubsub import pub
 import time
 import requests
 import json
-import data, constants, download, oauth
+import data, constants, oauth
 import webbrowser
-
-# FLASK API
-def query_flask_tournaments(tournament_id):
-    json=b''
-    return json 
+import asyncio
 
 # OSU API 
-def query_osu_user_beatmapsets(user_id, type):
+async def query_osu_user_beatmapsets(session, user_id, type):
     headers={
         "Content-Type": "application/json",
         "Accept": "application/json",
@@ -21,9 +17,9 @@ def query_osu_user_beatmapsets(user_id, type):
     page=1
     jsons=[]
     while True:
-        response=requests.get(f"{constants.OSU_API_URL}/users/{user_id}/beatmapsets/{type}?limit={page*100}&offset={(page-1)*100}", headers=headers)
-        time.sleep(constants.api_get_interval)
-        j=response.json() # https://osu.ppy.sh/docs/index.html#get-user-beatmaps
+        response=await session.get(f"{constants.OSU_API_URL}/users/{user_id}/beatmapsets/{type}?limit={page*100}&offset={(page-1)*100}", headers=headers)
+        await asyncio.sleep(constants.api_get_interval)
+        j=await response.json() # https://osu.ppy.sh/docs/index.html#get-user-beatmaps
         if str(j)=="[]":
             break
         jsons.append(j)
@@ -32,17 +28,18 @@ def query_osu_user_beatmapsets(user_id, type):
 
 
 # returns (hash, beatmapset_id) for validity check and use the output to write collections
-def query_osu_beatmap(beatmap_id):
+async def query_osu_beatmap(session, beatmap_id):
     headers={
         "Content-Type": "application/json",
         "Accept": "application/json",
         "Authorization": f"Bearer {get_token()}",
     }
 
-    response=requests.get(f"{constants.OSU_API_URL}/beatmaps/{beatmap_id}", headers=headers)
-    time.sleep(constants.api_get_interval)
-    j=response.json()
+    response=await session.get(f"{constants.OSU_API_URL}/beatmaps/{beatmap_id}", headers=headers)
+    await asyncio.sleep(constants.api_get_interval)
+    j=await response.json()
     try:
+        print(j["checksum"], j["beatmapset_id"])
         return j["checksum"], j["beatmapset_id"]
     except:
         # The beatmap is not hosted

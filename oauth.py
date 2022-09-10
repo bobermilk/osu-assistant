@@ -25,7 +25,7 @@ class AuthenticationLoopback(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(bytes("<html><head><title>Success!</title></head>", "utf-8"))
         self.wfile.write(bytes("<body>", "utf-8"))
-        self.wfile.write(bytes("<p>You may return to the osu assistant application now.</p>", "utf-8"))
+        self.wfile.write(bytes("<p>You may close this tab and return to the osu assistant application now.</p>", "utf-8"))
         self.wfile.write(bytes("</body></html>", "utf-8"))
         fin()
 

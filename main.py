@@ -6,7 +6,6 @@ import gui
 from wxasync import AsyncBind, WxAsyncApp, StartCoroutine
 import asyncio
 import data, constants, buen, database, misc
-from download import destroy_client
 from pubsub import pub
 import sys
 import os
@@ -64,10 +63,11 @@ def show_dialog(msg, ok=None):
     dlg.Destroy()
     return result == wx.ID_OK
 
-loading=None
 def show_loading(msg):
     global loading
-    if loading==None:
+    try:
+        loading
+    except:
         loading=wx.BusyInfo(msg)
     
     if msg==None:
@@ -98,7 +98,6 @@ class MainWindow(gui.Main):
     async def onDestroy(self, event):
         if show_dialog("Are you sure you want to close osu assistant?"):
             # pickle the data
-            await destroy_client()
             data.save_data()      
             
             if add_source_window!=None:
@@ -223,6 +222,11 @@ class MainWindow(gui.Main):
             if data.get_settings().valid_oauth==False:
                 get_token()
     
+    async def add_userpage(self, links, scope):
+        await data.get_sources().add_user_source(links, scope)
+    async def add_tournament(self, selection):
+        await data.get_sources().add_tournament_source(selection)
+        
     def open_discord(self, event):
         webbrowser.open(constants.link_discord)
     def open_donate(self, event):
@@ -262,12 +266,12 @@ class AddSourceWindow(gui.AddSource):
             show_dialog("You need to select something to download from the userpage!")
         else:
             self.Destroy()
-            await data.get_sources().add_user_source(links, scope)
+        StartCoroutine(main_window.add_userpage(links, scope), main_window)
         
     async def add_tournament(self, event):
         selection=self.m_tournament.GetPageText(self.m_tournament.GetSelection())
         self.Destroy()
-        await data.get_sources().add_tournament_source(selection)
+        StartCoroutine(main_window.add_tournament(selection), main_window)
 
     async def add_mappack(self, event):
         labels=[self.m_mappack_list.GetString(x) for x in self.m_mappack_list.GetSelections()]
