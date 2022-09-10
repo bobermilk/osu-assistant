@@ -107,7 +107,6 @@ class MainWindow(gui.Main):
     # used to repopulate the source list after a edit
     def update_sources(self, event):
         self.m_source_list.DeleteAllPages()
-        self.m_source_list.GetListView().Size=(800,-1)
 
         source_list=data.get_sources().read()
         for source_key, source in source_list:
@@ -119,6 +118,7 @@ class MainWindow(gui.Main):
             for i, beatmap in enumerate(source.get_missing_beatmaps()):
                 source_panel.m_list.Insert("beatmapset_id="+str(beatmap[0]) + " beatmap_id="+str(beatmap[1]) +" checksum="+str(beatmap[2])+  " (missing)",i)
             self.m_source_list.AddPage(source_panel, f"#{data.get_sources().collection_index[source_key]}: {source_key}")
+        self.m_source_list.GetListView().SetColumnWidth(0,-1)
 
     # used to repopulate the activity list after download completes
     def update_activity(self, event):
@@ -242,6 +242,7 @@ class AddSourceWindow(gui.AddSource):
     """
     def __init__(self, parent=None):
         super(AddSourceWindow, self).__init__(parent)
+        self.Maximize(True)
         # bind the buttons to their respective callbacks
         AsyncBind(wx.EVT_BUTTON, self.add_userpage, self.m_add_userpage)
         AsyncBind(wx.EVT_BUTTON, self.add_tournament, self.m_add_tournament)
@@ -304,6 +305,8 @@ class AddSourceWindow(gui.AddSource):
                 add_tournament_panel.m_list.InsertItems(beatmap_list,0)
             
             self.m_tournament.AddPage(add_tournament_panel, tournament_key)
+            
+            self.m_tournament.GetListView().SetColumnWidth(0,-1)
         
         mappack_list=[]
         for source_key, item in data.MappackJson["0"].items():

@@ -50,7 +50,7 @@ class Main ( wx.Frame ):
 		self.m_panel_sources.SetSizer( bSizer4 )
 		self.m_panel_sources.Layout()
 		bSizer4.Fit( self.m_panel_sources )
-		self.m_tabs.AddPage( self.m_panel_sources, u"Sources", False )
+		self.m_tabs.AddPage( self.m_panel_sources, u"Sources", True )
 		self.m_panel_activity = wx.Panel( self.m_tabs, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		activity_box = wx.BoxSizer( wx.VERTICAL )
 
@@ -644,7 +644,7 @@ class IntroWizard ( wx.adv.Wizard ):
 
 		bSizer262.Add( self.m_staticText192, 0, wx.ALL|wx.EXPAND, 5 )
 
-		self.m_staticText162 = wx.StaticText( self.m_wizPage3, wx.ID_ANY, u"1. Close osu\n2. Add as many beatmaps sources as you want\n3. Start downloads \n4. Open osu! to see new collections", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText162 = wx.StaticText( self.m_wizPage3, wx.ID_ANY, u"1. Close osu!\n2. Add as many beatmaps sources as you want\n3. Start downloads \n4. Open osu! to see new collections", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText162.Wrap( -1 )
 
 		self.m_staticText162.SetFont( wx.Font( 16, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
@@ -681,7 +681,7 @@ class IntroWizard ( wx.adv.Wizard ):
 
 		bSizer263 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticText25 = wx.StaticText( self.m_wizPage4, wx.ID_ANY, u"1. osu install folder:\n(example: C:\\Users\\foo\\AppData\\Local\\osu!)", wx.DefaultPosition, wx.Size( 150,100 ), 0 )
+		self.m_staticText25 = wx.StaticText( self.m_wizPage4, wx.ID_ANY, u"1. osu install folder:\n(example: C:\\Users\\foo\\AppData\\Local\\osu!)", wx.DefaultPosition, wx.Size( 250,100 ), 0 )
 		self.m_staticText25.Wrap( -1 )
 
 		self.m_staticText25.SetFont( wx.Font( 12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
