@@ -10,6 +10,7 @@ from download import destroy_client
 from pubsub import pub
 import sys
 import os
+import aiohttp
 
 def resource_path(relative_path):
     """ Get absolute path to resource, works for dev and for PyInstaller """
@@ -144,7 +145,8 @@ class MainWindow(gui.Main):
 
     async def restore_settings(self, event):
         get_token()
-        await check_cookies()
+        async with aiohttp.ClientSession() as session:
+            await check_cookies(session)
 
         s=data.get_settings()
         if s.osu_install_folder!=None:
@@ -191,7 +193,8 @@ class MainWindow(gui.Main):
             await database.create_osudb()
 
         if s.download_from_osu==True:
-            await check_cookies()
+            async with aiohttp.ClientSession() as session:
+                await check_cookies()
         
         data.save_data()      
     

@@ -87,12 +87,11 @@ def get_token():
         pub.sendMessage("show.dialog", msg="Api access is required and is not granted. Please go to your web browser and click allow")
         return None
 
-async def check_cookies():
+async def check_cookies(session):
     url=constants.osu_beatmap_url_download.format(1)
     settings=data.get_settings()
     cookie={"XSRF-TOKEN":settings.xsrf_token,"osu_session":settings.osu_session}
     osu_header={ "referer":constants.osu_beatmap_url.format(1) }
-    session=await download.get_session()
     try:
         async with session.head(url, allow_redirects=True, cookies=cookie, headers=osu_header) as s:
             if s.status==200:

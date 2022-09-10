@@ -3,29 +3,12 @@
 import constants, data
 import os
 import aiofiles
-import aiohttp
 
-session=None
-
-async def get_session():
-    global session
-    # aiohttp session
-    if session==None:
-        session = aiohttp.ClientSession()
-    return session
-
-async def destroy_client():
-    global session
-    if session != None:
-        await session.close()
-    
 # The exit codes are as follows
 # 0: Failed to download
 # 1: Success from chimu
 # 2. Success from osu
-async def download_beatmap(beatmapset_id):
-    session=await get_session()
-
+async def download_beatmap(session, beatmapset_id):
     success=0
     settings=data.get_settings()
     filename = os.path.join(settings.osu_install_folder, "Songs", str(beatmapset_id) + ".osz")

@@ -6,6 +6,7 @@ import download
 import asyncio
 import data, database, constants, strings
 from pubsub import pub
+import aiohttp
 
 # Update sources/jobs on startup
 # 
@@ -26,31 +27,32 @@ async def do_job(job):
     downloads=job.get_job_downloads()
 
     source=data.get_sources().get_source(job.get_job_source_key())
-    for i, beatmap in enumerate(downloads, 1):
-        # Check if cancel button has been pressed (user cancelled opration)
-        if data.cancel_jobs_toggle:
-            return False
-        # Check source beatmap cache for availability of beatmap
-        is_hosted=source.query_cache(beatmap)
-        # Start downloading
-        if is_hosted:
-            success=await download.download_beatmap(beatmap[0])
-            
-            # Intervals between jobs
-            download_interval=data.get_settings().download_interval/1000
-            if success==2:
-                download_interval+=constants.osu_get_interval # add 3 seconds if its downloading from osu website
-            await asyncio.sleep(download_interval)
+    async with aiohttp.ClientSession() as session:
+        for i, beatmap in enumerate(downloads, 1):
+            # Check if cancel button has been pressed (user cancelled opration)
+            if data.cancel_jobs_toggle:
+                return False
+            # Check source beatmap cache for availability of beatmap
+            is_hosted=source.query_cache(beatmap)
+            # Start downloading
+            if is_hosted:
+                success=await download.download_beatmap(session, beatmap[0])
+                
+                # Intervals between jobs
+                download_interval=data.get_settings().download_interval/1000
+                if success==2:
+                    download_interval+=constants.osu_get_interval # add 3 seconds if its downloading from osu website
+                await asyncio.sleep(download_interval)
 
-            if not success:
-                source.cache_missing_beatmap(beatmap)
+                if not success:
+                    source.cache_missing_beatmap(beatmap)
+                else:
+                    source.uncache_missing_beatmap(beatmap)
             else:
-                source.uncache_missing_beatmap(beatmap)
-        else:
-            source.cache_unavailable_beatmap(beatmap)
-        
-        # Update progressbar
-        pub.sendMessage("update.progress", value=i, range=len(downloads), progress_message=None)
+                source.cache_unavailable_beatmap(beatmap)
+            
+            # Update progressbar
+            pub.sendMessage("update.progress", value=i, range=len(downloads), progress_message=None)
     
     return True  
 
