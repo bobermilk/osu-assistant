@@ -101,11 +101,3 @@ def create_osucollector_source(links):
     new_source=entity.OsucollectorSource(ids)
 
     return (source_key, new_source)
-
-# Gets the directory this application is installed in
-def get_install_directory():
-    if constants.DEBUG:
-        return constants.test_folder
-    else:
-        # TODO: get the install directory here
-        pass

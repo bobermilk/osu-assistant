@@ -35,7 +35,7 @@ def create_osudb():
             num_beatmaps = buffer.read_uint(db)
 
             for i in range(num_beatmaps):
-                pub.sendMessage("show.loading", msg=f"Scanning osu database {i}/{num_beatmaps} beatmaps")
+                pub.sendMessage("show.loading", msg=f"Scanning osu database ({i}/{num_beatmaps} beatmaps)")
                 buffer.read_string(db)
                 buffer.read_string(db)
                 buffer.read_string(db)

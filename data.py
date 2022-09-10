@@ -1,9 +1,7 @@
 # data provider (store variables, hardcode things and functions to get and set data)
-from genericpath import isfile
+from os.path import isfile
 import pickle
 import entity
-import constants
-import fake_provider as fake
 from pubsub import pub
 
 # Credentials
@@ -25,26 +23,13 @@ osudb_beatmapset_ids=set()
 # User toggles
 cancel_jobs_toggle=False
 
-# Use these test functions below for testing purposes
-# The sources tab will only display the mock data when DEBUG=True
-# Adding things will add to the actual data, but it is not shown
-
 def get_sources():
-    if constants.DEBUG:
-        return Sources
-    else:
         return Sources
 
 def get_jobs():
-    if constants.DEBUG:
-        return Jobs
-    else:
         return Jobs
         
 def get_settings():
-    if constants.DEBUG:
-        return fake.Settings
-    else:
         return Settings
 
 def save_data():
