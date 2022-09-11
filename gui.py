@@ -25,7 +25,7 @@ class Main ( wx.Frame ):
 		bSizer1 = wx.BoxSizer( wx.VERTICAL )
 
 		self.m_tabs = wx.Notebook( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_tabs.SetFont( wx.Font( wx.NORMAL_FONT.GetPointSize(), wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
+		self.m_tabs.SetFont( wx.Font( 10, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, "Arial" ) )
 
 		self.m_panel_sources = wx.Panel( self.m_tabs, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		bSizer4 = wx.BoxSizer( wx.VERTICAL )
@@ -40,6 +40,7 @@ class Main ( wx.Frame ):
 
 		self.m_add_source = wx.Button( self.m_panel_sources, wx.ID_ANY, u"    Add source    ", wx.DefaultPosition, wx.Size( -1,60 ), 0 )
 		self.m_add_source.SetFont( wx.Font( 21, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
+		self.m_add_source.SetBackgroundColour( wx.Colour( 255, 128, 128 ) )
 
 		bSizer241.Add( self.m_add_source, 1, wx.ALL, 5 )
 
@@ -80,6 +81,7 @@ class Main ( wx.Frame ):
 
 		self.m_toggle_downloading = wx.Button( self.m_panel_activity, wx.ID_ANY, u"Start Downloading", wx.DefaultPosition, wx.Size( -1,60 ), 0 )
 		self.m_toggle_downloading.SetFont( wx.Font( 21, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
+		self.m_toggle_downloading.SetBackgroundColour( wx.Colour( 255, 128, 128 ) )
 
 		bSizer6.Add( self.m_toggle_downloading, 1, wx.ALL, 5 )
 
@@ -190,21 +192,27 @@ class Main ( wx.Frame ):
 
 		self.m_website = wx.Button( self.m_panel_settings, wx.ID_ANY, u"Wiki", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_website.SetFont( wx.Font( 14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
+		self.m_website.SetBackgroundColour( wx.Colour( 255, 128, 255 ) )
 
 		bSizer281.Add( self.m_website, 0, wx.ALL|wx.ALIGN_BOTTOM, 5 )
 
 		self.m_discord = wx.Button( self.m_panel_settings, wx.ID_ANY, u"Discord", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_discord.SetFont( wx.Font( 14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
+		self.m_discord.SetBackgroundColour( wx.Colour( 114, 137, 218 ) )
 
 		bSizer281.Add( self.m_discord, 0, wx.ALL|wx.ALIGN_BOTTOM, 5 )
 
 		self.m_github = wx.Button( self.m_panel_settings, wx.ID_ANY, u"Github", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_github.SetFont( wx.Font( 14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
+		self.m_github.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
+		self.m_github.SetBackgroundColour( wx.Colour( 0, 0, 0 ) )
 
 		bSizer281.Add( self.m_github, 0, wx.ALL|wx.ALIGN_BOTTOM, 5 )
 
 		self.m_donate = wx.Button( self.m_panel_settings, wx.ID_ANY, u"Donate", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_donate.SetFont( wx.Font( 14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
+		self.m_donate.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNTEXT ) )
+		self.m_donate.SetBackgroundColour( wx.Colour( 128, 255, 255 ) )
 
 		bSizer281.Add( self.m_donate, 0, wx.ALL|wx.ALIGN_BOTTOM, 5 )
 
@@ -221,6 +229,7 @@ class Main ( wx.Frame ):
 
 		self.m_save_settings = wx.Button( self.m_panel_settings, wx.ID_ANY, u"Save settings", wx.DefaultPosition, wx.Size( -1,60 ), 0 )
 		self.m_save_settings.SetFont( wx.Font( 21, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
+		self.m_save_settings.SetBackgroundColour( wx.Colour( 255, 128, 128 ) )
 
 		bSizer25.Add( self.m_save_settings, 0, wx.ALL|wx.EXPAND, 5 )
 
@@ -306,6 +315,7 @@ class AddSource ( wx.Frame ):
 
 		self.m_subscribed_mappers = wx.Button( self.m_panel6, wx.ID_ANY, u"        Get subscribed mappers        ", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_subscribed_mappers.SetFont( wx.Font( 12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
+		self.m_subscribed_mappers.SetBackgroundColour( wx.Colour( 255, 255, 128 ) )
 
 		bSizer35.Add( self.m_subscribed_mappers, 0, wx.TOP|wx.RIGHT|wx.LEFT, 5 )
 
@@ -364,6 +374,7 @@ class AddSource ( wx.Frame ):
 
 		self.m_add_userpage = wx.Button( self.m_panel6, wx.ID_ANY, u"Add Userpage(s)", wx.DefaultPosition, wx.Size( -1,60 ), 0 )
 		self.m_add_userpage.SetFont( wx.Font( 21, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
+		self.m_add_userpage.SetBackgroundColour( wx.Colour( 255, 128, 128 ) )
 
 		bSizer7.Add( self.m_add_userpage, 0, wx.ALL|wx.EXPAND, 5 )
 
@@ -383,6 +394,7 @@ class AddSource ( wx.Frame ):
 
 		self.m_add_tournament = wx.Button( self.m_panel7, wx.ID_ANY, u"Add Tournament", wx.DefaultPosition, wx.Size( -1,60 ), 0 )
 		self.m_add_tournament.SetFont( wx.Font( 21, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
+		self.m_add_tournament.SetBackgroundColour( wx.Colour( 255, 128, 128 ) )
 
 		bSizer14.Add( self.m_add_tournament, 0, wx.ALL|wx.EXPAND, 5 )
 
@@ -423,6 +435,7 @@ class AddSource ( wx.Frame ):
 
 		self.m_add_mappack = wx.Button( self.m_panel8, wx.ID_ANY, u"Add Mappack(s)", wx.DefaultPosition, wx.Size( -1,60 ), 0 )
 		self.m_add_mappack.SetFont( wx.Font( 21, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
+		self.m_add_mappack.SetBackgroundColour( wx.Colour( 255, 128, 128 ) )
 
 		bSizer141.Add( self.m_add_mappack, 0, wx.ALL|wx.EXPAND, 5 )
 
@@ -448,6 +461,7 @@ class AddSource ( wx.Frame ):
 
 		self.m_add_osucollector = wx.Button( self.m_panel9, wx.ID_ANY, u"Add Collection(s)", wx.DefaultPosition, wx.Size( -1,60 ), 0 )
 		self.m_add_osucollector.SetFont( wx.Font( 21, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
+		self.m_add_osucollector.SetBackgroundColour( wx.Colour( 255, 128, 128 ) )
 
 		bSizer241.Add( self.m_add_osucollector, 0, wx.ALL|wx.EXPAND, 5 )
 
@@ -574,7 +588,7 @@ class IntroWizard ( wx.adv.Wizard ):
 
 		bSizer261.Add( self.m_staticText191, 0, wx.ALL|wx.EXPAND, 5 )
 
-		self.m_staticText161 = wx.StaticText( self.m_wizPage1, wx.ID_ANY, u"• Bulk downloading from beatmap sources\n• Writing downloaded beatmaps to in-game collections\n• Beatmap sources allow future updates to be synced automatically\n• No loading screens so whenever the app is loading it just hangs", wx.DefaultPosition, wx.Size( 1000,400 ), 0 )
+		self.m_staticText161 = wx.StaticText( self.m_wizPage1, wx.ID_ANY, u"• Bulk downloading from beatmap sources\n• Writing downloaded beatmaps to in-game collections\n• Beatmap sources allow future updates to be synced automatically", wx.DefaultPosition, wx.Size( 1000,400 ), 0 )
 		self.m_staticText161.Wrap( -1 )
 
 		self.m_staticText161.SetFont( wx.Font( 16, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, "Arial" ) )

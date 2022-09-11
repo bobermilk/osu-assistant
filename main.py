@@ -55,7 +55,7 @@ def show_dialog(msg, ok=None):
     # called when new release dropped on github
     dlg = wx.MessageDialog(main_window, 
         msg,
-        "Ok", wx.OK|wx.CANCEL|wx.ICON_QUESTION)
+        "Alert", wx.OK|wx.CANCEL|wx.ICON_QUESTION)
     result = dlg.ShowModal()
     if result == wx.ID_OK:
         if ok != None:
@@ -189,7 +189,9 @@ class MainWindow(gui.Main):
         
         if s.osu_install_folder!=None:
             # Initialize the cache db
-            await database.create_osudb()
+            thread=threading.Thread(target=database.create_osudb())
+            thread.daemon=True
+            thread.start()
 
         if s.download_from_osu==True:
             async with aiohttp.ClientSession() as session:
@@ -209,6 +211,7 @@ class MainWindow(gui.Main):
                 await data.get_jobs().start_jobs()
             else:
                 show_dialog("Set the correct osu install folder in settings!")
+                self.m_toggle_downloading.Enable()
 
     async def show_add_window(self, event):
         global add_source_window
