@@ -1,4 +1,3 @@
-import threading
 import webbrowser
 import wx
 from api import check_cookies, get_token, get_oauth
@@ -154,9 +153,7 @@ class MainWindow(gui.Main):
         s=data.get_settings()
         if s.osu_install_folder!=None:
             # Initialize the cache db
-            thread=threading.Thread(target=database.create_osudb())
-            thread.daemon=True
-            thread.start()
+            StartCoroutine(self.create_osudb, self)
         if s.osu_install_folder != None:
             self.m_osu_dir.SetPath(s.osu_install_folder)
         self.m_autodownload_toggle.SetValue(s.download_on_start)
@@ -193,9 +190,7 @@ class MainWindow(gui.Main):
         
         if s.osu_install_folder!=None:
             # Initialize the cache db
-            thread=threading.Thread(target=database.create_osudb())
-            thread.daemon=True
-            thread.start()
+            StartCoroutine(self.create_osudb, self)
 
         if s.download_from_osu==True:
             async with aiohttp.ClientSession() as session:
@@ -233,7 +228,8 @@ class MainWindow(gui.Main):
         await data.get_sources().add_user_source(links, scope)
     async def add_tournament(self, selection):
         await data.get_sources().add_tournament_source(selection)
-        
+    async def create_osudb(self):
+        await database.create_osudb()
     def open_discord(self, event):
         webbrowser.open(constants.link_discord)
     def open_donate(self, event):

@@ -1,56 +1,56 @@
 # Taken from https://github.com/jaasonw/osu-db-tools/blob/master/buffer.py
 import struct
 
-def read_bool(buffer) -> bool:
-    return struct.unpack("<?", buffer.read(1))[0]
+async def read_bool(buffer) -> bool:
+    return struct.unpack("<?", await buffer.read(1))[0]
 
-def read_ubyte(buffer) -> int:
-    return struct.unpack("<B", buffer.read(1))[0]
+async def read_ubyte(buffer) -> int:
+    return struct.unpack("<B", await buffer.read(1))[0]
 
-def read_ushort(buffer) -> int:
-    return struct.unpack("<H", buffer.read(2))[0]
+async def read_ushort(buffer) -> int:
+    return struct.unpack("<H", await buffer.read(2))[0]
 
-def read_uint(buffer) -> int:
-    return struct.unpack("<I", buffer.read(4))[0]
+async def read_uint(buffer) -> int:
+    return struct.unpack("<I", await buffer.read(4))[0]
 
-def read_float(buffer) -> float:
-    return struct.unpack("<f", buffer.read(4))[0]
+async def read_float(buffer) -> float:
+    return struct.unpack("<f", await buffer.read(4))[0]
 
-def read_double(buffer) -> float:
-    return struct.unpack("<d", buffer.read(8))[0]
+async def read_double(buffer) -> float:
+    return struct.unpack("<d", await buffer.read(8))[0]
 
-def read_ulong(buffer) -> int:
-    return struct.unpack("<Q", buffer.read(8))[0]
+async def read_ulong(buffer) -> int:
+    return struct.unpack("<Q", await buffer.read(8))[0]
 
 # osu specific
-def read_int_double(buffer):
-    read_ubyte(buffer)
-    integer = read_uint(buffer)
-    read_ubyte(buffer)
-    double = read_double(buffer)
+async def read_int_double(buffer):
+    await read_ubyte(buffer)
+    integer = await read_uint(buffer)
+    await read_ubyte(buffer)
+    double = await read_double(buffer)
     return (integer, double)
 
-def read_timing_point(buffer):
-    bpm = read_double(buffer)
-    offset = read_double(buffer)
-    inherited = read_bool(buffer)
+async def read_timing_point(buffer):
+    bpm = await read_double(buffer)
+    offset = await read_double(buffer)
+    inherited = await read_bool(buffer)
     return (bpm, offset, inherited)
 
-def read_string(buffer) -> str:
+async def read_string(buffer) -> str:
     strlen = 0
-    strflag = read_ubyte(buffer)
+    strflag = await read_ubyte(buffer)
     if (strflag == 0x0b):
         strlen = 0
         shift = 0
         # uleb128
         # https://en.wikipedia.org/wiki/LEB128
         while True:
-            byte = read_ubyte(buffer)
+            byte = await read_ubyte(buffer)
             strlen |= ((byte & 0x7F) << shift)
             if (byte & (1 << 7)) == 0:
                 break
             shift += 7
-    return (struct.unpack("<" + str(strlen) + "s", buffer.read(strlen))[0]).decode("utf-8")
+    return (struct.unpack("<" + str(strlen) + "s", await buffer.read(strlen))[0]).decode("utf-8")
 
 class WriteBuffer:
     def __init__(self):

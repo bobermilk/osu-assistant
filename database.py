@@ -1,11 +1,12 @@
 # collections and osu db
 
+# collections and osu db
+
 import os
 import buffer, data
 import shutil
+import aiofiles
 from pubsub import pub
-
-from strings import generate_collection_name
 
 def query_osudb(beatmap):
     beatmapset_id=int(beatmap[0])
@@ -17,113 +18,113 @@ def query_osudb(beatmap):
 
 # cache_db=os.path.join(misc.get_install_directory(), "cache.db")
 # Taken from https://github.com/jaasonw/osu-db-tools/blob/master/osu_to_sqlite.py
-def create_osudb():
+async def create_osudb():
     settings=data.get_settings()
     osu_db_directory=os.path.join(settings.osu_install_folder, "osu!.db")
     if not os.path.isfile(osu_db_directory):
         settings.valid_osu_directory=False
     else:
         settings.valid_osu_directory=True
-        with open(osu_db_directory, mode="rb") as db:
-            buffer.read_uint(db)
-            buffer.read_uint(db)
-            buffer.read_bool(db)
+        async with aiofiles.open(osu_db_directory, mode="rb") as db:
+            await buffer.read_uint(db)
+            await buffer.read_uint(db)
+            await buffer.read_bool(db)
             # skip this datetime shit for now (8 bytes)
-            buffer.read_uint(db)
-            buffer.read_uint(db)
-            buffer.read_string(db)
-            num_beatmaps = buffer.read_uint(db)
+            await buffer.read_uint(db)
+            await buffer.read_uint(db)
+            await buffer.read_string(db)
+            num_beatmaps = await buffer.read_uint(db)
 
             for i in range(num_beatmaps):
                 pub.sendMessage("show.loading", msg=f"Scanning osu database ({i}/{num_beatmaps} beatmaps)")
-                buffer.read_string(db)
-                buffer.read_string(db)
-                buffer.read_string(db)
-                buffer.read_string(db)
-                buffer.read_string(db)
-                buffer.read_string(db)
-                buffer.read_string(db)
-                buffer.read_string(db)
-                buffer.read_string(db)
-                buffer.read_ubyte(db)
-                buffer.read_ushort(db)
-                buffer.read_ushort(db)
-                buffer.read_ushort(db)
-                buffer.read_ulong(db)
-                buffer.read_float(db)
-                buffer.read_float(db)
-                buffer.read_float(db)
-                buffer.read_float(db)
-                buffer.read_double(db)
+                await buffer.read_string(db)
+                await buffer.read_string(db)
+                await buffer.read_string(db)
+                await buffer.read_string(db)
+                await buffer.read_string(db)
+                await buffer.read_string(db)
+                await buffer.read_string(db)
+                await buffer.read_string(db)
+                await buffer.read_string(db)
+                await buffer.read_ubyte(db)
+                await buffer.read_ushort(db)
+                await buffer.read_ushort(db)
+                await buffer.read_ushort(db)
+                await buffer.read_ulong(db)
+                await buffer.read_float(db)
+                await buffer.read_float(db)
+                await buffer.read_float(db)
+                await buffer.read_float(db)
+                await buffer.read_double(db)
                 # skip these int double pairs, personally i dont think they're 
                 # important for the purpose of this database
-                i = buffer.read_uint(db)
+                i = await buffer.read_uint(db)
                 for _ in range(i):
-                    buffer.read_int_double(db)
+                    await buffer.read_int_double(db)
 
-                i = buffer.read_uint(db)
+                i = await buffer.read_uint(db)
                 for _ in range(i):
-                    buffer.read_int_double(db)
+                    await buffer.read_int_double(db)
 
-                i = buffer.read_uint(db)
+                i = await buffer.read_uint(db)
                 for _ in range(i):
-                    buffer.read_int_double(db)
+                    await buffer.read_int_double(db)
 
-                i = buffer.read_uint(db)
+                i = await buffer.read_uint(db)
                 for _ in range(i):
-                    buffer.read_int_double(db)
+                    await buffer.read_int_double(db)
 
-                buffer.read_uint(db)
-                buffer.read_uint(db)
-                buffer.read_uint(db)
+                await buffer.read_uint(db)
+                await buffer.read_uint(db)
+                await buffer.read_uint(db)
                 # skip timing points
-                # i = buffer.read_uint(db)
-                for _ in range(buffer.read_uint(db)):
-                    buffer.read_timing_point(db)
-                beatmap_id=buffer.read_uint(db)
-                beatmapset_id=buffer.read_uint(db)
-                buffer.read_uint(db)
-                buffer.read_ubyte(db)
-                buffer.read_ubyte(db)
-                buffer.read_ubyte(db)
-                buffer.read_ubyte(db)
-                buffer.read_ushort(db)
-                buffer.read_float(db)
-                buffer.read_ubyte(db)
-                buffer.read_string(db)
-                buffer.read_string(db)
-                buffer.read_ushort(db)
-                buffer.read_string(db)
-                buffer.read_bool(db)
-                buffer.read_ulong(db)
-                buffer.read_bool(db)
-                buffer.read_string(db)
-                buffer.read_ulong(db)
-                buffer.read_bool(db)
-                buffer.read_bool(db)
-                buffer.read_bool(db)
-                buffer.read_bool(db)
-                buffer.read_bool(db)
-                buffer.read_uint(db)
-                buffer.read_ubyte(db)
+                # i = await buffer.read_uint(db)
+                for _ in range(await buffer.read_uint(db)):
+                    await buffer.read_timing_point(db)
+                beatmap_id=await buffer.read_uint(db)
+                beatmapset_id=await buffer.read_uint(db)
+                await buffer.read_uint(db)
+                await buffer.read_ubyte(db)
+                await buffer.read_ubyte(db)
+                await buffer.read_ubyte(db)
+                await buffer.read_ubyte(db)
+                await buffer.read_ushort(db)
+                await buffer.read_float(db)
+                await buffer.read_ubyte(db)
+                await buffer.read_string(db)
+                await buffer.read_string(db)
+                await buffer.read_ushort(db)
+                await buffer.read_string(db)
+                await buffer.read_bool(db)
+                await buffer.read_ulong(db)
+                await buffer.read_bool(db)
+                await buffer.read_string(db)
+                await buffer.read_ulong(db)
+                await buffer.read_bool(db)
+                await buffer.read_bool(db)
+                await buffer.read_bool(db)
+                await buffer.read_bool(db)
+                await buffer.read_bool(db)
+                await buffer.read_uint(db)
+                await buffer.read_ubyte(db)
                 data.osudb_beatmap_ids.add(beatmap_id)
                 data.osudb_beatmapset_ids.add(beatmapset_id)
         pub.sendMessage("show.loading", msg=None)
 # Taken from https://raw.githubusercontent.com/jaasonw/osu-db-tools/master/read_collection.py
-def collection_to_dict():
+async def collection_to_dict():
     collections = {}
     try:
-        with open(os.path.join(data.get_settings().osu_install_folder, "collection.db"), "rb") as db:
-            collections["version"] = buffer.read_uint(db)
-            collections["num_collections"] = buffer.read_uint(db)
+        async with aiofiles.open(os.path.join(data.get_settings().osu_install_folder, "collection.db"), "rb") as db:
+            collections["version"] = await buffer.read_uint(db)
+            collections["num_collections"] = await buffer.read_uint(db)
             collections["collections"] = []
             for i in range(collections["num_collections"]):
                 collection = {}
-                collection["name"] = buffer.read_string(db)
-                collection["size"] = buffer.read_uint(db)
+                collection["name"] = await buffer.read_string(db)
+                collection["size"] = await buffer.read_uint(db)
                 collection["hashes"] = []
                 for i in range(collection["size"]):
-                    collection["hashes"].append(buffer.read_string(db))
+                    collection["hashes"].append(await buffer.read_string(db))
                 collections["collections"].append(collection)
     except:
         # Invalid osu folder, can't write to collections
