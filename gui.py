@@ -306,7 +306,7 @@ class AddSource ( wx.Frame ):
 
 		bSizer35 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticText12 = wx.StaticText( self.m_panel6, wx.ID_ANY, u"Links of userpage links (add new line or space after a link)", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText12 = wx.StaticText( self.m_panel6, wx.ID_ANY, u"Links of userpage links (add new line after a link)", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText12.Wrap( -1 )
 
 		self.m_staticText12.SetFont( wx.Font( 12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
@@ -447,7 +447,7 @@ class AddSource ( wx.Frame ):
 		self.m_panel9 = wx.Panel( self.m_notebook2, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		bSizer241 = wx.BoxSizer( wx.VERTICAL )
 
-		self.m_staticText22 = wx.StaticText( self.m_panel9, wx.ID_ANY, u"Links of osu collector links (add new line or space after a link)", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText22 = wx.StaticText( self.m_panel9, wx.ID_ANY, u"Links of osu collector links (add new line after a link)", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText22.Wrap( -1 )
 
 		self.m_staticText22.SetFont( wx.Font( 12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
