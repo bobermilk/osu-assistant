@@ -1,3 +1,4 @@
+wheel
 requests
 pypubsub
 wxPython
