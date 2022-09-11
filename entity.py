@@ -4,7 +4,7 @@ from pubsub import pub
 from copy import copy
 
 # Used to cache beatmaps retrieved from update_sources() and record beatmap ids
-# Note: the beatmaps is a set    of (beatmapset_id, beatmap_id, beatmap_checksum)
+# Note: the beatmaps is a set of (beatmapset_id, beatmap_id, beatmap_checksum)
 class Beatmaps():
     def __init__(self):
         self.all_beatmaps=set()
@@ -27,7 +27,7 @@ class Beatmaps():
 
     # caches api queries for beatmaps
     def cache_beatmaps(self, all_beatmaps):
-        self.all_beatmaps=all_beatmaps
+        self.all_beatmaps.update(all_beatmaps)
     
     def cache_unavailable_beatmap(self, unavailable_beatmap):
         self.unavailable_beatmaps.add(unavailable_beatmap)

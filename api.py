@@ -39,7 +39,6 @@ async def query_osu_beatmap(session, beatmap_id):
     await asyncio.sleep(constants.api_get_interval)
     j=await response.json()
     try:
-        print(j["checksum"], j["beatmapset_id"])
         return j["checksum"], j["beatmapset_id"]
     except:
         # The beatmap is not hosted
