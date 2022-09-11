@@ -34,8 +34,11 @@ async def get_userpage_beatmaps(source):
                     pub.sendMessage("show.loading", msg=f"Getting beatmap data from osu! api ({i}/{len(j)})")
                     if not beatmap_id in cached_beatmap_ids:
                         beatmap_checksum, beatmapset_id = await api.query_osu_beatmap(session, beatmap_id)
-                        beatmap=(beatmapset_id, beatmap_id, beatmap_checksum)
-                        beatmaps.add(beatmap)
+                        if beatmapset_id == None:
+                            source.cache_unavailable_beatmap(beatmapset_id)
+                        else:
+                            beatmap=(beatmapset_id, beatmap_id, beatmap_checksum)
+                            beatmaps.add(beatmap)
             pub.sendMessage("show.loading", msg=None)
             all_beatmaps.update(beatmaps)
 
@@ -136,7 +139,10 @@ async def get_tournament_beatmaps(source):
             pub.sendMessage("show.loading", msg=f"Getting beatmap data from osu! api ({i}/{len(beatmaps)})")
             if not beatmap[1] in cached_beatmap_ids:
                 checksum, beatmapset_id=await api.query_osu_beatmap(session, beatmap[1])
-                all_beatmaps.add((beatmapset_id, beatmap[1], checksum))
+                if beatmapset_id == None:
+                    source.cache_unavailable_beatmap(beatmap[1])
+                else:
+                    all_beatmaps.add((beatmapset_id, beatmap[1], checksum))
     pub.sendMessage("show.loading", msg=None)
     return all_beatmaps
 

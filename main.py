@@ -103,6 +103,7 @@ class MainWindow(gui.Main):
             if add_source_window!=None:
                 add_source_window.Destroy()
             self.Destroy()
+            sys.exit(0)
 
     # used to repopulate the source list after a edit
     def update_sources(self, event):
@@ -112,13 +113,13 @@ class MainWindow(gui.Main):
         for source_key, source in source_list:
             source_panel=gui.ListPanel(self.m_source_list)
             for i, beatmap in enumerate(source.get_available_beatmaps()):
-                source_panel.m_list.Insert("beatmapset_id="+str(beatmap[0]) + " beatmap_id="+str(beatmap[1])+" checksum="+str(beatmap[2]),i)
+                source_panel.m_list.Insert("https://osu.ppy.sh/beatmapsets/"+str(beatmap[0]) ,i)
             for i, beatmap in enumerate(source.get_unavailable_beatmaps()):
-                source_panel.m_list.Insert("beatmapset_id="+str(beatmap[0]) + " beatmap_id="+str(beatmap[1]) +" checksum="+str(beatmap[2])+ " (unavailable for download)",i)
+                source_panel.m_list.Insert("https://osu.ppy.sh/b/"+str(beatmap[1]) +" (unavailable for download)",i)
             for i, beatmap in enumerate(source.get_missing_beatmaps()):
-                source_panel.m_list.Insert("beatmapset_id="+str(beatmap[0]) + " beatmap_id="+str(beatmap[1]) +" checksum="+str(beatmap[2])+  " (missing)",i)
+                source_panel.m_list.Insert("https://osu.ppy.sh/beatmapsets/"+str(beatmap[0]) +" (missing in-game)",i)
             self.m_source_list.AddPage(source_panel, f"#{data.get_sources().collection_index[source_key]}: {source_key}")
-        self.m_source_list.GetListView().SetColumnWidth(0,-1)
+        self.m_source_list.GetListView().SetColumnWidth(0, 750)
 
     # used to repopulate the activity list after download completes
     def update_activity(self, event):

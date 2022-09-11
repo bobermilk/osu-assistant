@@ -43,13 +43,6 @@ async def do_job(job):
                 if success==2:
                     download_interval+=constants.osu_get_interval # add 3 seconds if its downloading from osu website
                 await asyncio.sleep(download_interval)
-
-                if not success:
-                    source.cache_missing_beatmap(beatmap)
-                else:
-                    source.uncache_missing_beatmap(beatmap)
-            else:
-                source.cache_unavailable_beatmap(beatmap)
             
             # Update progressbar
             pub.sendMessage("update.progress", value=i, range=len(downloads), progress_message=None)
@@ -58,11 +51,11 @@ async def do_job(job):
 
 # called by job refresh to find out what to download
 def diff_local_and_source(source):
-    missing_beatmap=[]
+    missing_beatmaps=[]
     for beatmap in source.get_available_beatmaps():
         if beatmap[0] != None and not database.query_osudb(beatmap):
-            missing_beatmap.append(beatmap)
-    return missing_beatmap
+            missing_beatmaps.append(beatmap)
+    return missing_beatmaps
 
 # The following creates source objects to be inserted into the Sources entities
 def create_userpage_source(links, scope):

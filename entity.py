@@ -4,12 +4,11 @@ from pubsub import pub
 from copy import copy
 
 # Used to cache beatmaps retrieved from update_sources() and record beatmap ids
-# Note: the beatmaps is a set of (beatmapset_id, beatmap_id, beatmap_checksum)
+# Note: the beatmaps is a set of (beatmapset_id, beatmap_id, beatmap_checksum, beatmap_name)
 class Beatmaps():
     def __init__(self):
         self.all_beatmaps=set()
         self.unavailable_beatmaps=set() # if api checksum is none, the beatmap will not be there forever
-        self.missing_beatmaps=set() # used solely for showing beatmap status on the sources tab
         
     def get_available_beatmaps(self):
         return list(self.all_beatmaps-self.unavailable_beatmaps)
@@ -20,7 +19,7 @@ class Beatmaps():
     
     # tried to download but failed
     def get_missing_beatmaps(self):
-        return self.unavailable_beatmaps
+        return misc.diff_local_and_source(self)
 
     def query_cache(self, beatmapset_id):
         return beatmapset_id not in self.unavailable_beatmaps
@@ -31,11 +30,6 @@ class Beatmaps():
     
     def cache_unavailable_beatmap(self, unavailable_beatmap):
         self.unavailable_beatmaps.add(unavailable_beatmap)
-    def cache_missing_beatmap(self, beatmap):
-        self.missing_beatmaps.add(beatmap)
-    def uncache_missing_beatmap(self, beatmap):
-        if beatmap in self.missing_beatmaps:
-            self.missing_beatmaps.remove(beatmap)
         
 # Note: ids is a set of pairs (user_id, gamemode)
 class UserpageSource(Beatmaps):
