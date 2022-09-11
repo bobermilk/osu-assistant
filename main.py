@@ -119,7 +119,10 @@ class MainWindow(gui.Main):
             for i, beatmap in enumerate(source.get_missing_beatmaps()):
                 source_panel.m_list.Insert("https://osu.ppy.sh/beatmapsets/"+str(beatmap[0]) +" (missing in-game)",i)
             self.m_source_list.AddPage(source_panel, f"#{data.get_sources().collection_index[source_key]}: {source_key}")
-        self.m_source_list.GetListView().SetColumnWidth(0, 750)
+        try:
+            self.m_source_list.GetListView().SetColumnWidth(0, 750)
+        except:
+            pass
 
     # used to repopulate the activity list after download completes
     def update_activity(self, event):
@@ -310,7 +313,10 @@ class AddSourceWindow(gui.AddSource):
             
             self.m_tournament.AddPage(add_tournament_panel, tournament_key)
             
-            self.m_tournament.GetListView().SetColumnWidth(0,-1)
+            try:
+                self.m_tournament.GetListView().SetColumnWidth(0,-1)
+            except:
+                pass
         
         mappack_list=[]
         for source_key, item in data.MappackJson["0"].items():
