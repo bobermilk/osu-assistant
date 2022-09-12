@@ -1,7 +1,5 @@
 # collections and osu db
 
-# collections and osu db
-
 import os
 import buffer, data
 import shutil

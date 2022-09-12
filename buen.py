@@ -2,8 +2,7 @@ import os
 import data
 import database
 import misc
-import shutil
-from strings import generate_random_name, generate_collection_name
+from strings import generate_random_name
 
 # Walks the specified subdirectory to a specified level
 def walklevel(some_dir, level=1):

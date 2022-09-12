@@ -1,6 +1,5 @@
 import re
-import data, constants
-import api
+import constants
 import random, string
 
 # Create userpage ids

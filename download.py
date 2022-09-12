@@ -1,5 +1,3 @@
-# downloading from mirror
-# returns (success, )
 import constants, data
 import os
 import aiofiles
