@@ -2,9 +2,7 @@ import os
 
 APP_VERSION=4
 
-test_folder=os.getcwd()
-request_timeout=10
-api_get_interval=1
+api_get_interval=0.1
 osu_get_interval=3 # osu site
 
 #oauth url

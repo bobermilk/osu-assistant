@@ -111,7 +111,7 @@ class Sources():
             all_beatmaps=scraper.get_mappack_beatmaps(source)
             source.cache_beatmaps(all_beatmaps)
         for source in self.osucollector_source.values():
-            all_beatmaps=scraper.get_osucollector_beatmaps(source)
+            all_beatmaps=await scraper.get_osucollector_beatmaps(source)
             source.cache_beatmaps(all_beatmaps)
 
         # Write source updates to save file
@@ -166,7 +166,7 @@ class Sources():
 
     async def add_osucollector_source(self, link):
         key, source=misc.create_osucollector_source(link)
-        all_beatmaps=scraper.get_osucollector_beatmaps(source)
+        all_beatmaps=await scraper.get_osucollector_beatmaps(source)
         source.cache_beatmaps(all_beatmaps)
         self.osucollector_source[key]=source
         self.latest_collection_index+=1
