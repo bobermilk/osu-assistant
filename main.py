@@ -232,6 +232,8 @@ class MainWindow(gui.Main):
         await data.Sources.add_user_source(links, scope)
     async def add_tournament(self, selection):
         await data.Sources.add_tournament_source(selection)
+    async def add_osucollector(self, links):
+        await data.Sources.add_osucollector_source(links)
 
     async def create_osudb(self):
         self.m_add_source.Disable()
@@ -305,7 +307,7 @@ class AddSourceWindow(gui.AddSource):
     async def add_osucollector(self, event):
         links=self.m_osu_collector.GetValue()
         self.Destroy()
-        await data.Sources.add_osucollector_source(links)
+        StartCoroutine(main_window.add_osucollector(links), main_window)
 
     async def change_mappack_section(self, event):
         selection=str(self.m_mappack_section.GetSelection())
