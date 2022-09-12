@@ -36,7 +36,7 @@ async def read_timing_point(buffer):
     inherited = await read_bool(buffer)
     return (bpm, offset, inherited)
 
-async def read_string(buffer) -> str:
+async def read_string(buffer, skip=False) -> str:
     strlen = 0
     strflag = await read_ubyte(buffer)
     if (strflag == 0x0b):
@@ -50,8 +50,10 @@ async def read_string(buffer) -> str:
             if (byte & (1 << 7)) == 0:
                 break
             shift += 7
-    return (struct.unpack("<" + str(strlen) + "s", await buffer.read(strlen))[0]).decode("utf-8")
-
+    if skip:
+        await buffer.read(strlen)
+    else:
+        return (struct.unpack("<" + str(strlen) + "s", await buffer.read(strlen))[0]).decode("utf-8")
 class WriteBuffer:
     def __init__(self):
         self.offset = 0

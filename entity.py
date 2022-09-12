@@ -114,6 +114,8 @@ class Sources():
             all_beatmaps=scraper.get_osucollector_beatmaps(source)
             source.cache_beatmaps(all_beatmaps)
 
+        # Write source updates to save file
+        data.save_data()
         # refresh the jobs
         await data.Jobs.refresh()
         # Update the views
@@ -126,11 +128,12 @@ class Sources():
         self.user_source[key]=source
         self.latest_collection_index+=1
         self.collection_index[key]=self.latest_collection_index
+        # Write source updates to save file
+        data.save_data()
         # refresh the jobs
         await data.Jobs.refresh()
         # Update the views
         pub.sendMessage("update.sources")
-        
 
     async def add_tournament_source(self, selection):
         tournament_id=selection.split(":")[0]
@@ -140,6 +143,8 @@ class Sources():
         self.tournament_source[key]=source
         self.latest_collection_index+=1
         self.collection_index[key]=self.latest_collection_index
+        # Write source updates to save file
+        data.save_data()
         # refresh the jobs
         await data.Jobs.refresh()
         # Update the views
@@ -152,6 +157,8 @@ class Sources():
         self.mappack_source[key]=source
         self.latest_collection_index+=1
         self.collection_index[key]=self.latest_collection_index
+        # Write source updates to save file
+        data.save_data()
         # refresh the jobs
         await data.Jobs.refresh()
         # Update the views
@@ -164,6 +171,8 @@ class Sources():
         self.osucollector_source[key]=source
         self.latest_collection_index+=1
         self.collection_index[key]=self.latest_collection_index
+        # Write source updates to save file
+        data.save_data()
         # refresh the jobs
         await data.Jobs.refresh()
         # Update the views
@@ -177,6 +186,8 @@ class Sources():
             del self.mappack_source[source_key]
         if source_key in self.osucollector_source.keys():
             del self.osucollector_source[source_key]
+        # Write source updates to save file
+        data.save_data()
         # refresh the jobs
         await data.Jobs.refresh()
         # Update the views
@@ -240,7 +251,7 @@ class Jobs:
             pub.sendMessage("update.activity")
         # Check last success to see if we should show the No pending downloads
         if success:
-            database.update_collections(collections)
+            await database.update_collections(collections)
             pub.sendMessage("update.progress", value=None, range=None, progress_message=f"{initial_job_cnt} jobs completed successfully")
             pub.sendMessage("update.activity")
             pub.sendMessage("reset.job_toggle_button_text")

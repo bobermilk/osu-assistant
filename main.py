@@ -172,11 +172,6 @@ class MainWindow(gui.Main):
         
         # Refresh sources and jobs (the views will update)
         await data.Sources.refresh()
-
-        # Initiate automatic downloads
-        if s.download_on_start:
-            pub.sendMessage("toggle.jobs")
-            StartCoroutine(self.toggle_jobs, self)
             
     async def update_settings(self, event):
         s=data.Settings
@@ -241,10 +236,15 @@ class MainWindow(gui.Main):
         self.m_add_source.Disable()
         self.m_toggle_downloading.Disable()
         await database.create_osudb()
-        self.update_sources(None)
-        self.update_activity(None)
+        # Refresh sources and jobs (the views will update)
+        await data.Sources.refresh()
         self.m_add_source.Enable()
         self.m_toggle_downloading.Enable()
+
+        # Initiate automatic downloads
+        if data.Settings.download_on_start:
+            pub.sendMessage("toggle.jobs")
+            StartCoroutine(self.toggle_jobs, self)
         
     def open_discord(self, event):
         webbrowser.open(constants.link_discord)
