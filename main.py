@@ -124,6 +124,7 @@ class MainWindow(gui.Main):
             self.m_source_list.AddPage(source_panel, f"#{data.get_sources().collection_index[source_key]}: {source_key}")
         try:
             self.m_source_list.GetListView().SetColumnWidth(0, 750)
+            self.m_source_list.GetListView().Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.delete_source)
         except:
             pass
 
@@ -227,7 +228,10 @@ class MainWindow(gui.Main):
         else:
             if data.get_settings().valid_oauth==False:
                 get_token()
-    
+    def delete_source(self, event):
+        source_key=self.m_source_list.GetListView().GetItemText(self.m_source_list.GetListView().GetFocusedItem())
+        if show_dialog("Are you sure you want to delete {}".format(source_key)):
+            StartCoroutine(data.get_sources().delete_source(source_key[source_key.find(" ")+1:]), self)
     async def add_userpage(self, links, scope):
         await data.get_sources().add_user_source(links, scope)
     async def add_tournament(self, selection):

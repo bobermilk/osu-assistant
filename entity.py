@@ -168,6 +168,19 @@ class Sources():
         await data.get_jobs().refresh()
         # Update the views
         pub.sendMessage("update.sources")
+    async def delete_source(self, source_key):
+        if source_key in self.user_source.keys():
+            del self.user_source[source_key]
+        if source_key in self.tournament_source.keys():
+            del self.tournament_source[source_key]
+        if source_key in self.mappack_source.keys():
+            del self.mappack_source[source_key]
+        if source_key in self.osucollector_source.keys():
+            del self.osucollector_source[source_key]
+        # refresh the jobs
+        await data.get_jobs().refresh()
+        # Update the views
+        pub.sendMessage("update.sources")
 
 # Job
 class Job:
