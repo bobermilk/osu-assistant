@@ -33,7 +33,7 @@ async def get_userpage_beatmaps(source):
                 for i, item in enumerate(j):
                     beatmap_id=item['beatmap_id']
                     pub.sendMessage("show.loading", msg=f"Getting beatmap data from osu! api ({i}/{len(j)})")
-                    if not beatmap_id in cached_beatmap_ids:
+                    if data.Settings.valid_oauth and not beatmap_id in cached_beatmap_ids:
                         beatmap_checksum, beatmapset_id = await api.query_osu_beatmap(session, beatmap_id)
                         if beatmapset_id == None:
                             source.cache_unavailable_beatmap(beatmapset_id)
@@ -64,10 +64,11 @@ async def get_userpage_beatmaps(source):
             beatmaps=set()
             for user_id, gamemode in source.get_ids():
                 pub.sendMessage("show.loading", msg=f"Getting favourite maps from {user_id}...")
-                j=await api.query_osu_user_beatmapsets(session, user_id, "favourite") # list of jsons on each page
-                for item in j:
-                    for beatmap in item:
-                        beatmaps.add((beatmap["beatmaps"][0]["beatmapset_id"], None, None))
+                if data.Settings.valid_oauth:
+                    j=await api.query_osu_user_beatmapsets(session, user_id, "favourite") # list of jsons on each page
+                    for item in j:
+                        for beatmap in item:
+                            beatmaps.add((beatmap["beatmaps"][0]["beatmapset_id"], None, None))
             all_beatmaps.update(beatmaps)
             
         if scope[2]:
@@ -75,12 +76,13 @@ async def get_userpage_beatmaps(source):
             beatmaps=set()
             for user_id, gamemode in source.get_ids():
                 pub.sendMessage("show.loading", msg=f"Getting every map played by {user_id}...")
-                j=await api.query_osu_user_beatmapsets(session, user_id, "most_played")
-                for item in j:
-                    for beatmap in item:
-                        beatmapset_id=beatmap["beatmap"]["beatmapset_id"]
-                        beatmap_id=beatmap["beatmap_id"]
-                        beatmaps.add((beatmapset_id, beatmap_id, None))
+                if data.Settings.valid_oauth:
+                    j=await api.query_osu_user_beatmapsets(session, user_id, "most_played")
+                    for item in j:
+                        for beatmap in item:
+                            beatmapset_id=beatmap["beatmap"]["beatmapset_id"]
+                            beatmap_id=beatmap["beatmap_id"]
+                            beatmaps.add((beatmapset_id, beatmap_id, None))
             all_beatmaps.update(beatmaps)
             
 
@@ -88,12 +90,12 @@ async def get_userpage_beatmaps(source):
             beatmaps=set()
             for user_id, gamemode in source.get_ids():
                 pub.sendMessage("show.loading", msg=f"Getting ranked maps from {user_id}...")
-                j=await api.query_osu_user_beatmapsets(session, user_id, "ranked")
-
-                for item in j:
-                    for beatmap in item:
-                        beatmapset_id=beatmap["beatmaps"][0]["beatmapset_id"]
-                        beatmaps.add((beatmapset_id, None, None))
+                if data.Settings.valid_oauth:
+                    j=await api.query_osu_user_beatmapsets(session, user_id, "ranked")
+                    for item in j:
+                        for beatmap in item:
+                            beatmapset_id=beatmap["beatmaps"][0]["beatmapset_id"]
+                            beatmaps.add((beatmapset_id, None, None))
             all_beatmaps.update(beatmaps)
 
             
@@ -101,36 +103,36 @@ async def get_userpage_beatmaps(source):
             beatmaps=set()
             for user_id, gamemode in source.get_ids():
                 pub.sendMessage("show.loading", msg=f"Getting loved maps from {user_id}...")
-                j=await api.query_osu_user_beatmapsets(session, user_id, "loved")
-
-                for item in j:
-                    for beatmap in item:
-                        beatmapset_id=beatmap["beatmaps"][0]["beatmapset_id"]
-                        beatmaps.add((beatmapset_id, None, None))
+                if data.Settings.valid_oauth:
+                    j=await api.query_osu_user_beatmapsets(session, user_id, "loved")
+                    for item in j:
+                        for beatmap in item:
+                            beatmapset_id=beatmap["beatmaps"][0]["beatmapset_id"]
+                            beatmaps.add((beatmapset_id, None, None))
             all_beatmaps.update(beatmaps)
 
         if scope[5]:
             beatmaps=set()
             for user_id, gamemode in source.get_ids():
                 pub.sendMessage("show.loading", msg=f"Getting pending maps from {user_id}...")
-                j=await api.query_osu_user_beatmapsets(session, user_id, "pending")
-
-                for item in j:
-                    for beatmap in item:
-                        beatmapset_id=beatmap["beatmaps"][0]["beatmapset_id"]
-                        beatmaps.add((beatmapset_id, None, None))
+                if data.Settings.valid_oauth:
+                    j=await api.query_osu_user_beatmapsets(session, user_id, "pending")
+                    for item in j:
+                        for beatmap in item:
+                            beatmapset_id=beatmap["beatmaps"][0]["beatmapset_id"]
+                            beatmaps.add((beatmapset_id, None, None))
             all_beatmaps.update(beatmaps)
 
         if scope[6]:
             beatmaps=set()
             for user_id, gamemode in source.get_ids():
                 pub.sendMessage("show.loading", msg=f"Getting graveyarded maps from {user_id}...")
-                j=await api.query_osu_user_beatmapsets(session, user_id, "graveyard")
-
-                for item in j:
-                    for beatmap in item:
-                        beatmapset_id=beatmap["beatmaps"][0]["beatmapset_id"]
-                        beatmaps.add((beatmapset_id, None, None))
+                if data.Settings.valid_oauth:
+                    j=await api.query_osu_user_beatmapsets(session, user_id, "graveyard")
+                    for item in j:
+                        for beatmap in item:
+                            beatmapset_id=beatmap["beatmaps"][0]["beatmapset_id"]
+                            beatmaps.add((beatmapset_id, None, None))
             all_beatmaps.update(beatmaps)
         
     pub.sendMessage("show.loading", msg=None)
@@ -145,7 +147,7 @@ async def get_tournament_beatmaps(source):
             cached_beatmap_ids.add(beatmap[1])
         for i, beatmap in enumerate(beatmaps):
             pub.sendMessage("show.loading", msg=f"Getting beatmap data from osu! api ({i}/{len(beatmaps)})")
-            if not beatmap[1] in cached_beatmap_ids:
+            if data.Settings.valid_oauth and not beatmap[1] in cached_beatmap_ids:
                 checksum, beatmapset_id=await api.query_osu_beatmap(session, beatmap[1])
                 if beatmapset_id == None:
                     source.cache_unavailable_beatmap(beatmap[1])
@@ -164,7 +166,7 @@ def get_mappack_beatmaps(source):
                 break # move on to next id
     return all_beatmaps
 
-async def get_osucollector_beatmaps(session, source):
+async def get_osucollector_beatmaps(source):
     all_beatmaps=set()
     async with aiohttp.ClientSession() as session:
         for source_id in source.get_ids():
