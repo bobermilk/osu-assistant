@@ -5,6 +5,7 @@ import gui
 from wxasync import AsyncBind, WxAsyncApp, StartCoroutine
 import asyncio
 import data, constants, buen, database, misc
+from gui_extra import PyBusyInfo
 from pubsub import pub
 import sys
 import os
@@ -54,7 +55,7 @@ def show_dialog(msg, ok=None):
     # called when new release dropped on github
     dlg = wx.MessageDialog(main_window, 
         msg,
-        "Alert", wx.OK|wx.CANCEL|wx.ICON_QUESTION)
+        "Alert OwO", wx.OK|wx.CANCEL|wx.ICON_QUESTION)
     result = dlg.ShowModal()
     if result == wx.ID_OK:
         if ok != None:
@@ -66,13 +67,13 @@ def show_loading(msg):
     global loading
     try:
         loading
+        if msg == None:
+            del loading
+        else: 
+            loading.UpdateText(msg)
     except:
-        loading=wx.BusyInfo(msg)
-    
-    if msg==None:
-        del loading
-    else:
-        loading.UpdateText(msg)
+        if msg != None:
+            loading=PyBusyInfo(msg, parent=main_window, title="Loading UwU")
 
 class MainWindow(gui.Main):
     """
@@ -235,11 +236,13 @@ class MainWindow(gui.Main):
     async def create_osudb(self):
         self.m_add_source.Disable()
         self.m_toggle_downloading.Disable()
+        self.m_save_settings.Disable()
         await database.create_osudb()
         # Refresh sources and jobs (the views will update)
         await data.Sources.refresh()
         self.m_add_source.Enable()
         self.m_toggle_downloading.Enable()
+        self.m_save_settings.Enable()
 
         # Initiate automatic downloads
         if data.Settings.download_on_start:
