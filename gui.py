@@ -40,7 +40,7 @@ class Main ( wx.Frame ):
 
 		self.m_add_source = wx.Button( self.m_panel_sources, wx.ID_ANY, u"    Add source    ", wx.DefaultPosition, wx.Size( -1,60 ), 0 )
 		self.m_add_source.SetFont( wx.Font( 21, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
-		self.m_add_source.SetBackgroundColour( wx.Colour( 255, 128, 128 ) )
+		self.m_add_source.SetBackgroundColour( wx.Colour( 255, 121, 184 ) )
 
 		bSizer241.Add( self.m_add_source, 1, wx.ALL, 5 )
 
@@ -81,7 +81,7 @@ class Main ( wx.Frame ):
 
 		self.m_toggle_downloading = wx.Button( self.m_panel_activity, wx.ID_ANY, u"Start Downloading", wx.DefaultPosition, wx.Size( -1,60 ), 0 )
 		self.m_toggle_downloading.SetFont( wx.Font( 21, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
-		self.m_toggle_downloading.SetBackgroundColour( wx.Colour( 255, 128, 128 ) )
+		self.m_toggle_downloading.SetBackgroundColour( wx.Colour( 255, 121, 184 ) )
 
 		bSizer6.Add( self.m_toggle_downloading, 1, wx.ALL, 5 )
 
@@ -177,6 +177,7 @@ class Main ( wx.Frame ):
 
 		self.m_export_to_beatmap = wx.Button( self.m_collapsiblePane1.GetPane(), wx.ID_ANY, u"Convert a in-game collection to beatmap", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_export_to_beatmap.SetFont( wx.Font( 12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
+		self.m_export_to_beatmap.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
 
 		bSizer23.Add( self.m_export_to_beatmap, 0, wx.ALL|wx.EXPAND, 5 )
 
@@ -192,7 +193,7 @@ class Main ( wx.Frame ):
 
 		self.m_website = wx.Button( self.m_panel_settings, wx.ID_ANY, u"Wiki", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_website.SetFont( wx.Font( 14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
-		self.m_website.SetBackgroundColour( wx.Colour( 255, 128, 255 ) )
+		self.m_website.SetBackgroundColour( wx.Colour( 255, 128, 64 ) )
 
 		bSizer281.Add( self.m_website, 0, wx.ALL|wx.ALIGN_BOTTOM, 5 )
 
@@ -229,7 +230,7 @@ class Main ( wx.Frame ):
 
 		self.m_save_settings = wx.Button( self.m_panel_settings, wx.ID_ANY, u"Save settings", wx.DefaultPosition, wx.Size( -1,60 ), 0 )
 		self.m_save_settings.SetFont( wx.Font( 21, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
-		self.m_save_settings.SetBackgroundColour( wx.Colour( 255, 128, 128 ) )
+		self.m_save_settings.SetBackgroundColour( wx.Colour( 255, 121, 184 ) )
 
 		bSizer25.Add( self.m_save_settings, 0, wx.ALL|wx.EXPAND, 5 )
 
@@ -301,6 +302,8 @@ class AddSource ( wx.Frame ):
 		bSizer1 = wx.BoxSizer( wx.VERTICAL )
 
 		self.m_notebook2 = wx.Notebook( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_notebook2.SetFont( wx.Font( 10, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
+
 		self.m_panel6 = wx.Panel( self.m_notebook2, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		bSizer7 = wx.BoxSizer( wx.VERTICAL )
 
@@ -315,7 +318,7 @@ class AddSource ( wx.Frame ):
 
 		self.m_subscribed_mappers = wx.Button( self.m_panel6, wx.ID_ANY, u"        Get subscribed mappers        ", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_subscribed_mappers.SetFont( wx.Font( 12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
-		self.m_subscribed_mappers.SetBackgroundColour( wx.Colour( 255, 255, 128 ) )
+		self.m_subscribed_mappers.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
 
 		bSizer35.Add( self.m_subscribed_mappers, 0, wx.TOP|wx.RIGHT|wx.LEFT, 5 )
 
@@ -374,7 +377,7 @@ class AddSource ( wx.Frame ):
 
 		self.m_add_userpage = wx.Button( self.m_panel6, wx.ID_ANY, u"Add Userpage(s)", wx.DefaultPosition, wx.Size( -1,60 ), 0 )
 		self.m_add_userpage.SetFont( wx.Font( 21, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
-		self.m_add_userpage.SetBackgroundColour( wx.Colour( 255, 128, 128 ) )
+		self.m_add_userpage.SetBackgroundColour( wx.Colour( 255, 121, 184 ) )
 
 		bSizer7.Add( self.m_add_userpage, 0, wx.ALL|wx.EXPAND, 5 )
 
@@ -394,7 +397,7 @@ class AddSource ( wx.Frame ):
 
 		self.m_add_tournament = wx.Button( self.m_panel7, wx.ID_ANY, u"Add Tournament", wx.DefaultPosition, wx.Size( -1,60 ), 0 )
 		self.m_add_tournament.SetFont( wx.Font( 21, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
-		self.m_add_tournament.SetBackgroundColour( wx.Colour( 255, 128, 128 ) )
+		self.m_add_tournament.SetBackgroundColour( wx.Colour( 255, 121, 184 ) )
 
 		bSizer14.Add( self.m_add_tournament, 0, wx.ALL|wx.EXPAND, 5 )
 
@@ -435,7 +438,7 @@ class AddSource ( wx.Frame ):
 
 		self.m_add_mappack = wx.Button( self.m_panel8, wx.ID_ANY, u"Add Mappack(s)", wx.DefaultPosition, wx.Size( -1,60 ), 0 )
 		self.m_add_mappack.SetFont( wx.Font( 21, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
-		self.m_add_mappack.SetBackgroundColour( wx.Colour( 255, 128, 128 ) )
+		self.m_add_mappack.SetBackgroundColour( wx.Colour( 255, 121, 184 ) )
 
 		bSizer141.Add( self.m_add_mappack, 0, wx.ALL|wx.EXPAND, 5 )
 
@@ -461,7 +464,7 @@ class AddSource ( wx.Frame ):
 
 		self.m_add_osucollector = wx.Button( self.m_panel9, wx.ID_ANY, u"Add Collection(s)", wx.DefaultPosition, wx.Size( -1,60 ), 0 )
 		self.m_add_osucollector.SetFont( wx.Font( 21, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
-		self.m_add_osucollector.SetBackgroundColour( wx.Colour( 255, 128, 128 ) )
+		self.m_add_osucollector.SetBackgroundColour( wx.Colour( 255, 121, 184 ) )
 
 		bSizer241.Add( self.m_add_osucollector, 0, wx.ALL|wx.EXPAND, 5 )
 
@@ -584,7 +587,7 @@ class IntroWizard ( wx.adv.Wizard ):
 		self.m_staticText191.Wrap( -1 )
 
 		self.m_staticText191.SetFont( wx.Font( 18, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, "Arial" ) )
-		self.m_staticText191.SetMinSize( wx.Size( -1,30 ) )
+		self.m_staticText191.SetMinSize( wx.Size( -1,50 ) )
 
 		bSizer261.Add( self.m_staticText191, 0, wx.ALL|wx.EXPAND, 5 )
 
@@ -619,11 +622,11 @@ class IntroWizard ( wx.adv.Wizard ):
 		self.m_staticText19.Wrap( -1 )
 
 		self.m_staticText19.SetFont( wx.Font( 18, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, "Arial" ) )
-		self.m_staticText19.SetMinSize( wx.Size( -1,30 ) )
+		self.m_staticText19.SetMinSize( wx.Size( -1,50 ) )
 
 		bSizer26.Add( self.m_staticText19, 0, wx.ALL|wx.EXPAND, 5 )
 
-		self.m_staticText16 = wx.StaticText( self.m_wizPage2, wx.ID_ANY, u"• userpages on the osu website\n• tournaments\n• mappacks\n• osu!Collector collection link\n", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText16 = wx.StaticText( self.m_wizPage2, wx.ID_ANY, u"• userpages on the osu website\n• tournaments mappools\n• mappacks\n• osu!Collector collection link\n", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText16.Wrap( -1 )
 
 		self.m_staticText16.SetFont( wx.Font( 16, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
@@ -654,7 +657,7 @@ class IntroWizard ( wx.adv.Wizard ):
 		self.m_staticText192.Wrap( -1 )
 
 		self.m_staticText192.SetFont( wx.Font( 18, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, "Arial" ) )
-		self.m_staticText192.SetMinSize( wx.Size( -1,30 ) )
+		self.m_staticText192.SetMinSize( wx.Size( -1,50 ) )
 
 		bSizer262.Add( self.m_staticText192, 0, wx.ALL|wx.EXPAND, 5 )
 
@@ -689,13 +692,13 @@ class IntroWizard ( wx.adv.Wizard ):
 		self.m_staticText1921.Wrap( -1 )
 
 		self.m_staticText1921.SetFont( wx.Font( 18, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, "Arial" ) )
-		self.m_staticText1921.SetMinSize( wx.Size( -1,30 ) )
+		self.m_staticText1921.SetMinSize( wx.Size( -1,50 ) )
 
 		bSizer2621.Add( self.m_staticText1921, 0, wx.ALL|wx.EXPAND, 5 )
 
 		bSizer263 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticText25 = wx.StaticText( self.m_wizPage4, wx.ID_ANY, u"1. osu install folder:\n(example: C:\\Users\\foo\\AppData\\Local\\osu!)", wx.DefaultPosition, wx.Size( 250,100 ), 0 )
+		self.m_staticText25 = wx.StaticText( self.m_wizPage4, wx.ID_ANY, u"1. osu install folder:\n(example:\nC:\\Users\\foo\\AppData\\Local\\osu!)", wx.DefaultPosition, wx.Size( 350,100 ), 0 )
 		self.m_staticText25.Wrap( -1 )
 
 		self.m_staticText25.SetFont( wx.Font( 12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
@@ -712,8 +715,9 @@ class IntroWizard ( wx.adv.Wizard ):
 
 		bSizer2611 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_oauth_btn = wx.Button( self.m_wizPage4, wx.ID_ANY, u"2. Grant assistant access to the osu! api", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_oauth_btn = wx.Button( self.m_wizPage4, wx.ID_ANY, u"2. Grant assistant access to the osu! api", wx.DefaultPosition, wx.Size( -1,50 ), 0 )
 		self.m_oauth_btn.SetFont( wx.Font( 12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
+		self.m_oauth_btn.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
 
 		bSizer2611.Add( self.m_oauth_btn, 1, wx.ALL, 5 )
 
