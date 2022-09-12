@@ -18,7 +18,7 @@ def walklevel(some_dir, level=1):
 
 # Buen
 def generate_beatmap(selections, current_collections):
-        settings=data.get_settings()
+        settings=data.Settings
         osudb=database.create_osudb2()
         new_folder=os.path.join(settings.osu_install_folder, "Songs", generate_random_name(8))
         while os.path.isdir(new_folder):

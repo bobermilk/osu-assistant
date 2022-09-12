@@ -19,7 +19,7 @@ def query_osudb(beatmap):
 # cache_db=os.path.join(misc.get_install_directory(), "cache.db")
 # Taken from https://github.com/jaasonw/osu-db-tools/blob/master/osu_to_sqlite.py
 async def create_osudb():
-    settings=data.get_settings()
+    settings=data.Settings
     osu_db_directory=os.path.join(settings.osu_install_folder, "osu!.db")
     if not os.path.isfile(osu_db_directory):
         settings.valid_osu_directory=False
@@ -114,7 +114,7 @@ async def create_osudb():
 async def collection_to_dict():
     collections = {}
     try:
-        async with aiofiles.open(os.path.join(data.get_settings().osu_install_folder, "collection.db"), "rb") as db:
+        async with aiofiles.open(os.path.join(data.Settings.osu_install_folder, "collection.db"), "rb") as db:
             collections["version"] = await buffer.read_uint(db)
             collections["num_collections"] = await buffer.read_uint(db)
             collections["collections"] = []
@@ -133,7 +133,7 @@ async def collection_to_dict():
 
 
 def update_collections(new_collections):
-    if data.get_settings().valid_osu_directory:
+    if data.Settings.valid_osu_directory:
         current_collections=collection_to_dict()
         if not isinstance(current_collections, bool):
             b = buffer.WriteBuffer()
@@ -141,7 +141,7 @@ def update_collections(new_collections):
 
             # Weed out the shit we gonna replace
             existing_collections={}
-            new_collection_names=["- Source {}".format(data.get_sources().collection_index[x]) for x in new_collections.keys()]
+            new_collection_names=["- Source {}".format(data.Sources.collection_index[x]) for x in new_collections.keys()]
             for collection in current_collections["collections"]:
                 if collection["name"] not in new_collection_names:
                     existing_collections[collection["name"]]=collection["hashes"]
@@ -157,12 +157,12 @@ def update_collections(new_collections):
                     
             # Write the new collections
             for source_key, checksums in new_collections.items():
-                b.write_string("- Source {}".format(data.get_sources().collection_index[source_key]))
+                b.write_string("- Source {}".format(data.Sources.collection_index[source_key]))
                 b.write_uint(len(checksums))
                 for checksum in checksums:
                     b.write_string(checksum)
             
-            osu_folder=data.get_settings().osu_install_folder
+            osu_folder=data.Settings.osu_install_folder
             collection_file=os.path.join(osu_folder,"collection.db")
             backup_file=os.path.join(osu_folder, "collection_backup.db")
             if not os.path.isfile(backup_file) and os.path.isfile(collection_file):
@@ -173,7 +173,7 @@ def update_collections(new_collections):
 
 # Taken from https://github.com/jaasonw/osu-db-tools/blob/master/osu_to_sqlite.py
 def create_osudb2():
-    settings=data.get_settings()
+    settings=data.Settings
     osu_db_directory=os.path.join(settings.osu_install_folder, "osu!.db")
     beatmaps={}
     if os.path.isfile(osu_db_directory):

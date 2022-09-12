@@ -23,15 +23,6 @@ osudb_beatmapset_ids=set()
 # User toggles
 cancel_jobs_toggle=False
 
-def get_sources():
-        return Sources
-
-def get_jobs():
-        return Jobs
-        
-def get_settings():
-        return Settings
-
 def save_data():
     with open("osu-assistant.data", 'wb') as f:
         pickle.dump((OAUTH_TOKEN, Sources, Settings), f)

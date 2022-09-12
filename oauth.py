@@ -15,10 +15,10 @@ class AuthenticationLoopback(BaseHTTPRequestHandler):
         query_components = dict(qc.split("=") for qc in query.split("&"))
         data.OAUTH_TOKEN = query_components["token"]
         if data.OAUTH_TOKEN=="Failed":
-            data.get_settings().valid_oauth=False
+            data.Settings.valid_oauth=False
             data.OAUTH_TOKEN=None
         else:
-            data.get_settings().valid_oauth=True
+            data.Settings.valid_oauth=True
 
         self.send_response(200)
         self.send_header("Content-type", "text/html")

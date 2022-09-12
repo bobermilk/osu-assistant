@@ -85,7 +85,7 @@ def get_token():
 
 async def check_cookies(session):
     url=constants.osu_beatmap_url_download.format(1)
-    settings=data.get_settings()
+    settings=data.Settings
     cookie={"XSRF-TOKEN":settings.xsrf_token,"osu_session":settings.osu_session}
     osu_header={ "referer":constants.osu_beatmap_url.format(1) }
     try:

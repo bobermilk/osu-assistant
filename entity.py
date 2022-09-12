@@ -115,7 +115,7 @@ class Sources():
             source.cache_beatmaps(all_beatmaps)
 
         # refresh the jobs
-        await data.get_jobs().refresh()
+        await data.Jobs.refresh()
         # Update the views
         pub.sendMessage("update.sources")
 
@@ -127,7 +127,7 @@ class Sources():
         self.latest_collection_index+=1
         self.collection_index[key]=self.latest_collection_index
         # refresh the jobs
-        await data.get_jobs().refresh()
+        await data.Jobs.refresh()
         # Update the views
         pub.sendMessage("update.sources")
         
@@ -141,7 +141,7 @@ class Sources():
         self.latest_collection_index+=1
         self.collection_index[key]=self.latest_collection_index
         # refresh the jobs
-        await data.get_jobs().refresh()
+        await data.Jobs.refresh()
         # Update the views
         pub.sendMessage("update.sources")
 
@@ -153,7 +153,7 @@ class Sources():
         self.latest_collection_index+=1
         self.collection_index[key]=self.latest_collection_index
         # refresh the jobs
-        await data.get_jobs().refresh()
+        await data.Jobs.refresh()
         # Update the views
         pub.sendMessage("update.sources")
 
@@ -165,7 +165,7 @@ class Sources():
         self.latest_collection_index+=1
         self.collection_index[key]=self.latest_collection_index
         # refresh the jobs
-        await data.get_jobs().refresh()
+        await data.Jobs.refresh()
         # Update the views
         pub.sendMessage("update.sources")
     async def delete_source(self, source_key):
@@ -178,13 +178,12 @@ class Sources():
         if source_key in self.osucollector_source.keys():
             del self.osucollector_source[source_key]
         # refresh the jobs
-        await data.get_jobs().refresh()
+        await data.Jobs.refresh()
         # Update the views
         pub.sendMessage("update.sources")
 
 # Job
 class Job:
-    # source_key is the key used to get source by data.get_sources().get_source()
     def __init__(self, source_key, downloads):
         self.job_source_key=source_key
         self.job_downloads=downloads
@@ -212,7 +211,7 @@ class Jobs:
     async def refresh(self):
         #job_queue_copy.pop() -> maps=diff(job.beatmapsetids , db.get_data())
         job_queue=[]
-        for source_key, source in data.get_sources().read():
+        for source_key, source in data.Sources.read():
             downloads=misc.diff_local_and_source(source)
             job_queue.append(Job(source_key, downloads))
 
@@ -230,7 +229,7 @@ class Jobs:
         while self.get_job_cnt() > 0:
             job=self.job_queue.pop(0)
             job_source_key=job.get_job_source_key()
-            job_source=data.get_sources().get_source(job_source_key)
+            job_source=data.Sources.get_source(job_source_key)
             if isinstance(job_source, UserpageSource) or isinstance(job_source, TournamentSource) or isinstance(job_source, OsucollectorSource):
                 collections[job_source_key]=[x[2] for x in job_source.get_available_beatmaps() if x[2] != None]
             pub.sendMessage("update.progress", value=0, range=0, progress_message=f"Downloading {job_source_key} ({initial_job_cnt-self.get_job_cnt()}/{initial_job_cnt} jobs)")

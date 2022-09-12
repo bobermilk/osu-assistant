@@ -72,7 +72,7 @@ def parse_userpages_urlstrings(urlstring):
     #     try:
     #         r = requests.head(url, allow_redirects=True, timeout=10)
     #         beatmapset_ids.append(re.findall(ra, r.url)[0])
-    #         time.sleep(data.get_settings().download_interval)
+    #         time.sleep(data.Settings.download_interval)
     #     except:
     #         pass
     # return beatmapset_ids

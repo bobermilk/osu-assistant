@@ -108,7 +108,7 @@ class MainWindow(gui.Main):
     def update_sources(self, event):
         self.m_source_list.DeleteAllPages()
 
-        source_list=data.get_sources().read()
+        source_list=data.Sources.read()
         for source_key, source in source_list:
             source_panel=ListPanel(self.m_source_list)
             missing_beatmaps=[beatmap[0] for beatmap in source.get_missing_beatmaps()]
@@ -121,7 +121,7 @@ class MainWindow(gui.Main):
                 source_panel.m_list.Insert("https://osu.ppy.sh/b/"+str(beatmap[1]) +" (unavailable for download)",i)
             for i, beatmapset_id in enumerate(missing_beatmaps):
                 source_panel.m_list.Insert("https://osu.ppy.sh/beatmapsets/"+str(beatmapset_id) +" (missing in-game)",i)
-            self.m_source_list.AddPage(source_panel, f"#{data.get_sources().collection_index[source_key]}: {source_key}")
+            self.m_source_list.AddPage(source_panel, f"#{data.Sources.collection_index[source_key]}: {source_key}")
         try:
             self.m_source_list.GetListView().SetColumnWidth(0, 750)
             self.m_source_list.GetListView().Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.delete_source)
@@ -131,7 +131,7 @@ class MainWindow(gui.Main):
     # used to repopulate the activity list after download completes
     def update_activity(self, event):
         self.m_activity_list.Clear()
-        job_list=data.get_jobs().read()
+        job_list=data.Jobs.read()
         i=0
         while len(job_list) > 0:
             job=job_list.pop(0)
@@ -139,8 +139,8 @@ class MainWindow(gui.Main):
             self.m_activity_list.Insert(str(job_source_key+f" ({job.get_job_downloads_cnt()} beatmaps will be downloaded)"), i)
 
     def export_collection_to_beatmap(self, event):
-        if data.get_settings().valid_osu_directory:
-            if os.path.isfile(os.path.join(data.get_settings().osu_install_folder, "collection.db")):
+        if data.Settings.valid_osu_directory:
+            if os.path.isfile(os.path.join(data.Settings.osu_install_folder, "collection.db")):
                 # collection_window=CollectionSelectionWindow()
                 # collection_window.SetIcon(wx.Icon(resource_path("osu.ico")))
                 # collection_window.Show()
@@ -155,7 +155,7 @@ class MainWindow(gui.Main):
         async with aiohttp.ClientSession() as session:
             await check_cookies(session)
 
-        s=data.get_settings()
+        s=data.Settings
         if s.osu_install_folder!=None:
             # Initialize the cache db
             StartCoroutine(self.create_osudb, self)
@@ -179,7 +179,7 @@ class MainWindow(gui.Main):
             StartCoroutine(self.toggle_jobs, self)
             
     async def update_settings(self, event):
-        s=data.get_settings()
+        s=data.Settings
         s.osu_install_folder=self.m_osu_dir.GetPath()
         s.download_on_start=self.m_autodownload_toggle.GetValue()
         s.download_from_osu=self.m_use_osu_mirror.GetValue()
@@ -210,32 +210,32 @@ class MainWindow(gui.Main):
             data.cancel_jobs_toggle=True
             self.m_toggle_downloading.SetLabelText(constants.activity_start)
         elif not data.cancel_jobs_toggle:
-            if data.get_settings().valid_osu_directory:
+            if data.Settings.valid_osu_directory:
                 self.m_toggle_downloading.SetLabelText(constants.activity_stop)
-                await data.get_jobs().start_jobs()
+                await data.Jobs.start_jobs()
             else:
                 show_dialog("Set the correct osu install folder in settings!")
                 self.m_toggle_downloading.Enable()
 
     async def show_add_window(self, event):
         global add_source_window
-        if data.get_settings().valid_oauth == True:
+        if data.Settings.valid_oauth == True:
             add_source_window=AddSourceWindow(parent=None)
             add_source_window.SetIcon(wx.Icon(resource_path("osu.ico")))
             add_source_window.Show()
             self.m_add_source.Disable()
             await add_source_window.populate_add_window(add_source_window)
         else:
-            if data.get_settings().valid_oauth==False:
+            if data.Settings.valid_oauth==False:
                 get_token()
     def delete_source(self, event):
         source_key=self.m_source_list.GetListView().GetItemText(self.m_source_list.GetListView().GetFocusedItem())
         if show_dialog("Are you sure you want to delete {}".format(source_key)):
-            StartCoroutine(data.get_sources().delete_source(source_key[source_key.find(" ")+1:]), self)
+            StartCoroutine(data.Sources.delete_source(source_key[source_key.find(" ")+1:]), self)
     async def add_userpage(self, links, scope):
-        await data.get_sources().add_user_source(links, scope)
+        await data.Sources.add_user_source(links, scope)
     async def add_tournament(self, selection):
-        await data.get_sources().add_tournament_source(selection)
+        await data.Sources.add_tournament_source(selection)
 
     async def create_osudb(self):
         self.m_add_source.Disable()
@@ -297,12 +297,12 @@ class AddSourceWindow(gui.AddSource):
         labels=[self.m_mappack_list.GetString(x) for x in self.m_mappack_list.GetSelections()]
         ids=[int(x.split(":")[0]) for x in labels]
         self.Destroy()
-        await data.get_sources().add_mappack_source(ids)
+        await data.Sources.add_mappack_source(ids)
 
     async def add_osucollector(self, event):
         links=self.m_osu_collector.GetValue()
         self.Destroy()
-        await data.get_sources().add_osucollector_source(links)
+        await data.Sources.add_osucollector_source(links)
 
     async def change_mappack_section(self, event):
         selection=str(self.m_mappack_section.GetSelection())
@@ -385,7 +385,7 @@ async def main():
         wizard.SetIcon(wx.Icon(resource_path("osu.ico")))
         wizard.m_oauth_btn.Bind(wx.EVT_BUTTON, get_oauth)
         wizard.RunWizard(wizard.m_wizPage1)
-        data.get_settings().osu_install_folder=wizard.m_osu_dir.GetPath()
+        data.Settings.osu_install_folder=wizard.m_osu_dir.GetPath()
     await main_window.restore_settings(None)
     await app.MainLoop()
 asyncio.run(main())

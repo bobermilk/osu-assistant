@@ -26,7 +26,7 @@ async def init():
 async def do_job(job):
     downloads=job.get_job_downloads()
 
-    source=data.get_sources().get_source(job.get_job_source_key())
+    source=data.Sources.get_source(job.get_job_source_key())
     async with aiohttp.ClientSession() as session:
         for i, beatmap in enumerate(downloads, 1):
             # Check if cancel button has been pressed (user cancelled opration)
@@ -39,7 +39,7 @@ async def do_job(job):
                 success=await download.download_beatmap(session, beatmap[0])
                 
                 # Intervals between jobs
-                download_interval=data.get_settings().download_interval/1000
+                download_interval=data.Settings.download_interval/1000
                 if success==2:
                     download_interval+=constants.osu_get_interval # add 3 seconds if its downloading from osu website
                 await asyncio.sleep(download_interval)

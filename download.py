@@ -10,7 +10,7 @@ import aiofiles
 # 2. Success from osu
 async def download_beatmap(session, beatmapset_id):
     success=0
-    settings=data.get_settings()
+    settings=data.Settings
     filename = os.path.join(settings.osu_install_folder, "Songs", str(beatmapset_id) + ".osz")
     try:
         # If osu install folder is none, it will just download at current directory
