@@ -1,6 +1,6 @@
 import os
 
-APP_VERSION=3
+APP_VERSION=4
 
 test_folder=os.getcwd()
 request_timeout=10
