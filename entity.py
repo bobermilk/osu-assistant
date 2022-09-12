@@ -17,7 +17,7 @@ class Beatmaps():
     def get_unavailable_beatmaps(self):
         return self.unavailable_beatmaps
     
-    # tried to download but failed
+    # missing from the local database
     def get_missing_beatmaps(self):
         return misc.diff_local_and_source(self)
 

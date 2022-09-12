@@ -513,8 +513,16 @@ class ListPanel ( wx.Panel ):
 		self.SetSizer( bSizer31 )
 		self.Layout()
 
+		# Connect Events
+		self.m_list.Bind( wx.EVT_LISTBOX_DCLICK, self.open_beatmap_website )
+
 	def __del__( self ):
 		pass
+
+
+	# Virtual event handlers, override them in your derived class
+	def open_beatmap_website( self, event ):
+		event.Skip()
 
 
 ###########################################################################

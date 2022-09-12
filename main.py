@@ -110,13 +110,17 @@ class MainWindow(gui.Main):
 
         source_list=data.get_sources().read()
         for source_key, source in source_list:
-            source_panel=gui.ListPanel(self.m_source_list)
-            for i, beatmap in enumerate(source.get_available_beatmaps()):
-                source_panel.m_list.Insert("https://osu.ppy.sh/beatmapsets/"+str(beatmap[0]) ,i)
+            source_panel=ListPanel(self.m_source_list)
+            missing_beatmaps=[beatmap[0] for beatmap in source.get_missing_beatmaps()]
+            i=0
+            for beatmap in source.get_available_beatmaps():
+                if beatmap[0] not in missing_beatmaps:
+                    source_panel.m_list.Insert("https://osu.ppy.sh/beatmapsets/"+str(beatmap[0]) ,i)
+                    i+=1
             for i, beatmap in enumerate(source.get_unavailable_beatmaps()):
                 source_panel.m_list.Insert("https://osu.ppy.sh/b/"+str(beatmap[1]) +" (unavailable for download)",i)
-            for i, beatmap in enumerate(source.get_missing_beatmaps()):
-                source_panel.m_list.Insert("https://osu.ppy.sh/beatmapsets/"+str(beatmap[0]) +" (missing in-game)",i)
+            for i, beatmapset_id in enumerate(missing_beatmaps):
+                source_panel.m_list.Insert("https://osu.ppy.sh/beatmapsets/"+str(beatmapset_id) +" (missing in-game)",i)
             self.m_source_list.AddPage(source_panel, f"#{data.get_sources().collection_index[source_key]}: {source_key}")
         try:
             self.m_source_list.GetListView().SetColumnWidth(0, 750)
@@ -228,8 +232,16 @@ class MainWindow(gui.Main):
         await data.get_sources().add_user_source(links, scope)
     async def add_tournament(self, selection):
         await data.get_sources().add_tournament_source(selection)
+
     async def create_osudb(self):
+        self.m_add_source.Disable()
+        self.m_toggle_downloading.Disable()
         await database.create_osudb()
+        self.update_sources(None)
+        self.update_activity(None)
+        self.m_add_source.Enable()
+        self.m_toggle_downloading.Enable()
+        
     def open_discord(self, event):
         webbrowser.open(constants.link_discord)
     def open_donate(self, event):
@@ -300,7 +312,7 @@ class AddSourceWindow(gui.AddSource):
     async def populate_add_window(self, event):
         for item in data.TournamentJson.items():
             beatmap_list=[]
-            add_tournament_panel=gui.ListPanel(self.m_tournament)
+            add_tournament_panel=ListPanel(self.m_tournament)
             for beatmap in item[1][1]:
                 beatmap_list.append(constants.osu_beatmap_url_full.format(beatmap[0], beatmap[2], beatmap[1]))
             tournament_key=item[0] + ": "+ item[1][0]
@@ -322,6 +334,18 @@ class AddSourceWindow(gui.AddSource):
             self.m_mappack_list.InsertItems(mappack_list,0)
     def open_subscribed_mappers(self, event):
         webbrowser.open(constants.link_mappers)
+
+class ListPanel(gui.ListPanel):
+    def __init__(self, parent=None):
+        super(ListPanel, self).__init__(parent)
+        
+    def open_beatmap_website(self, event):
+        try:
+            index = event.GetSelection()
+            url=self.m_list.GetString(index).split()[0]
+            webbrowser.open(url)
+        except:
+            pass
 
 class CollectionSelectionWindow(gui.CollectionsSelection):
     """
