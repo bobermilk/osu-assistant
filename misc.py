@@ -14,12 +14,12 @@ async def init():
     # Load app data
     has_savefile=data.load_data()
     # Check for update
-    if requests.get("https://milkies.ml/json/osu-assistant.json").json()["latest"]>constants.APP_VERSION:
+    if requests.get("https://bobermilk.pythonanywhere.com/json/osu-assistant.json").json()["latest"]>constants.APP_VERSION:
         pub.sendMessage("show.dialog", msg="New update available! Download from github?", ok=lambda: webbrowser.open(constants.link_github_releases))
 
     # Get the jsons
-    data.TournamentJson=requests.get("https://milkies.ml/json/tournament.json").json()
-    data.MappackJson=requests.get("https://milkies.ml/json/mappack.json").json()
+    data.TournamentJson=requests.get("https://bobermilk.pythonanywhere.com/json/tournament.json").json()
+    data.MappackJson=requests.get("https://bobermilk.pythonanywhere.com/json/mappack.json").json()
     return has_savefile
     
 # WARNING: this function WILL hang the main thread, so remember to make it async in production

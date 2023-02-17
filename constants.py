@@ -1,12 +1,10 @@
-import os
-
-APP_VERSION=4
+APP_VERSION=5
 
 api_get_interval=0.1
 osu_get_interval=3 # osu site
 
 #oauth url
-oauth_url="https://osu.ppy.sh/oauth/authorize?client_id=17410&response_type=code&redirect_uri=https%3A%2F%2Fmilkies.ml%2Fosuauth"
+oauth_url="https://osu.ppy.sh/oauth/authorize?client_id=17410&response_type=code&redirect_uri=https%3A%2F%2Fbobermilk.pythonanywhere.com%2Fosuauth"
 # scraper.py endpoints
 user_url="https://osu.ppy.sh/users/"
 #scrape_pinned=user_url+"{}/scores/pinned?mode={}&limit={}&offset={}"
@@ -43,5 +41,5 @@ link_discord="https://discord.gg/PARv9mme9X"
 link_paypal="https://paypal.me/bobermilk"
 link_github="https://github.com/bobermilk/osu-assistant"
 link_github_releases="https://github.com/bobermilk/osu-assistant/releases"
-link_website="https://milkies.ml/osu-assistant"
+link_website="https://bobermilk.pythonanywhere.com/osu-assistant"
 link_mappers="https://osu.ppy.sh/home/follows/mapping"
