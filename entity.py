@@ -73,11 +73,22 @@ class OsucollectorSource(Beatmaps):
     def set_ids(self, ids):
         self.ids=ids
 
+class OsuweblinksSource(Beatmaps):
+    def __init__(self, beatmapset_ids, beatmap_ids):
+        super().__init__()
+        self.beatmap_ids=beatmap_ids
+        self.beatmapset_ids=beatmapset_ids
+    def get_beatmap_ids(self):
+        return self.beatmap_ids
+    def get_beatmapset_ids(self):
+        return self.beatmapset_ids
+
 # Data for the sources tab
 class Sources():
     def __init__(self):
         self.user_source={}
         self.osucollector_source={}
+        self.osuweblinks_source={}
         self.mappack_source={}
         self.tournament_source={}
         self.collection_index={}
@@ -93,11 +104,13 @@ class Sources():
             return self.mappack_source[source_key]
         if source_key in self.osucollector_source:
             return self.osucollector_source[source_key]
+        if source_key in self.osuweblinks_source:
+            return self.osuweblinks_source[source_key]
         return None
 
     # returns [(source_key1, source1), (source_key2, source2), ...]
     def read(self):
-        return list(self.user_source.items()) + list(self.tournament_source.items()) + list(self.mappack_source.items()) + list(self.osucollector_source.items())
+        return list(self.user_source.items()) + list(self.tournament_source.items()) + list(self.mappack_source.items()) + list(self.osucollector_source.items()) + list(self.osuweblinks_source.items())
 
     async def refresh(self):
         # TODO: api shit, call query_osu and store beatmaps in source.all_beatmaps as a triple (beatmapsetid, beatmapid, checksum)
@@ -112,6 +125,9 @@ class Sources():
             source.cache_beatmaps(all_beatmaps)
         for source in self.osucollector_source.values():
             all_beatmaps=await scraper.get_osucollector_beatmaps(source)
+            source.cache_beatmaps(all_beatmaps)
+        for source in self.osuweblinks_source.values():
+            all_beatmaps=await scraper.get_osuweblinks_beatmaps(source)
             source.cache_beatmaps(all_beatmaps)
 
         # Write source updates to save file
@@ -177,6 +193,21 @@ class Sources():
         await data.Jobs.refresh()
         # Update the views
         pub.sendMessage("update.sources")
+    
+    async def add_osuweblinks_source(self, title, link):
+        key, source=misc.create_osuweblinks_source(title, link)
+        all_beatmaps=await scraper.get_osuweblinks_beatmaps(source)
+        source.cache_beatmaps(all_beatmaps)
+        self.osuweblinks_source[key]=source
+        self.latest_collection_index+=1
+        self.collection_index[key]=self.latest_collection_index
+        # Write source updates to save file
+        data.save_data()
+        # refresh the jobs
+        await data.Jobs.refresh()
+        # Update the views
+        pub.sendMessage("update.sources")
+
     async def delete_source(self, source_key):
         if source_key in self.user_source.keys():
             del self.user_source[source_key]
@@ -186,6 +217,8 @@ class Sources():
             del self.mappack_source[source_key]
         if source_key in self.osucollector_source.keys():
             del self.osucollector_source[source_key]
+        if source_key in self.osuweblinks_source.keys():
+            del self.osuweblinks_source[source_key]
         # Write source updates to save file
         data.save_data()
         # refresh the jobs
@@ -241,7 +274,7 @@ class Jobs:
             job=self.job_queue.pop(0)
             job_source_key=job.get_job_source_key()
             job_source=data.Sources.get_source(job_source_key)
-            if isinstance(job_source, UserpageSource) or isinstance(job_source, TournamentSource) or isinstance(job_source, OsucollectorSource):
+            if isinstance(job_source, UserpageSource) or isinstance(job_source, TournamentSource) or isinstance(job_source, OsucollectorSource) or isinstance(job_source, OsuweblinksSource):
                 collections[job_source_key]=[x[2] for x in job_source.get_available_beatmaps() if x[2] != None]
             pub.sendMessage("update.progress", value=0, range=0, progress_message=f"Downloading {job_source_key} ({initial_job_cnt-self.get_job_cnt()}/{initial_job_cnt} jobs)")
             pub.sendMessage("enable.job_toggle_button")

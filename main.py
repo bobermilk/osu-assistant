@@ -234,6 +234,8 @@ class MainWindow(gui.Main):
         await data.Sources.add_tournament_source(selection)
     async def add_osucollector(self, links):
         await data.Sources.add_osucollector_source(links)
+    async def add_osuweblinks(self, title, links):
+        await data.Sources.add_osuweblinks_source(title, links)
 
     async def create_osudb(self):
         self.m_add_source.Disable()
@@ -272,6 +274,7 @@ class AddSourceWindow(gui.AddSource):
         AsyncBind(wx.EVT_BUTTON, self.add_tournament, self.m_add_tournament)
         AsyncBind(wx.EVT_BUTTON, self.add_mappack, self.m_add_mappack)
         AsyncBind(wx.EVT_BUTTON, self.add_osucollector, self.m_add_osucollector)
+        AsyncBind(wx.EVT_BUTTON, self.add_osuweblinks, self.m_add_weblinks)
         AsyncBind(wx.EVT_CHOICE, self.change_mappack_section, self.m_mappack_section)
         AsyncBind(wx.EVT_WINDOW_DESTROY, self.onDestroy, self)
 
@@ -308,6 +311,12 @@ class AddSourceWindow(gui.AddSource):
         links=self.m_osu_collector.GetValue()
         self.Destroy()
         StartCoroutine(main_window.add_osucollector(links), main_window)
+
+    async def add_osuweblinks(self, event):
+        title=self.m_osu_weblinks_key.GetValue()
+        links=self.m_osu_weblinks.GetValue()
+        self.Destroy()
+        StartCoroutine(main_window.add_osuweblinks(title, links), main_window)
 
     async def change_mappack_section(self, event):
         selection=str(self.m_mappack_section.GetSelection())

@@ -191,3 +191,17 @@ async def get_osucollector_beatmaps(source):
                     break
     pub.sendMessage("show.loading", msg=None)
     return all_beatmaps
+
+async def get_osuweblinks_beatmaps(source):
+    all_beatmaps=set()
+
+    for beatmapset_id in source.get_beatmapset_ids():
+        all_beatmaps.add((beatmapset_id, None, None))
+
+    async with aiohttp.ClientSession() as session:
+        for beatmap_id in source.get_beatmap_ids():
+            beatmap_checksum, beatmapset_id = await api.query_osu_beatmap(session, beatmap_id)
+            all_beatmaps.add((beatmapset_id, beatmap_id, beatmap_checksum))
+
+    pub.sendMessage("show.loading", msg=None)
+    return all_beatmaps

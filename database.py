@@ -22,9 +22,9 @@ async def create_osudb():
     else:
         settings.valid_osu_directory=True
         async with aiofiles.open(osu_db_directory, mode="rb") as db:
-            await db.read(9)
+            await db.seek(9,1)
             # skip this datetime shit for now (8 bytes)
-            await db.read(8)
+            await db.seek(8,1)
             await buffer.read_string(db, True)
             num_beatmaps = await buffer.read_uint(db)
 
@@ -39,40 +39,40 @@ async def create_osudb():
                 await buffer.read_string(db, True)
                 await buffer.read_string(db, True)
                 await buffer.read_string(db, True)
-                await db.read(39)
+                await db.seek(39,1)
                 # skip these int double pairs, personally i dont think they're 
                 # important for the purpose of this database
                 i = await buffer.read_uint(db)
                 for _ in range(i):
-                    await db.read(14)
+                    await db.seek(14,1)
 
                 i = await buffer.read_uint(db)
                 for _ in range(i):
-                    await db.read(14)
+                    await db.seek(14,1)
 
                 i = await buffer.read_uint(db)
                 for _ in range(i):
-                    await db.read(14)
+                    await db.seek(14,1)
 
                 i = await buffer.read_uint(db)
                 for _ in range(i):
-                    await db.read(14)
+                    await db.seek(14,1)
                 
-                await db.read(12)
+                await db.seek(12,1)
                 # skip timing points
                 # i = await buffer.read_uint(db)
                 for _ in range(await buffer.read_uint(db)):
-                    await db.read(17)
+                    await db.seek(17,1)
                 beatmap_id=await buffer.read_uint(db)
                 beatmapset_id=await buffer.read_uint(db)
-                await db.read(15)
+                await db.seek(15,1)
                 await buffer.read_string(db, True)
                 await buffer.read_string(db, True)
-                await db.read(2)
+                await db.seek(2,1)
                 await buffer.read_string(db, True)
-                await db.read(10)
+                await db.seek(10,1)
                 await buffer.read_string(db, True)
-                await db.read(18)
+                await db.seek(18,1)
                 data.osudb_beatmap_ids.add(beatmap_id)
                 data.osudb_beatmapset_ids.add(beatmapset_id)
         pub.sendMessage("show.loading", msg=None)

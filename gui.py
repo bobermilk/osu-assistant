@@ -476,6 +476,18 @@ class AddSource ( wx.Frame ):
 		self.m_panel10 = wx.Panel( self.m_notebook2, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		bSizer2411 = wx.BoxSizer( wx.VERTICAL )
 
+		self.m_staticText171 = wx.StaticText( self.m_panel10, wx.ID_ANY, u"In-game collection name", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText171.Wrap( -1 )
+
+		self.m_staticText171.SetFont( wx.Font( 12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
+
+		bSizer2411.Add( self.m_staticText171, 0, wx.ALL, 5 )
+
+		self.m_osu_weblinks_key = wx.TextCtrl( self.m_panel10, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_osu_weblinks_key.SetFont( wx.Font( 12, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, "Arial" ) )
+
+		bSizer2411.Add( self.m_osu_weblinks_key, 0, wx.ALL|wx.EXPAND, 5 )
+
 		self.m_staticText221 = wx.StaticText( self.m_panel10, wx.ID_ANY, u"osu! website beatmap links (add new line after a link)", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText221.Wrap( -1 )
 

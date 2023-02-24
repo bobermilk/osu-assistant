@@ -48,6 +48,9 @@ def generate_osucollector_source_key(collection_ids):
         ids=ids[:-1]
     return f"Osucollector: {ids}"
 
+def generate_osuweblinks_source_key(title):
+    return f"Osuweblinks: {title}"
+
 # Extract (user_id, gamemode) from osu beatmap urls
 # https://osu.ppy.sh/users/15656848/fruits
 def parse_userpages_urlstrings(urlstring):
@@ -85,6 +88,24 @@ def parse_osucollector_urlstrings(urlstring):
         collections.add(int(collection_id))
 
     return collections
+
+# Extract beatmap_id, beatmapset_id from osu website urls
+def parse_osuweblinks_urlstrings(urlstring):
+    beatmapset_ids=set() # beatmapset_id
+    beatmap_ids=set() # (beatmapset_id, beatmap_id) cant use dict cuz multiple same key
+
+    ra = "(?<=beatmapsets\/)(.*)" # matches format beatmapset_id#gamemode/beatmap_id
+
+    for beatmap_data in re.findall(ra, urlstring):
+        # beatmap_id
+        data=re.findall(r'\d+', beatmap_data)
+        if len(data)==1:
+            beatmapset_ids.add(data[0])
+        elif len(data)==2:
+            beatmapset_ids.add(data[0])
+            beatmap_ids.add(data[1])
+
+    return beatmapset_ids, beatmap_ids
 
 def generate_random_name(length):
    letters = string.ascii_lowercase

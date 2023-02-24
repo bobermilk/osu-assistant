@@ -61,7 +61,7 @@ def diff_local_and_source(source):
 def create_userpage_source(links, scope):
     users=strings.parse_userpages_urlstrings(links) # returns set of (userid, gamemode)
 
-    #Example
+    # Example entry in main screen
     # User: played=top&fav status=r&gp&p&g mode=m Polyester
     source_key=strings.generate_userpage_source_key(users, scope)
 
@@ -73,7 +73,7 @@ def create_tournament_source(tournament_id, source_key):
     return (source_key, entity.TournamentSource(tournament_id))
 
 def create_mappack_source(ids):
-    #Example
+    # Example entry in main screen
     # Mappack mode=m #109 #108
     
     source_key=strings.generate_mappack_source_key(ids)
@@ -81,7 +81,7 @@ def create_mappack_source(ids):
     return (source_key, entity.MappackSource(ids))
 
 def create_osucollector_source(links):
-    #Example
+    # Example entry in main screen
     # Osucollector: DT SPEED
 
     # Get id
@@ -92,5 +92,20 @@ def create_osucollector_source(links):
 
     # Generate new source
     new_source=entity.OsucollectorSource(ids)
+
+    return (source_key, new_source)
+
+def create_osuweblinks_source(title, links):
+    # Example entry in main screen
+    # Osuweblinks: training packs my osu coach gave me
+
+    # Get beatmapset_id, beatmapset_id -> beatmap_id
+    beatmapset_ids, beatmap_ids=strings.parse_osuweblinks_urlstrings(links)
+
+    # Generate source key
+    source_key=strings.generate_osuweblinks_source_key(title)
+
+    # Generate new source
+    new_source=entity.OsuweblinksSource(beatmapset_ids, beatmap_ids)
 
     return (source_key, new_source)
