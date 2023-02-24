@@ -37,7 +37,7 @@ activity_stop="Stop Downloading"
 activity_start="Start Downloading (top to bottom)"
 
 #links
-link_discord="https://discord.gg/PARv9mme9X"
+link_discord="https://discord.gg/UG4VHtYzGv"
 link_paypal="https://paypal.me/bobermilk"
 link_github="https://github.com/bobermilk/osu-assistant"
 link_github_releases="https://github.com/bobermilk/osu-assistant/releases"
