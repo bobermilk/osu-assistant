@@ -30,7 +30,7 @@ async def get_userpage_beatmaps(source):
                 cached_beatmap_ids=set()
                 for beatmap in source.all_beatmaps:
                     cached_beatmap_ids.add(beatmap[1])
-                for i, item in enumerate(j):
+                for i, item in enumerate(j, 1):
                     beatmap_id=item['beatmap_id']
                     pub.sendMessage("show.loading", msg=f"Getting beatmap data from osu! api ({i}/{len(j)})")
                     if data.Settings.valid_oauth and not beatmap_id in cached_beatmap_ids:
@@ -145,7 +145,7 @@ async def get_tournament_beatmaps(source):
         cached_beatmap_ids=set()
         for beatmap in source.all_beatmaps:
             cached_beatmap_ids.add(beatmap[1])
-        for i, beatmap in enumerate(beatmaps):
+        for i, beatmap in enumerate(beatmaps, 1):
             pub.sendMessage("show.loading", msg=f"Getting beatmap data from osu! api ({i}/{len(beatmaps)})")
             if data.Settings.valid_oauth and not beatmap[1] in cached_beatmap_ids:
                 checksum, beatmapset_id=await api.query_osu_beatmap(session, beatmap[1])
@@ -199,8 +199,11 @@ async def get_osuweblinks_beatmaps(source):
         all_beatmaps.add((beatmapset_id, None, None))
 
     async with aiohttp.ClientSession() as session:
-        for beatmap_id in source.get_beatmap_ids():
+        for i, beatmap_id in enumerate(source.get_beatmap_ids(), 1):
+            pub.sendMessage("show.loading", msg=f"Getting beatmap data from osu! api ({i}/{len(source.get_beatmap_ids())})")
             beatmap_checksum, beatmapset_id = await api.query_osu_beatmap(session, beatmap_id)
+            if (beatmapset_id, None, None) in all_beatmaps:
+                all_beatmaps.remove((beatmapset_id, None, None))
             all_beatmaps.add((beatmapset_id, beatmap_id, beatmap_checksum))
 
     pub.sendMessage("show.loading", msg=None)

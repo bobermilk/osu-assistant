@@ -51,9 +51,12 @@ def reset_job_toggle_button_text():
     # called when jobs are completed
     main_window.m_toggle_downloading.SetLabelText(constants.activity_start)
 
-def show_dialog(msg, ok=None):
+def show_dialog(msg, ok=None, focus_main=True):
+    focus=main_window
+    if not focus_main:
+        focus=add_source_window
     # called when new release dropped on github
-    dlg = wx.MessageDialog(main_window, 
+    dlg = wx.MessageDialog(focus, 
         msg,
         "Alert OwO", wx.OK|wx.CANCEL|wx.ICON_QUESTION)
     result = dlg.ShowModal()
@@ -285,16 +288,22 @@ class AddSourceWindow(gui.AddSource):
         #User closed application
         if main_window != None:
             main_window.m_add_source.Enable()
+            main_window.SetFocus()
 
     async def add_userpage(self, event):
-        links=self.m_userpages.GetValue()
+        links=self.m_userpages.GetValue().strip()
         scope=[self.m_user_top100.GetValue(), self.m_user_favourites.GetValue(), self.m_user_everything.GetValue(),
                 self.m_user_ranked.GetValue(), self.m_user_loved.GetValue(), self.m_user_pending.GetValue(), self.m_user_graveyarded.GetValue()]
+        success=True
+        if not "ppy.sh/users/" in links:
+            show_dialog("You need to input a link to the osu user profile", focus_main=False)
+            success=False
         if all(x==0 for x in scope):
-            show_dialog("You need to select something to download from the userpage!")
-        else:
+            show_dialog("You need to select something to download from the userpage!", focus_main=False)
+            success=False
+        if success:
             self.Destroy()
-        StartCoroutine(main_window.add_userpage(links, scope), main_window)
+            StartCoroutine(main_window.add_userpage(links, scope), main_window)
         
     async def add_tournament(self, event):
         selection=self.m_tournament.GetPageText(self.m_tournament.GetSelection())
@@ -308,15 +317,28 @@ class AddSourceWindow(gui.AddSource):
         await data.Sources.add_mappack_source(ids)
 
     async def add_osucollector(self, event):
-        links=self.m_osu_collector.GetValue()
-        self.Destroy()
-        StartCoroutine(main_window.add_osucollector(links), main_window)
+        success=True
+        links=self.m_osu_collector.GetValue().strip()
+        if not "osucollector.com/collections/" in links:
+            show_dialog("You need to input osucollector collection url", focus_main=False)
+            success=False
+        if success:
+            self.Destroy()
+            StartCoroutine(main_window.add_osucollector(links), main_window)
 
     async def add_osuweblinks(self, event):
-        title=self.m_osu_weblinks_key.GetValue()
-        links=self.m_osu_weblinks.GetValue()
-        self.Destroy()
-        StartCoroutine(main_window.add_osuweblinks(title, links), main_window)
+        success=True
+        title=self.m_osu_weblinks_key.GetValue().strip()
+        links=self.m_osu_weblinks.GetValue().strip()
+        if not title:
+            show_dialog("You need to name the collection", focus_main=False)
+            success=False
+        if not "ppy.sh/beatmapsets/" in links:
+            show_dialog("You need to input beatmaps for this collection", focus_main=False)
+            success=False
+        if success:
+            self.Destroy()
+            StartCoroutine(main_window.add_osuweblinks(title, links), main_window)
 
     async def change_mappack_section(self, event):
         selection=str(self.m_mappack_section.GetSelection())

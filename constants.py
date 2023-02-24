@@ -1,4 +1,4 @@
-APP_VERSION=5
+APP_VERSION=6
 
 api_get_interval=0.1
 osu_get_interval=3 # osu site
