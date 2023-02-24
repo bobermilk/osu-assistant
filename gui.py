@@ -450,7 +450,7 @@ class AddSource ( wx.Frame ):
 		self.m_panel9 = wx.Panel( self.m_notebook2, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		bSizer241 = wx.BoxSizer( wx.VERTICAL )
 
-		self.m_staticText22 = wx.StaticText( self.m_panel9, wx.ID_ANY, u"Links of osu collector links (add new line after a link)", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText22 = wx.StaticText( self.m_panel9, wx.ID_ANY, u"osu collector collection links (add new line after a link)", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText22.Wrap( -1 )
 
 		self.m_staticText22.SetFont( wx.Font( 12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
@@ -473,6 +473,32 @@ class AddSource ( wx.Frame ):
 		self.m_panel9.Layout()
 		bSizer241.Fit( self.m_panel9 )
 		self.m_notebook2.AddPage( self.m_panel9, u"osu!Collector", False )
+		self.m_panel10 = wx.Panel( self.m_notebook2, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
+		bSizer2411 = wx.BoxSizer( wx.VERTICAL )
+
+		self.m_staticText221 = wx.StaticText( self.m_panel10, wx.ID_ANY, u"osu! website beatmap links (add new line after a link)", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText221.Wrap( -1 )
+
+		self.m_staticText221.SetFont( wx.Font( 12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
+
+		bSizer2411.Add( self.m_staticText221, 0, wx.ALL, 5 )
+
+		self.m_osu_weblinks = wx.TextCtrl( self.m_panel10, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_AUTO_URL|wx.TE_MULTILINE )
+		self.m_osu_weblinks.SetFont( wx.Font( 12, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, "Arial" ) )
+
+		bSizer2411.Add( self.m_osu_weblinks, 1, wx.ALL|wx.EXPAND, 5 )
+
+		self.m_add_weblinks = wx.Button( self.m_panel10, wx.ID_ANY, u"Add Collection(s)", wx.DefaultPosition, wx.Size( -1,60 ), 0 )
+		self.m_add_weblinks.SetFont( wx.Font( 21, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
+		self.m_add_weblinks.SetBackgroundColour( wx.Colour( 255, 121, 184 ) )
+
+		bSizer2411.Add( self.m_add_weblinks, 0, wx.ALL|wx.EXPAND, 5 )
+
+
+		self.m_panel10.SetSizer( bSizer2411 )
+		self.m_panel10.Layout()
+		bSizer2411.Fit( self.m_panel10 )
+		self.m_notebook2.AddPage( self.m_panel10, u"Website Links", False )
 
 		bSizer1.Add( self.m_notebook2, 1, wx.EXPAND |wx.ALL, 5 )
 
